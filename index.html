@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Brainrot Heist V2.2 Hardcore Rival City</title>
+<title>Brainrot Heist V2.3 Mode Sword Wars</title>
 <style>
   :root{
     --bg:#060914;--panel:rgba(8,14,30,.86);--panel2:rgba(255,255,255,.08);--line:rgba(255,255,255,.14);
@@ -31,6 +31,9 @@
   .patch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:20px 0}
   .patch div{border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:12px;background:rgba(0,0,0,.20);font-size:14px;color:#d2ddf6;min-height:74px}
   .patch b{display:block;color:#fff;margin-bottom:4px;font-size:15px}
+  .difficultyBox{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:14px 0 6px}
+  .modeBtn{height:auto;min-height:86px;text-align:left;align-items:flex-start;justify-content:flex-start;flex-direction:column;padding:12px 14px;border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.07)}
+  .modeBtn b{display:block;font-size:16px;margin-bottom:4px}.modeBtn span{display:block;font-size:12px;line-height:1.35;color:#bdcae7}.modeBtn.active{background:linear-gradient(135deg,rgba(126,240,193,.24),rgba(121,217,255,.18));border-color:rgba(126,240,193,.55);box-shadow:0 0 0 2px rgba(126,240,193,.14) inset}
   .menuBtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
   .menu button,.resetCard button{height:48px;padding:0 18px;font-size:15px;background:rgba(126,240,193,.15)}
   .menu button.primary{background:linear-gradient(135deg,#7ef0c1,#79d9ff);color:#07101f;border:0}
@@ -51,7 +54,7 @@
   .panelHead{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;position:sticky;top:-18px;padding:14px 0 12px;background:linear-gradient(180deg,rgba(8,14,30,.98),rgba(8,14,30,.88));z-index:2}
   .panel h2{margin:0;font-size:clamp(24px,5vw,38px);letter-spacing:-.035em}.panel .sub{color:var(--muted);font-size:13px;margin-top:5px}.panel .close{height:42px;min-width:42px;padding:0 14px;background:rgba(255,102,136,.16)}
   .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}.card{border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(255,255,255,.065);padding:12px;min-height:92px}.card h3{margin:0 0 5px;font-size:15px}.card p{margin:4px 0;color:#bdcae7;font-size:12px;line-height:1.35}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.pill{display:inline-flex;align-items:center;height:24px;border-radius:999px;padding:0 9px;background:rgba(255,255,255,.10);font-size:12px;font-weight:900;color:#dce7ff}.panel button.small{height:34px;padding:0 10px;font-size:12px;border-radius:11px;margin-top:8px}.panel button.good{background:rgba(126,240,193,.18)}.panel button.bad{background:rgba(255,102,136,.18)}.panel button.gold{background:rgba(255,230,128,.18)}.bar{height:12px;border-radius:999px;background:rgba(255,255,255,.10);overflow:hidden;border:1px solid rgba(255,255,255,.08);margin:8px 0}.bar span{display:block;height:100%;background:linear-gradient(90deg,#7ef0c1,#79d9ff);border-radius:999px}.dangerText{color:#ff6688}.resetModal{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(2,5,12,.84);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}.resetCard{width:min(580px,100%);border:1px solid rgba(255,102,136,.38);border-radius:26px;padding:22px;background:linear-gradient(180deg,rgba(70,15,30,.94),rgba(8,14,30,.96));box-shadow:0 35px 120px rgba(0,0,0,.62)}.resetCard h2{margin:0;font-size:clamp(28px,6vw,45px);line-height:.95;letter-spacing:-.04em}.resetInput{width:100%;height:52px;margin-top:12px;border-radius:16px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.10);color:#fff;font-size:22px;font-weight:1000;text-align:center;letter-spacing:.12em;outline:none;text-transform:uppercase}.dangerBtn{background:rgba(255,102,136,.28)!important;color:#fff!important;border-color:rgba(255,102,136,.5)!important}
-  @media (pointer:coarse), (max-width:900px){.mobileControls{display:block}.topbar button{height:38px;padding:0 10px;font-size:12px}.patch{grid-template-columns:1fr}.menuCard{padding:19px}.panelCard{padding:14px}.panelHead{top:-14px}.grid{grid-template-columns:1fr}}
+  @media (pointer:coarse), (max-width:900px){.mobileControls{display:block}.topbar button{height:38px;padding:0 10px;font-size:12px}.patch,.difficultyBox{grid-template-columns:1fr}.menuCard{padding:19px}.panelCard{padding:14px}.panelHead{top:-14px}.grid{grid-template-columns:1fr}}
   @media (orientation:portrait) and (pointer:coarse){#rotateHint{display:block}.mButtons{grid-template-columns:76px 76px}.mButton{height:54px;font-size:11px}.mButton.big{height:66px}#joyWrap{width:132px;height:132px}}
   @media (max-width:760px){.topbar{left:calc(env(safe-area-inset-left) + 8px);right:calc(env(safe-area-inset-right) + 8px);justify-content:flex-end;gap:6px}.topbar button{height:34px;padding:0 8px;font-size:11px}.mButtons{right:calc(env(safe-area-inset-right) + 10px);bottom:calc(env(safe-area-inset-bottom) + 14px);grid-template-columns:69px 69px;gap:8px}.mButton{height:48px;font-size:10px;border-radius:14px}.mButton.big{height:57px}#joyWrap{left:calc(env(safe-area-inset-left) + 12px);bottom:calc(env(safe-area-inset-bottom) + 16px);width:116px;height:116px}#joyStick{width:52px;height:52px;margin:-26px 0 0 -26px}#rotateHint{bottom:calc(env(safe-area-inset-bottom) + 170px);font-size:12px;padding:8px 10px}}
   @media (max-height:500px){#rotateHint{display:none!important}.mButtons{grid-template-columns:66px 66px;gap:7px}.mButton{height:40px;font-size:10px}.mButton.big{height:48px}#joyWrap{width:104px;height:104px}.menu{align-items:flex-start}.menuCard{margin-top:8px}}
@@ -59,7 +62,7 @@
 </head>
 <body>
 <div id="app">
-  <canvas id="game" aria-label="Brainrot Heist V2.1 Police Skill Tree oyun alanı"></canvas>
+  <canvas id="game" aria-label="Brainrot Heist V2.3 Mode Sword Wars oyun alanı"></canvas>
   <div id="toast" class="toast" aria-live="polite"></div>
   <div class="topbar">
     <button id="btnMenu" type="button">MENÜ</button>
@@ -75,7 +78,7 @@
     <div id="joyWrap"><div id="joyStick"></div></div>
     <div class="mButtons">
       <button class="mButton big" data-action="act" type="button">AL / ÇAL</button>
-      <button class="mButton big danger" data-action="swing" type="button">VUR</button>
+      <button class="mButton big danger" data-action="swing" type="button">KILIÇ</button>
       <button class="mButton warn" data-action="lock" type="button">KİLİT</button>
       <button class="mButton" data-action="inventory" type="button">ENVANTER</button>
       <button class="mButton" data-action="quest" type="button">GÖREV</button>
@@ -88,14 +91,18 @@
   </div>
   <section id="menu" class="menu">
     <div class="menuCard">
-      <p class="eyebrow">V2.2 Hardcore Rival City Update</p>
-      <h1>Brainrot Heist<br>HARDCORE RIVAL CITY</h1>
-      <p class="lead">V2.2 dev güncelleme: aşırı zor ekonomi, 8 rival base, fake multiplayer botlar, botların birbirinden ve senden pet çalması, boss savaşlarına bot katılımı, hardcore rank ve güvenli kayıt sistemi.</p>
+      <p class="eyebrow">V2.3 Easy / Hardcore Sword Wars Update</p>
+      <h1>Brainrot Heist<br>MODE SWORD WARS</h1>
+      <p class="lead">V2.3 güncelleme: menüden Easy / Hardcore seçimi, 8 rival base, fake multiplayer bot savaşları, botların birbirine raid atması, boss için kılıç sistemi ve güvenli kayıt sistemi.</p>
       <div class="patch">
         <div><b>8 Rival Base</b>Şehir artık 8 farklı rakip base, merkez market, black market, boss arena, police HQ, skill dojo ve raid bölgeleriyle büyüdü.</div>
         <div><b>Hardcore ilerleme</b>Para tek başına yetmez: boss core, raid rep, world tier, hardcore rank, skill ve zone ilerlemesi gerekir.</div>
         <div><b>Fake multiplayer botları</b>Bot oyuncular marketten pet alır, senden ve birbirinden çalar, bazen birlikte boss’a dalar.</div>
-        <div><b>Aşırı zorluk</b>Eski zengin save’ler korunur ama düşman seviyesi servetine göre yükselir. Endgame artık oyunun %1’i bile değil.</div>
+        <div><b>Mod seçimi</b>Easy mod rahat ekonomi ve düşük baskı verir. Hardcore mod eski aşırı zorluk olarak kalır.</div>
+      </div>
+      <div class="difficultyBox" aria-label="Oyun modu seçimi">
+        <button id="btnEasyMode" class="modeBtn" type="button"><b>😄 EASY MOD</b><span>Az önceki gibi daha rahat: ucuz upgrade, daha az polis, botlar var ama oyuncuya baskı düşük. Enis modu.</span></button>
+        <button id="btnHardMode" class="modeBtn" type="button"><b>🔥 HARDCORE MOD</b><span>V2.2’deki aşırı zor mod: zengin save’ler threat yükseltir, raid/boss/core baskısı serttir.</span></button>
       </div>
       <div class="menuBtns">
         <button id="btnStart" class="primary" type="button">OYUNA BAŞLA</button>
@@ -105,7 +112,7 @@
         <button id="btnUndoReset" type="button">SON RESETİ GERİ AL</button>
         <button id="btnReset" type="button">KAYDI SIFIRLA</button>
       </div>
-      <p class="smallNote">Klavye: WASD/Oklar hareket, Shift koş, E al/çal/koy, Space vur, L kilit, I envanter, Q görev, H/T skill, M heist, K kasa, U upgrade/Hardcore, C koleksiyon, F pet kilitle, V pet sat, R boss raid, B rebirth, P pause. <b>N ile reset yok.</b></p>
+      <p class="smallNote">Klavye: WASD/Oklar hareket, Shift koş, E al/çal/koy, Space kılıçla vur, L kilit, I envanter, Q görev, H/T skill, M heist, K kasa, U upgrade/Hardcore, C koleksiyon, F pet kilitle, V pet sat, R boss raid, B rebirth, P pause. <b>N ile reset yok.</b></p>
     </div>
   </section>
   <section id="panel" class="panel hidden" aria-modal="true" role="dialog">
@@ -149,12 +156,26 @@ const mobileControls = document.querySelector('.mobileControls');
 const actionButton = document.querySelector('[data-action="act"]');
 
 const SAVE_KEY = 'brainrot-heist-save';
-const SAVE_VERSION = 8;
+const SAVE_VERSION = 9;
 const RESET_BACKUP_KEY = 'brainrot-heist-reset-backup';
 const LEGACY_SAVE_KEYS = [
   SAVE_KEY,
   'brainrot-heist-v13-save','brainrot-heist-v12-save','brainrot-heist-deluxe-v12',
   'brainrot-heist-standalone-v12','brainrot-heist-standalone-v2','brainrot-heist-standalone-v1'
+];
+const GAME_MODES = {
+  easy:{id:'easy',label:'EASY',emoji:'😄',threatMult:.18,maxThreat:18,upgradeCostMult:.34,endgameCostMult:.10,coreReqMult:.45,rebirthCostMult:.30,crateCostMult:.42,wantedMult:.32,policeMult:.35,botAggro:.28,playerRaidChance:.08,rivalRaidChance:.72,bossBotChance:.22,raidStormMult:.35,weaponCostMult:.45,swordDamageMult:1.45,bossHpMult:.42,bossRewardMult:1.18,botWarFreq:1.25,desc:'Rahat ekonomi, az polis, az oyuncu baskını; bot savaşları yine açık.'},
+  hardcore:{id:'hardcore',label:'HARDCORE',emoji:'🔥',threatMult:1,maxThreat:90,upgradeCostMult:1,endgameCostMult:1,coreReqMult:1,rebirthCostMult:1,crateCostMult:1,wantedMult:1,policeMult:1,botAggro:1,playerRaidChance:.22,rivalRaidChance:.54,bossBotChance:.22,raidStormMult:1,weaponCostMult:1,swordDamageMult:1,bossHpMult:1,bossRewardMult:1,botWarFreq:1,desc:'V2.2 aşırı zor ekonomi ve yoğun raid baskısı.'}
+};
+const SWORDS = [
+  {name:'Tahta Kılıç',emoji:'🪵',color:'#ffe680'},
+  {name:'Demir Kılıç',emoji:'⚔️',color:'#d7e4ff'},
+  {name:'Altın Kılıç',emoji:'🗡️',color:'#ffe680'},
+  {name:'Neon Saber',emoji:'💠',color:'#79d9ff'},
+  {name:'Glitch Blade',emoji:'👾',color:'#ff4dff'},
+  {name:'Void Katana',emoji:'🌌',color:'#be95ff'},
+  {name:'Admin Slayer',emoji:'👑',color:'#ffffff'},
+  {name:'Infinite Core Blade',emoji:'♾️',color:'#7ef0c1'}
 ];
 const WORLD = { w: 4300, h: 2700 };
 const COLORS = {
@@ -297,12 +318,12 @@ let lastFrame = performance.now();
 
 function defaultState(){
   return {
-    version:SAVE_VERSION,t:0,started:false,paused:true,saveTimer:1.5,message:'',messageTimer:0,toastTimer:0,
+    version:SAVE_VERSION,t:0,started:false,paused:true,settings:{mode:'easy'},weapon:{level:1,xp:0},botWarTimer:12,saveTimer:1.5,message:'',messageTimer:0,toastTimer:0,
     player:{x:330,y:900,r:20,cash:2500,highCash:2500,gems:20,xp:0,level:1,skillPoints:0,skills:defaultSkills(),rebirths:0,speedLevel:0,slotBonus:0,luckLevel:0,lockLevel:0,trapLevel:0,guardLevel:0,scannerLevel:0,vaultLevel:0,shieldTimer:0,swingTimer:0,stunTimer:0,carrying:null},
     activeSlots:[], inventory:[], market:[], blackOffers:[], rivals:[], fakeBots:[], thieves:[], police:[], traps:[], boss:null, guard:{x:220,y:500,mode:'idle'}, particles:[], floatingTexts:[],
     activeEvent:null,eventTimer:28,marketTimer:0,blackTimer:8,thiefTimer:6,bossTimer:95,policeTimer:4,botActionTimer:2.5,raidStormTimer:42,
     wanted:{heat:0,level:0,best:0,timer:0,survive:0,lastReason:'Temiz'}, heist:{active:null,completed:[],failed:0}, hardcore:{rank:0,worldTier:1,cores:0,raidRep:0,legacyPower:0,botThreat:1,totalBotSteals:0,totalRivalWars:0,bossAssists:0},
-    collection:{total:0,rarities:{},seen:{},best:null}, quests:initQuests(), stats:{bought:0,stolen:0,sold:0,defended:0,stolenFromUs:0,crates:0,bosses:0,quests:0,fused:0,totalEarned:0,bestIncome:0,thievesCaught:0,policeCaught:0,heists:0,skillsSpent:0,wantedPeak:0,botRaids:0,botSteals:0,rivalWars:0,coresEarned:0}, muted:false
+    collection:{total:0,rarities:{},seen:{},best:null}, quests:initQuests(), stats:{bought:0,stolen:0,sold:0,defended:0,stolenFromUs:0,crates:0,bosses:0,quests:0,fused:0,totalEarned:0,bestIncome:0,thievesCaught:0,policeCaught:0,heists:0,skillsSpent:0,wantedPeak:0,botRaids:0,botSteals:0,rivalWars:0,botDuels:0,coresEarned:0}, muted:false
   };
 }
 function initQuests(){
@@ -345,6 +366,7 @@ function ensureTransientWorld(){
   state.guard = {x:ZONES.playerBase.x+100,y:ZONES.playerBase.y+120,mode:'idle'};
   state.botActionTimer = 1.5;
   state.raidStormTimer = rand(24,42);
+  state.botWarTimer = rand(8,16);
   if(!state.activeSlots.length && !state.inventory.length){
     const starter = makeBrainrot({forceKey:'rare'}); starter.name='Starter Cappu Kedi'; starter.income=28; starter.price=650; starter.mutation='Normal'; starter.ability='lockAura'; starter.locked=true; addActiveSlot(starter,true);
   }
@@ -453,8 +475,50 @@ function ensureV22Fields(){
   state.fakeBots = Array.isArray(state.fakeBots)?state.fakeBots:[];
   state.raidStormTimer = Number.isFinite(Number(state.raidStormTimer))?state.raidStormTimer:rand(28,46);
   state.botActionTimer = Number.isFinite(Number(state.botActionTimer))?state.botActionTimer:2.5;
+  ensureV23Fields();
   state.hardcore.botThreat = hardcoreDifficulty();
 }
+
+function ensureV23Fields(){
+  state.settings = {mode:'easy', ...(state.settings||{})};
+  if(!GAME_MODES[state.settings.mode]) state.settings.mode='easy';
+  state.weapon = {level:1,xp:0, ...(state.weapon||{})};
+  state.weapon.level = clamp(Number(state.weapon.level)||1,1,SWORDS.length);
+  state.weapon.xp = Math.max(0, Number(state.weapon.xp)||0);
+  state.botWarTimer = Number.isFinite(Number(state.botWarTimer)) ? state.botWarTimer : rand(8,16);
+  state.stats.botDuels = Number(state.stats.botDuels)||0;
+}
+function modeId(){ return GAME_MODES[state.settings?.mode] ? state.settings.mode : 'easy'; }
+function modeCfg(){ return GAME_MODES[modeId()] || GAME_MODES.easy; }
+function setGameMode(mode){
+  ensureV23Fields(); const next = GAME_MODES[mode] ? mode : 'easy';
+  state.settings.mode = next; state.hardcore.botThreat = hardcoreDifficulty();
+  state.raidStormTimer = Math.max(state.raidStormTimer||0, next==='easy'?28:12);
+  toast(`${GAME_MODES[next].emoji} ${GAME_MODES[next].label} mod açıldı. Save silinmedi.`);
+  refreshModeButtons(); saveGame(); if(!panelEl.classList.contains('hidden')) openPanel('upgrades');
+}
+function refreshModeButtons(){
+  const m=modeId();
+  document.getElementById('btnEasyMode')?.classList.toggle('active',m==='easy');
+  document.getElementById('btnHardMode')?.classList.toggle('active',m==='hardcore');
+}
+function weaponLevel(){ ensureV23Fields(); return clamp(Number(state.weapon.level)||1,1,SWORDS.length); }
+function swordDef(level=weaponLevel()){ return SWORDS[clamp(Math.round(level),1,SWORDS.length)-1] || SWORDS[0]; }
+function swordDamage(){
+  const lvl=weaponLevel(); const h=state.hardcore||{};
+  return (14 + lvl*15 + state.player.level*1.9 + state.player.rebirths*11 + (h.rank||0)*7 + ((h.worldTier||1)-1)*9) * modeCfg().swordDamageMult;
+}
+function swordCost(){
+  const lvl=weaponLevel(); const cfg=modeCfg();
+  return {cash:Math.round(5500*Math.pow(6.2,lvl-1)*Math.pow(state.hardcore?.worldTier||1,1.35)*cfg.weaponCostMult), gems:Math.max(0,Math.floor((lvl-2)*18*cfg.coreReqMult)), cores:Math.max(0,Math.ceil((lvl-4)*cfg.coreReqMult))};
+}
+function buySword(){
+  ensureV23Fields(); const lvl=weaponLevel(); if(lvl>=SWORDS.length){showMessage('Kılıç maksimum seviye.'); return;}
+  const c=swordCost(); if(state.player.cash<c.cash || state.player.gems<c.gems || state.hardcore.cores<c.cores){showMessage(`Kılıç için $${shortNum(c.cash)}${c.gems?`, ${c.gems}💎`:''}${c.cores?`, ${c.cores} core`:''} lazım.`); beep('bad'); return;}
+  state.player.cash-=c.cash; state.player.gems-=c.gems; state.hardcore.cores-=c.cores; state.weapon.level=lvl+1;
+  particles(state.player.x,state.player.y,swordDef().color,90); toast(`${swordDef().emoji} ${swordDef().name} açıldı! Boss hasarın arttı.`); beep('win'); saveGame(); openPanel('upgrades');
+}
+
 function getRawIncomeSafe(){ try{return (state?.activeSlots||[]).reduce((sum,b)=>sum+(Number(b.income)||0),0);}catch(_){return 1;} }
 function hardcoreDifficulty(){
   const cash = Math.max(1, Number(state?.player?.highCash || state?.player?.cash || 1));
@@ -462,11 +526,13 @@ function hardcoreDifficulty(){
   const cashTier = clamp(Math.floor(Math.log10(cash)/1.45),0,32);
   const incomeTier = clamp(Math.floor(Math.log10(income)/1.55),0,26);
   const h = state?.hardcore || {};
-  return clamp(1 + cashTier + incomeTier + Math.floor((state?.player?.level||1)/9) + Math.floor((state?.player?.rebirths||0)*1.8) + Math.floor((h.rank||0)*2.2) + Math.floor((h.worldTier||1)*2.5), 1, 90);
+  const base = clamp(1 + cashTier + incomeTier + Math.floor((state?.player?.level||1)/9) + Math.floor((state?.player?.rebirths||0)*1.8) + Math.floor((h.rank||0)*2.2) + Math.floor((h.worldTier||1)*2.5), 1, 90);
+  const cfg = modeCfg();
+  return clamp(Math.max(1, Math.round(base * cfg.threatMult)), 1, cfg.maxThreat);
 }
-function hardcoreCostMult(){ return Math.pow(1.34, clamp(hardcoreDifficulty(),1,70)/3); }
-function rankNeed(){ const r=state.hardcore?.rank||0; return {cash:Math.round(50000000*Math.pow(5.4,r)*Math.pow(state.hardcore?.worldTier||1,1.7)), cores:2+r*2, rep:5+r*4, income:Math.round(500000*Math.pow(3.6,r))}; }
-function worldTierNeed(){ const t=state.hardcore?.worldTier||1; return {cash:Math.round(2000000000*Math.pow(9,t-1)), cores:6+t*4, rep:12+t*8, rank:Math.max(1,t*2-1)}; }
+function hardcoreCostMult(){ return Math.pow(1.34, clamp(hardcoreDifficulty(),1,70)/3) * modeCfg().upgradeCostMult; }
+function rankNeed(){ const r=state.hardcore?.rank||0; const cfg=modeCfg(); return {cash:Math.round(50000000*Math.pow(5.4,r)*Math.pow(state.hardcore?.worldTier||1,1.7)*cfg.endgameCostMult), cores:Math.max(0,Math.ceil((2+r*2)*cfg.coreReqMult)), rep:Math.max(1,Math.ceil((5+r*4)*cfg.coreReqMult)), income:Math.round(500000*Math.pow(3.6,r)*cfg.endgameCostMult)}; }
+function worldTierNeed(){ const t=state.hardcore?.worldTier||1; const cfg=modeCfg(); return {cash:Math.round(2000000000*Math.pow(9,t-1)*cfg.endgameCostMult), cores:Math.max(1,Math.ceil((6+t*4)*cfg.coreReqMult)), rep:Math.max(2,Math.ceil((12+t*8)*cfg.coreReqMult)), rank:Math.max(1,t*2-1)}; }
 function buyHardcoreRank(){ ensureV22Fields(); const n=rankNeed(); if(state.player.cash<n.cash || state.hardcore.cores<n.cores || state.hardcore.raidRep<n.rep || getIncome()<n.income){ showMessage(`Hardcore Rank için $${shortNum(n.cash)}, ${n.cores} core, ${n.rep} rep ve +${shortNum(n.income)}/sn lazım.`); beep('bad'); return; } state.player.cash-=n.cash; state.hardcore.cores-=n.cores; state.hardcore.raidRep-=n.rep; state.hardcore.rank++; addXp(900+state.hardcore.rank*180); toast(`Hardcore Rank ${state.hardcore.rank}! Botlar güçlendi, yeni içerik açıldı.`); beep('win'); saveGame(); openPanel('upgrades'); }
 function buyWorldTier(){ ensureV22Fields(); const n=worldTierNeed(); if(state.hardcore.rank<n.rank || state.player.cash<n.cash || state.hardcore.cores<n.cores || state.hardcore.raidRep<n.rep){ showMessage(`World Tier için Rank ${n.rank}, $${shortNum(n.cash)}, ${n.cores} core, ${n.rep} rep lazım.`); beep('bad'); return; } state.player.cash-=n.cash; state.hardcore.cores-=n.cores; state.hardcore.raidRep-=n.rep; state.hardcore.worldTier++; refreshBlackMarket(); state.rivals = RIVAL_CONFIG.map((cfg,idx)=>createRival(cfg,idx)); state.fakeBots = createFakeBots(); toast(`WORLD TIER ${state.hardcore.worldTier}! 8 base yeniden güçlendi.`); beep('win'); saveGame(); openPanel('upgrades'); }
 function addCores(n=1){ ensureV22Fields(); state.hardcore.cores += n; state.stats.coresEarned=(state.stats.coresEarned||0)+n; addProgress('core',n); }
@@ -601,7 +667,7 @@ function beep(type='ok'){
 
 function serializeSave(){
   ensureV22Fields();
-  return {version:SAVE_VERSION,savedAt:Date.now(),cash:Math.round(state.player.cash),highCash:Math.round(state.player.highCash),gems:Math.round(state.player.gems),xp:state.player.xp,level:state.player.level,skillPoints:state.player.skillPoints,skills:state.player.skills,rebirths:state.player.rebirths,speedLevel:state.player.speedLevel,slotBonus:state.player.slotBonus,luckLevel:state.player.luckLevel,lockLevel:state.player.lockLevel,trapLevel:state.player.trapLevel,guardLevel:state.player.guardLevel,scannerLevel:state.player.scannerLevel||0,vaultLevel:state.player.vaultLevel||0,hardcore:state.hardcore,activeSlots:state.activeSlots.map(cleanBrainrot),playerSlots:state.activeSlots.map(cleanBrainrot),inventory:state.inventory.map(cleanBrainrot),collection:state.collection,quests:state.quests,wanted:state.wanted,heist:state.heist,stats:state.stats,muted:state.muted};
+  return {version:SAVE_VERSION,savedAt:Date.now(),settings:state.settings,weapon:state.weapon,cash:Math.round(state.player.cash),highCash:Math.round(state.player.highCash),gems:Math.round(state.player.gems),xp:state.player.xp,level:state.player.level,skillPoints:state.player.skillPoints,skills:state.player.skills,rebirths:state.player.rebirths,speedLevel:state.player.speedLevel,slotBonus:state.player.slotBonus,luckLevel:state.player.luckLevel,lockLevel:state.player.lockLevel,trapLevel:state.player.trapLevel,guardLevel:state.player.guardLevel,scannerLevel:state.player.scannerLevel||0,vaultLevel:state.player.vaultLevel||0,hardcore:state.hardcore,activeSlots:state.activeSlots.map(cleanBrainrot),playerSlots:state.activeSlots.map(cleanBrainrot),inventory:state.inventory.map(cleanBrainrot),collection:state.collection,quests:state.quests,wanted:state.wanted,heist:state.heist,stats:state.stats,muted:state.muted};
 }
 function saveGame(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(serializeSave())); }catch(e){ console.warn('save failed',e); } }
 function saveProgressScore(data){
@@ -629,6 +695,8 @@ function restoreSave(saved){
   state.player.gems=num(saved.gems??saved.player?.gems,20); state.player.xp=num(saved.xp??saved.player?.xp,0); state.player.level=clamp(num(saved.level??saved.player?.level,1),1,999); state.player.rebirths=num(saved.rebirths??saved.player?.rebirths,0);
   state.player.speedLevel=num(saved.speedLevel??upgrades.speed??saved.player?.speedLevel,0); state.player.slotBonus=num(saved.slotBonus??upgrades.slots??saved.player?.slotBonus,0); state.player.luckLevel=num(saved.luckLevel??upgrades.luck??saved.player?.luckLevel,0);
   state.player.lockLevel=num(saved.lockLevel??saved.player?.lockLevel,0); state.player.trapLevel=num(saved.trapLevel??saved.trapCount??saved.player?.trapLevel,0); state.player.guardLevel=num(saved.guardLevel??saved.player?.guardLevel,0); state.player.scannerLevel=num(saved.scannerLevel??saved.player?.scannerLevel,0); state.player.vaultLevel=num(saved.vaultLevel??saved.player?.vaultLevel,0);
+  state.settings={mode:'easy', ...(saved.settings||{})}; if(!GAME_MODES[state.settings.mode]) state.settings.mode='easy';
+  state.weapon={level:clamp(num(saved.weapon?.level??saved.swordLevel,1),1,SWORDS.length), xp:num(saved.weapon?.xp??saved.swordXp,0)};
   state.player.skills={...defaultSkills(), ...(saved.skills||saved.player?.skills||{})};
   state.player.skillPoints=num(saved.skillPoints??saved.player?.skillPoints,Math.max(0,state.player.level-1-spentSkillPoints(state.player.skills)));
   const rawSlots=Array.isArray(saved.activeSlots)?saved.activeSlots:(Array.isArray(saved.playerSlots)?saved.playerSlots:(Array.isArray(saved.slots)?saved.slots:(Array.isArray(saved.player?.slots)?saved.player.slots:[])));
@@ -642,7 +710,7 @@ function restoreSave(saved){
   state.stats={...state.stats,...(saved.stats||{})}; state.muted=Boolean(saved.muted); document.getElementById('btnMute').textContent=state.muted?'SESSİZ':'SES'; ensureV22Fields(); updateBestIncome(); return true;
 }
 function mergeQuests(old){ const fresh=initQuests(); for(const q of fresh){ const o=old.find(x=>x.id===q.id); if(o){q.progress=clamp(Number(o.progress)||0,0,q.goal); q.claimed=Boolean(o.claimed);} } return fresh; }
-function loadSave(){ try{ const candidates=saveCandidates(); if(!candidates.length) return false; for(const c of candidates){ try{ if(restoreSave(c.data)){ saveGame(); showMessage(c.key===SAVE_KEY?'Kayıt V2.2’ye yüklendi.':'Eski kayıt bulundu, V2.2’ye taşındı.',3); return true; } }catch(e){ console.warn('candidate failed',c.key,e); } } }catch(e){ console.warn(e); } return false; }
+function loadSave(){ try{ const candidates=saveCandidates(); if(!candidates.length) return false; for(const c of candidates){ try{ if(restoreSave(c.data)){ saveGame(); showMessage(c.key===SAVE_KEY?'Kayıt V2.3’e yüklendi.':'Eski kayıt bulundu, V2.3’e taşındı.',3); return true; } }catch(e){ console.warn('candidate failed',c.key,e); } } }catch(e){ console.warn(e); } return false; }
 function encodeSave(data){ const json=JSON.stringify(data); const bytes=new TextEncoder().encode(json); let bin=''; for(const b of bytes) bin+=String.fromCharCode(b); return 'BRAINROT_MEGA_V'+SAVE_VERSION+':'+btoa(bin); }
 function decodeSave(text){ let raw=String(text||'').trim(); if(!raw) throw new Error('empty'); if(raw.startsWith('{')) return JSON.parse(raw); raw=raw.replace(/^BRAINROT_(SAVE|MEGA)_V\d+:/,''); const bin=atob(raw); const bytes=new Uint8Array([...bin].map(ch=>ch.charCodeAt(0))); return JSON.parse(new TextDecoder().decode(bytes)); }
 async function exportSave(){ const code=encodeSave(serializeSave()); try{ await navigator.clipboard?.writeText(code); showMessage('Kayıt kodu kopyalandı. Notlar’a sakla.'); }catch(_){ prompt('Kayıt kodunu kopyala:',code); } saveGame(); }
@@ -662,14 +730,14 @@ function rebirth(){
   ensureV22Fields();
   const n = state.player.rebirths + 1;
   const tier = state.hardcore?.worldTier || 1;
-  const need=Math.round(35000000*Math.pow(n,3.35)*Math.pow(tier,1.9));
-  const incomeNeed=Math.round(85000*Math.pow(n,2.25)*Math.pow(tier,1.35));
-  const coreNeed=Math.max(0,Math.floor((n-4)/3));
+  const need=Math.round(35000000*Math.pow(n,3.35)*Math.pow(tier,1.9)*modeCfg().rebirthCostMult);
+  const incomeNeed=Math.round(85000*Math.pow(n,2.25)*Math.pow(tier,1.35)*modeCfg().rebirthCostMult);
+  const coreNeed=Math.max(0,Math.ceil(Math.floor((n-4)/3)*modeCfg().coreReqMult));
   if(state.player.cash<need || getIncome()<incomeNeed || state.hardcore.cores<coreNeed){ showMessage(`Rebirth için $${shortNum(need)}, +${shortNum(incomeNeed)}/sn gelir${coreNeed?`, ${coreNeed} core`:''} lazım.`); beep('bad'); return; }
   state.player.cash-=need; if(coreNeed) state.hardcore.cores-=coreNeed; state.player.rebirths++; state.player.gems+=25+state.player.rebirths*5; state.hardcore.raidRep+=1+Math.floor(state.player.rebirths/3); addXp(650+state.player.rebirths*60); toast(`Rebirth ${state.player.rebirths}! Petler silinmedi ama sonraki hedefler çok daha pahalı.`); beep('win'); saveGame();
 }
 function lockBase(){
-  const duration=14+state.player.lockLevel*3+Math.floor(state.player.rebirths*1.2)+petAura().lockBonus; const cost=Math.round((1500+hardcoreDifficulty()*260)*Math.pow(1.42,state.player.lockLevel)); if(state.player.shieldTimer>0){showMessage('Base zaten kilitli.'); return;} if(state.player.cash<cost){showMessage(`Kilit için $${shortNum(cost)} lazım.`);beep('bad');return;} state.player.cash-=cost; state.player.shieldTimer=duration; showMessage(`Base kilitlendi: ${Math.ceil(duration)}sn`); particles(ZONES.playerBase.x+ZONES.playerBase.w/2,ZONES.playerBase.y+ZONES.playerBase.h/2,COLORS.cyan,55); beep('buy'); saveGame();
+  const duration=14+state.player.lockLevel*3+Math.floor(state.player.rebirths*1.2)+petAura().lockBonus; const cost=Math.round((1500+hardcoreDifficulty()*260)*Math.pow(1.42,state.player.lockLevel)*modeCfg().upgradeCostMult); if(state.player.shieldTimer>0){showMessage('Base zaten kilitli.'); return;} if(state.player.cash<cost){showMessage(`Kilit için $${shortNum(cost)} lazım.`);beep('bad');return;} state.player.cash-=cost; state.player.shieldTimer=duration; showMessage(`Base kilitlendi: ${Math.ceil(duration)}sn`); particles(ZONES.playerBase.x+ZONES.playerBase.w/2,ZONES.playerBase.y+ZONES.playerBase.h/2,COLORS.cyan,55); beep('buy'); saveGame();
 }
 function spawnMarket(forceKey=null){
   const item=makeBrainrot({forceKey,boost:state.activeEvent?.type==='gold'?.9:0});
@@ -685,12 +753,14 @@ function refreshBlackMarket(){
 function openCrate(kind){
   ensureV22Fields();
   const c=CRATES[kind]||CRATES.basic;
+  const cfg=modeCfg();
+  const cost={cash:Math.round((c.cash||0)*cfg.crateCostMult), gems:c.gems||0, cores:Math.max(0,Math.ceil((c.cores||0)*cfg.coreReqMult)), rep:Math.max(0,Math.ceil((c.rep||0)*cfg.coreReqMult))};
   const rankNeed=Math.max(0,(c.minTier||1)-8);
   if(rankNeed>0 && state.hardcore.rank<rankNeed){showMessage(`${c.name} için Hardcore Rank ${rankNeed} lazım.`);beep('bad');return;}
-  if(state.player.cash<c.cash || state.player.gems<c.gems || state.hardcore.cores<(c.cores||0) || state.hardcore.raidRep<(c.rep||0)){
-    showMessage(`${c.name} için ${c.cash?'$'+shortNum(c.cash):''}${c.gems?' '+c.gems+'💎':''}${c.cores?' '+c.cores+' core':''}${c.rep?' '+c.rep+' rep':''} lazım.`);beep('bad');return;
+  if(state.player.cash<cost.cash || state.player.gems<cost.gems || state.hardcore.cores<cost.cores || state.hardcore.raidRep<cost.rep){
+    showMessage(`${c.name} için ${cost.cash?'$'+shortNum(cost.cash):''}${cost.gems?' '+cost.gems+'💎':''}${cost.cores?' '+cost.cores+' core':''}${cost.rep?' '+cost.rep+' rep':''} lazım.`);beep('bad');return;
   }
-  state.player.cash-=c.cash; state.player.gems-=c.gems; state.hardcore.cores-=c.cores||0; state.hardcore.raidRep-=c.rep||0;
+  state.player.cash-=cost.cash; state.player.gems-=cost.gems; state.hardcore.cores-=cost.cores; state.hardcore.raidRep-=cost.rep;
   const item=makeBrainrot({minTier:c.minTier,boost:c.boost+crateSkillBoost()+state.hardcore.rank*.08}); item.name = c.name.replace(' Crate','')+' '+item.name; addToInventory(item); state.stats.crates++; addProgress('crate',1); particles(state.player.x,state.player.y-40,item.color,70); toast(`${c.name} açıldı: ${item.rarity} ${item.name} envantere geldi.`); beep(item.tier>=5?'win':'buy'); saveGame(); if(!panelEl.classList.contains('hidden')) openPanel('crates');
 }
 function fuseBest(){
@@ -745,18 +815,18 @@ function swing(){
   for(const th of state.thieves){ if(th.stunTimer<=0 && Math.hypot(p.x-th.x,p.y-th.y)<72){ captureThief(th,true); hit=true; break; } }
   if(!hit){ for(const bot of state.fakeBots||[]){ if((bot.stunTimer||0)<=0 && Math.hypot(p.x-bot.x,p.y-bot.y)<72 && (bot.state==='raidPlayer'||bot.carrying)){ captureFakeBot(bot,true); hit=true; break; } } }
   if(!hit){ for(const cop of state.police){ if(cop.stunTimer<=0 && Math.hypot(p.x-cop.x,p.y-cop.y)<74){ stunPolice(cop); hit=true; break; } } }
-  if(state.boss && Math.hypot(p.x-state.boss.x,p.y-state.boss.y)<88){ damageBoss(8+state.player.level*1.2+state.player.rebirths*8); hit=true; }
+  if(state.boss && Math.hypot(p.x-state.boss.x,p.y-state.boss.y)<(92+weaponLevel()*4)){ damageBoss(swordDamage()); hit=true; }
   if(!hit) particles(p.x+38,p.y-10,COLORS.yellow,12);
 }
 function damageBoss(amount){ const b=state.boss; if(!b) return; b.hp-=amount; b.hitTimer=.18; floating(b.x,b.y-60,'-'+Math.round(amount),COLORS.yellow); particles(b.x,b.y,COLORS.red,18); if(b.hp<=0) defeatBoss(); }
 function startBossRaid(){
-  if(state.boss){showMessage('Boss zaten aktif!'); return;} const z=ZONES.boss; const diff=hardcoreDifficulty(); const maxHp=1600+state.player.level*115+state.player.rebirths*900+diff*260+Math.pow(state.hardcore?.worldTier||1,2)*850; state.boss={x:z.x+z.w/2,y:z.y+z.h/2,hp:maxHp,maxHp,phase:'arena',attackTimer:1.0,hitTimer:0,botDamage:0,name:choice(['Mega Thief Boss','Void Croco Boss','Admin Brainrot Boss','Laser Bandit Boss','Hardcore Core Reaper','Fake Multiplayer King'])}; toast(`${state.boss.name} doğdu! Space/VUR ile saldır.`); beep('bad'); state.bossTimer=160;
+  if(state.boss){showMessage('Boss zaten aktif!'); return;} const z=ZONES.boss; const diff=hardcoreDifficulty(); const maxHp=Math.round((1600+state.player.level*115+state.player.rebirths*900+diff*260+Math.pow(state.hardcore?.worldTier||1,2)*850)*modeCfg().bossHpMult); state.boss={x:z.x+z.w/2,y:z.y+z.h/2,hp:maxHp,maxHp,phase:'arena',attackTimer:1.0,hitTimer:0,botDamage:0,name:choice(['Mega Thief Boss','Void Croco Boss','Admin Brainrot Boss','Laser Bandit Boss','Hardcore Core Reaper','Fake Multiplayer King'])}; toast(`${state.boss.name} doğdu! Space/KILIÇ ile saldır.`); beep('bad'); state.bossTimer=160;
 }
 function defeatBoss(){
-  const b=state.boss; if(!b) return; const mult=rewardMult(); const cores=1+Math.floor((state.hardcore?.worldTier||1)/2)+Math.floor((state.hardcore?.rank||0)/3); const cash=Math.round((180000+state.player.level*9500+state.player.rebirths*85000+hardcoreDifficulty()*60000)*mult); const gems=25+Math.floor(state.player.level/3)+state.player.rebirths*4; state.player.cash+=cash; state.player.gems+=gems; addCores(cores); addRaidRep(2+Math.floor(hardcoreDifficulty()/8)); state.stats.bosses++; addProgress('boss',1); heistProgress('boss',1); addXp(650+state.player.level*30); const drop=makeBrainrot({minTier:clamp(5+Math.floor((state.hardcore?.worldTier||1)/2),5,12),boost:2.0+crateSkillBoost()+state.hardcore.rank*.12}); addToInventory(drop,true); particles(b.x,b.y,COLORS.yellow,140); toast(`Boss yenildi! +$${shortNum(cash)}, +${gems}💎, +${cores} core ve ${drop.rarity} pet geldi.`); beep('win'); state.boss=null; saveGame();
+  const b=state.boss; if(!b) return; const mult=rewardMult()*modeCfg().bossRewardMult; const cores=1+Math.floor((state.hardcore?.worldTier||1)/2)+Math.floor((state.hardcore?.rank||0)/3); const cash=Math.round((180000+state.player.level*9500+state.player.rebirths*85000+hardcoreDifficulty()*60000)*mult); const gems=25+Math.floor(state.player.level/3)+state.player.rebirths*4; state.player.cash+=cash; state.player.gems+=gems; addCores(cores); addRaidRep(2+Math.floor(hardcoreDifficulty()/8)); state.stats.bosses++; addProgress('boss',1); heistProgress('boss',1); addXp(650+state.player.level*30); const drop=makeBrainrot({minTier:clamp(5+Math.floor((state.hardcore?.worldTier||1)/2),5,12),boost:2.0+crateSkillBoost()+state.hardcore.rank*.12}); addToInventory(drop,true); particles(b.x,b.y,COLORS.yellow,140); toast(`Boss yenildi! +$${shortNum(cash)}, +${gems}💎, +${cores} core ve ${drop.rarity} pet geldi.`); beep('win'); state.boss=null; saveGame();
 }
 function spawnThief(){
-  const diff=hardcoreDifficulty(); if(state.thieves.length>=8+Math.floor(state.wanted.level/2)+Math.floor(diff/5)) return; const rival=choice(state.rivals); const types=[{n:'Noob Thief',speed:125,hp:1,icon:'🥷'},{n:'Speed Thief',speed:190,hp:1,icon:'💨'},{n:'Tank Thief',speed:115,hp:2,icon:'🛡️'},{n:'Sneaky Thief',speed:155,hp:1,icon:'👻'},{n:'Hardcore Raider',speed:175,hp:3,icon:'🔥'},{n:'Admin Stealer',speed:205,hp:2,icon:'👑'}]; const t=choice(types); state.thieves.push({id:uid(),name:t.n,icon:t.icon,x:rival.x+rival.w/2,y:rival.y+rival.h/2,r:rival.id,home:rival.id,speed:t.speed+state.player.level*1.8+diff*3,hp:t.hp+Math.floor(diff/14),maxHp:t.hp+Math.floor(diff/14),stunTimer:0,state:'toBase',carrying:null,targetSlot:null,escapeX:rival.x+rival.w/2,escapeY:rival.y+rival.h/2}); const lure=petAura().thiefLure; state.thiefTimer=rand(4.8,12)/(1+lure+state.wanted.level*.11+diff*.015); }
+  const diff=hardcoreDifficulty(); if(state.thieves.length>=Math.ceil((8+Math.floor(state.wanted.level/2)+Math.floor(diff/5))*modeCfg().raidStormMult)) return; const rival=choice(state.rivals); const types=[{n:'Noob Thief',speed:125,hp:1,icon:'🥷'},{n:'Speed Thief',speed:190,hp:1,icon:'💨'},{n:'Tank Thief',speed:115,hp:2,icon:'🛡️'},{n:'Sneaky Thief',speed:155,hp:1,icon:'👻'},{n:'Hardcore Raider',speed:175,hp:3,icon:'🔥'},{n:'Admin Stealer',speed:205,hp:2,icon:'👑'}]; const t=choice(types); state.thieves.push({id:uid(),name:t.n,icon:t.icon,x:rival.x+rival.w/2,y:rival.y+rival.h/2,r:rival.id,home:rival.id,speed:(t.speed+state.player.level*1.8+diff*3)*(modeId()==="easy"?.72:1),hp:t.hp+Math.floor(diff/14),maxHp:t.hp+Math.floor(diff/14),stunTimer:0,state:'toBase',carrying:null,targetSlot:null,escapeX:rival.x+rival.w/2,escapeY:rival.y+rival.h/2}); const lure=petAura().thiefLure; state.thiefTimer=rand(4.8,12)/(1+lure+state.wanted.level*.11+diff*.015)/(modeCfg().raidStormMult||1); }
 function updateThieves(dt){
   for(const th of [...state.thieves]){
     if(th.stunTimer>0){ th.stunTimer-=dt; continue; }
@@ -808,24 +878,24 @@ function updateEvents(dt){
 
 function wantedLevelForHeat(heat){ let lvl=0; for(let i=1;i<WANTED_THRESHOLDS.length;i++) if(heat>=WANTED_THRESHOLDS[i]) lvl=i; return lvl; }
 function addWanted(amount,reason='Soygun'){
-  ensureV21Fields(); const reduction=petAura().wantedReduction; const final=Math.max(0,amount*(1-reduction));
+  ensureV21Fields(); const reduction=petAura().wantedReduction; const final=Math.max(0,amount*(1-reduction)*modeCfg().wantedMult);
   state.wanted.heat=clamp((state.wanted.heat||0)+final,0,560); state.wanted.timer=18+state.wanted.level*5; state.wanted.lastReason=reason;
   const old=state.wanted.level||0; state.wanted.level=wantedLevelForHeat(state.wanted.heat); state.wanted.best=Math.max(state.wanted.best||0,state.wanted.level); state.stats.wantedPeak=Math.max(state.stats.wantedPeak||0,state.wanted.level);
   if(state.wanted.level>old){ toast(`${state.wanted.level} yıldız wanted! ${reason}`); beep('bad'); }
   if(state.wanted.level>=5) toast('LOCKDOWN! Polis şehri kapattı, HQ’ya gidip ceza ödeyebilirsin.');
 }
-function desiredPoliceCount(){ return state.wanted.level<=0?0:state.wanted.level + (state.wanted.level>=3?2:0) + (state.wanted.level>=5?2:0) + Math.floor(hardcoreDifficulty()/12); }
+function desiredPoliceCount(){ if(state.wanted.level<=0) return 0; return Math.max(1, Math.ceil((state.wanted.level + (state.wanted.level>=3?2:0) + (state.wanted.level>=5?2:0) + Math.floor(hardcoreDifficulty()/12))*modeCfg().policeMult)); }
 function spawnPolice(kind=null){
   const lvl=state.wanted.level; if(lvl<=0) return;
   let type=kind || (lvl>=5?'captain':lvl>=4?'swat':lvl>=3&&Math.random()<.45?'drone':'patrol'); const def=POLICE_TYPES[type]||POLICE_TYPES.patrol;
   const z=ZONES.police; const edge=choice([{x:40,y:rand(60,WORLD.h-60)},{x:WORLD.w-40,y:rand(60,WORLD.h-60)},{x:z.x+rand(60,z.w-60),y:z.y+rand(40,z.h-40)}]);
-  state.police.push({id:uid(),type,name:def.name,icon:def.icon,color:def.color,x:edge.x,y:edge.y,speed:def.speed+lvl*14,r:20,stunTimer:0,blink:0});
+  state.police.push({id:uid(),type,name:def.name,icon:def.icon,color:def.color,x:edge.x,y:edge.y,speed:(def.speed+lvl*14)*(modeId()==="easy"?.72:1),r:20,stunTimer:0,blink:0});
 }
 function updateWanted(dt){
   ensureV21Fields(); const w=state.wanted; if(w.heat>0){ w.timer=Math.max(0,(w.timer||0)-dt); const hiding=!state.player.carrying && w.timer<=0; const decay=(hiding?9:1.2)*(1+getSkill('getaway')*.04); w.heat=clamp(w.heat-decay*dt,0,560); }
   const old=w.level||0; w.level=wantedLevelForHeat(w.heat); if(old>0 && w.level===0){ toast('Wanted temizlendi.'); state.police.length=0; }
   if(w.level>=2){ w.survive=(w.survive||0)+dt; addProgress('wantedTime',dt); }
-  const want=desiredPoliceCount(); state.policeTimer-=dt; if(w.level>0 && state.police.length<want && state.policeTimer<=0){ spawnPolice(); state.policeTimer=clamp(5.5-w.level*.55,1.6,5.5); }
+  const want=desiredPoliceCount(); state.policeTimer-=dt; if(w.level>0 && state.police.length<want && state.policeTimer<=0){ spawnPolice(); state.policeTimer=clamp((5.5-w.level*.55)/(modeCfg().policeMult||1),1.6,8.5); }
   if(w.level>=5 && state.activeEvent?.type!=='lockdown') { /* visual only through HUD */ }
 }
 function updatePolice(dt){
@@ -839,7 +909,7 @@ function updatePolice(dt){
 }
 function policeCatch(cop){
   const dodge=petAura().policeDodge; if(Math.random()<dodge){ floating(state.player.x,state.player.y-42,'DODGE!',COLORS.cyan); stunPolice(cop,true); return; }
-  const def=POLICE_TYPES[cop.type]||POLICE_TYPES.patrol; const lvl=Math.max(1,state.wanted.level); let fine=Math.round(Math.max(650*lvl, state.player.cash*def.fine));
+  const def=POLICE_TYPES[cop.type]||POLICE_TYPES.patrol; const lvl=Math.max(1,state.wanted.level); let fine=Math.round(Math.max(650*lvl, state.player.cash*def.fine)*(modeId()==="easy"?.35:1));
   if(state.player.carrying){ const lost=state.player.carrying; state.player.carrying=null; addToInventory(lost,true); fine=Math.round(fine*1.25); toast(`Polis yakaladı! ${lost.name} delil deposundan envantere taşındı.`); }
   state.player.cash=Math.max(0,state.player.cash-fine); state.player.stunTimer=.95; state.wanted.heat=Math.max(0,state.wanted.heat-95); state.wanted.level=wantedLevelForHeat(state.wanted.heat); particles(state.player.x,state.player.y,COLORS.red,55); floating(state.player.x,state.player.y-35,`CEZA -$${shortNum(fine)}`,COLORS.red); beep('bad'); removeFromArray(state.police,cop.id); saveGame();
 }
@@ -867,21 +937,22 @@ function nextRivalSlotIndex(r){ const used=new Set((r.slots||[]).map(s=>s.slotIn
 function strongestRivalPet(r){ if(!r||!r.slots?.length) return null; const pos=rivalSlotPositions(r); const pet=[...r.slots].filter(p=>!p.locked).sort((a,b)=>b.income-a.income)[0] || [...r.slots].sort((a,b)=>b.income-a.income)[0]; if(!pet) return null; return {owner:r,pet,pos:pos[pet.slotIndex]||pos[0]}; }
 function botChooseAction(bot){
   const home=botHome(bot); if(!home) return;
-  const diff=hardcoreDifficulty();
-  bot.timer=rand(1.6,4.8);
-  if(state.boss && Math.random()<(.22+diff*.006)){ bot.state='attackBoss'; bot.target={x:state.boss.x,y:state.boss.y}; bot.targetKind='boss'; return; }
-  if(state.market.length && Math.random()<.22){ const item=choice(state.market); bot.state='toMarket'; bot.target={id:item.id,x:item.x,y:item.y}; bot.targetKind='market'; return; }
+  const diff=hardcoreDifficulty(); const cfg=modeCfg();
+  bot.timer=rand(1.2,4.2);
   const candidates=state.rivals.filter(r=>r.id!==home.id && r.slots?.length);
-  const targetPlayer=state.activeSlots.filter(p=>!p.locked).length>0 && Math.random()<(.22+Math.min(.42,diff*.012));
+  if(state.boss && Math.random()<(cfg.bossBotChance+diff*.004)){ bot.state='attackBoss'; bot.target={x:state.boss.x,y:state.boss.y}; bot.targetKind='boss'; return; }
+  if(candidates.length && Math.random()<cfg.rivalRaidChance){ const r=choice(candidates); const t=strongestRivalPet(r); if(t){ bot.state='raidRival'; bot.target={rivalId:r.id,petId:t.pet.id,x:t.pos.x,y:t.pos.y}; bot.targetKind='rival'; return; } }
+  const targetPlayer=state.activeSlots.filter(p=>!p.locked).length>0 && Math.random()<(cfg.playerRaidChance+Math.min(.32,diff*.008*cfg.botAggro));
   if(targetPlayer){ const t=getStealTarget(); if(t){bot.state='raidPlayer'; bot.target={petId:t.pet.id,x:t.pos.x,y:t.pos.y}; bot.targetKind='player'; state.stats.botRaids=(state.stats.botRaids||0)+1; addProgress('botRaid',.25); return;} }
-  if(candidates.length){ const r=choice(candidates); const t=strongestRivalPet(r); if(t){ bot.state='raidRival'; bot.target={rivalId:r.id,petId:t.pet.id,x:t.pos.x,y:t.pos.y}; bot.targetKind='rival'; return; } }
-  const c=rivalCenter(home); bot.state='wander'; bot.target={x:c.x+rand(-120,120),y:c.y+rand(-100,100)};
+  if(state.market.length && Math.random()<.24){ const item=choice(state.market); bot.state='toMarket'; bot.target={id:item.id,x:item.x,y:item.y}; bot.targetKind='market'; return; }
+  const c=rivalCenter(home); bot.state='wander'; bot.target={x:c.x+rand(-140,140),y:c.y+rand(-120,120)};
 }
 function updateFakeBots(dt){
   ensureV22Fields();
   if(!state.fakeBots.length) state.fakeBots=createFakeBots();
-  state.botActionTimer-=dt; state.raidStormTimer-=dt;
-  if(state.raidStormTimer<=0){ triggerRaidStorm(); state.raidStormTimer=rand(38,74)/(1+hardcoreDifficulty()*.018); }
+  state.botActionTimer-=dt; state.raidStormTimer-=dt; state.botWarTimer-=dt;
+  if(state.botWarTimer<=0){ triggerBotWar(); state.botWarTimer=rand(8,18)/modeCfg().botWarFreq; }
+  if(state.raidStormTimer<=0){ triggerRaidStorm(); state.raidStormTimer=rand(38,74)/(1+hardcoreDifficulty()*.018)/(modeCfg().raidStormMult||1); }
   for(const bot of state.fakeBots){
     bot.timer-=dt; const home=botHome(bot); if(!home) continue;
     if(bot.stunTimer>0){ bot.stunTimer-=dt; continue; }
@@ -889,9 +960,14 @@ function updateFakeBots(dt){
     if(bot.timer<=0 || !bot.target) botChooseAction(bot);
     if(bot.state==='wander'){ moveTo(bot,bot.target.x,bot.target.y,dt,bot.speed*.55); if(Math.hypot(bot.x-bot.target.x,bot.y-bot.target.y)<28) botChooseAction(bot); }
     else if(bot.state==='toMarket'){ const item=state.market.find(x=>x.id===bot.target.id); if(!item){botChooseAction(bot); continue;} moveTo(bot,item.x,item.y,dt,bot.speed); if(Math.hypot(bot.x-item.x,bot.y-item.y)<40){ const pet=removeFromArray(state.market,item.id); if(pet){ pet.slotIndex=nextRivalSlotIndex(home); home.slots.push(cleanBrainrot(pet)); floating(bot.x,bot.y-30,'BOT SATIN ALDI',COLORS.yellow); } botChooseAction(bot); } }
-    else if(bot.state==='raidRival'){ const victim=rivalById(bot.target.rivalId); const pos={x:bot.target.x,y:bot.target.y}; moveTo(bot,pos.x,pos.y,dt,bot.speed*1.08); if(Math.hypot(bot.x-pos.x,bot.y-pos.y)<42){ const stolen=victim?removeFromArray(victim.slots,bot.target.petId):null; if(stolen){ bot.carrying=cleanBrainrot(stolen); state.stats.rivalWars=(state.stats.rivalWars||0)+1; state.hardcore.totalRivalWars++; addProgress('rivalWar',1); floating(bot.x,bot.y-35,`${bot.name} çaldı!`,COLORS.red); } botChooseAction(bot); } }
+    else if(bot.state==='raidRival'){ const victim=rivalById(bot.target.rivalId); if(!victim){botChooseAction(bot); continue;} const pos={x:bot.target.x,y:bot.target.y};
+      const defender=state.fakeBots.find(b=>b!==bot && b.home===victim.id && (b.stunTimer||0)<=0 && !b.carrying);
+      if(defender && defender.state!=='defendHome' && Math.random()<.62){ defender.state='defendHome'; defender.target={botId:bot.id}; defender.targetKind='defense'; defender.timer=1.8; }
+      if(defender && Math.hypot(bot.x-defender.x,bot.y-defender.y)<50){ botDuel(bot,defender); continue; }
+      moveTo(bot,pos.x,pos.y,dt,bot.speed*1.08); if(Math.hypot(bot.x-pos.x,bot.y-pos.y)<42){ const stolen=victim?removeFromArray(victim.slots,bot.target.petId):null; if(stolen){ bot.carrying=cleanBrainrot(stolen); state.stats.rivalWars=(state.stats.rivalWars||0)+1; state.hardcore.totalRivalWars++; addProgress('rivalWar',1); floating(bot.x,bot.y-35,`${bot.name} çaldı!`,COLORS.red); if(defender){ defender.state='defendHome'; defender.target={botId:bot.id}; defender.targetKind='defense'; } } botChooseAction(bot); } }
     else if(bot.state==='raidPlayer'){ const target=getBotPlayerTarget(bot.target.petId); if(!target){botChooseAction(bot); continue;} moveTo(bot,target.pos.x,target.pos.y,dt,bot.speed*1.12); if(pointInRect(bot,ZONES.playerBase) && state.player.shieldTimer>0 && Math.random()<.72){ captureFakeBot(bot,false); continue; } for(const trap of state.traps){ const trapRadius=trap.r+getSkill('trapMaster')*7; if(trap.cool<=0 && Math.hypot(bot.x-trap.x,bot.y-trap.y)<trapRadius){ trap.cool=Math.max(2.0,4.8-getSkill('trapMaster')*.32); captureFakeBot(bot,false); break; } } if(bot.stunTimer>0) continue; if(Math.hypot(bot.x-target.pos.x,bot.y-target.pos.y)<38){ const shieldChance=petAura().stealShield + (state.player.vaultLevel||0)*.025; if(Math.random()<shieldChance){ captureFakeBot(bot,false); floating(target.pos.x,target.pos.y-42,'VAULT SAVE!',COLORS.cyan); continue; } const stolen=removeFromArray(state.activeSlots,target.pet.id); if(stolen){ bot.carrying=stolen; state.stats.stolenFromUs++; state.hardcore.totalBotSteals++; toast(`${bot.name} base’inden ${stolen.name} çaldı! Yakala!`); beep('bad'); saveGame(); } } }
-    else if(bot.state==='attackBoss'){ if(!state.boss){botChooseAction(bot); continue;} moveTo(bot,state.boss.x+rand(-35,35),state.boss.y+rand(-35,35),dt,bot.speed*.92); if(Math.hypot(bot.x-state.boss.x,bot.y-state.boss.y)<80){ const dmg=(2.5+hardcoreDifficulty()*.25)*(1+(botHome(bot)?.threat||1)*.12); state.boss.hp-=dmg*dt; state.boss.botDamage=(state.boss.botDamage||0)+dmg*dt; bot.bossHits+=dmg*dt; state.hardcore.bossAssists+=dmg*dt; if(Math.random()<.012){floating(bot.x,bot.y-35,'BOT BOSS VURDU',COLORS.yellow);} if(state.boss.hp<=0){ defeatBossByBots(); } } }
+    else if(bot.state==='defendHome'){ const enemy=state.fakeBots.find(b=>b.id===bot.target?.botId); if(!enemy || (enemy.stunTimer||0)>0){ botChooseAction(bot); continue; } moveTo(bot,enemy.x,enemy.y,dt,bot.speed*1.18); if(Math.hypot(bot.x-enemy.x,bot.y-enemy.y)<48){ botDuel(bot,enemy); } }
+    else if(bot.state==='attackBoss'){ if(!state.boss){botChooseAction(bot); continue;} moveTo(bot,state.boss.x+rand(-35,35),state.boss.y+rand(-35,35),dt,bot.speed*.92); if(Math.hypot(bot.x-state.boss.x,bot.y-state.boss.y)<80){ const dmg=(2.5+hardcoreDifficulty()*.25)*(1+(botHome(bot)?.threat||1)*.12)*modeCfg().botAggro; state.boss.hp-=dmg*dt; state.boss.botDamage=(state.boss.botDamage||0)+dmg*dt; bot.bossHits+=dmg*dt; state.hardcore.bossAssists+=dmg*dt; if(Math.random()<.012){floating(bot.x,bot.y-35,'BOT BOSS VURDU',COLORS.yellow);} if(state.boss.hp<=0){ defeatBossByBots(); } } }
   }
 }
 function getBotPlayerTarget(preferId){
@@ -904,10 +980,30 @@ function captureFakeBot(bot,byPlayer=true){
   if(bot.carrying){ addActiveSlot(bot.carrying) || addToInventory(bot.carrying,true); bot.carrying=null; }
   state.player.cash+=reward; state.stats.defended++; state.stats.thievesCaught++; addProgress('catch',1); addProgress('botRaid',1); addXp(75+hardcoreDifficulty()*2); particles(bot.x,bot.y,COLORS.cyan,50); floating(bot.x,bot.y-32,`BOT YAKALANDI +$${shortNum(reward)}`,COLORS.cyan); beep(byPlayer?'win':'buy'); botChooseAction(bot); saveGame();
 }
+
+function botDuel(a,b){
+  if(!a||!b||a===b) return;
+  const ah=(botHome(a)?.threat||1)+rand(0,3)+(a.carrying?.tier||0)*.45;
+  const bh=(botHome(b)?.threat||1)+rand(0,3)+(b.carrying?.tier||0)*.45;
+  const winner=ah>=bh?a:b, loser=winner===a?b:a;
+  loser.stunTimer=rand(1.2,2.6); loser.timer=rand(2,4); winner.timer=rand(.4,1.4);
+  if(loser.carrying && !winner.carrying && Math.random()<.72){ winner.carrying=loser.carrying; loser.carrying=null; floating(winner.x,winner.y-44,'PET KAPTI!',COLORS.yellow); }
+  state.stats.botDuels=(state.stats.botDuels||0)+1; state.stats.rivalWars=(state.stats.rivalWars||0)+1; state.hardcore.totalRivalWars=(state.hardcore.totalRivalWars||0)+1; addProgress('rivalWar',.5);
+  particles((a.x+b.x)/2,(a.y+b.y)/2,COLORS.yellow,30); floating((a.x+b.x)/2,(a.y+b.y)/2-35,`⚔️ ${winner.name} kazandı`,COLORS.yellow); beep('buy');
+  botChooseAction(loser); if(!winner.carrying) botChooseAction(winner);
+}
+function triggerBotWar(){
+  ensureV22Fields(); const free=(state.fakeBots||[]).filter(b=>(b.stunTimer||0)<=0 && !b.carrying); if(free.length<2) return;
+  const attacker=choice(free); const home=botHome(attacker); const rivals=state.rivals.filter(r=>r.id!==home.id && r.slots?.length); if(!rivals.length) return;
+  const victim=choice(rivals); const target=strongestRivalPet(victim); if(!target) return;
+  attacker.state='raidRival'; attacker.target={rivalId:victim.id,petId:target.pet.id,x:target.pos.x,y:target.pos.y}; attacker.targetKind='rivalWar'; attacker.timer=2.2;
+  const defender=state.fakeBots.find(b=>b.home===victim.id && b!==attacker); if(defender){ defender.state='defendHome'; defender.target={botId:attacker.id}; defender.targetKind='defense'; defender.timer=2.6; }
+  if(Math.random()<.42) toast(`⚔️ Bot savaşı: ${attacker.name} → ${victim.name}`);
+}
 function triggerRaidStorm(){
-  const diff=hardcoreDifficulty(); const amount=clamp(2+Math.floor(diff/10),2,8); for(let i=0;i<amount;i++) setTimeout(spawnThief,i*300);
-  for(const bot of state.fakeBots.slice(0,Math.min(amount,state.fakeBots.length))){ bot.timer=0; if(Math.random()<.55 && getStealTarget()){ const t=getStealTarget(); bot.state='raidPlayer'; bot.target={petId:t.pet.id,x:t.pos.x,y:t.pos.y}; bot.targetKind='player'; } }
-  toast(`HARDCORE RAID STORM! ${amount} hırsız + fake bot baskını.`); beep('bad');
+  const diff=hardcoreDifficulty(); const amount=clamp(Math.ceil((2+Math.floor(diff/10))*modeCfg().raidStormMult),1,8); for(let i=0;i<amount;i++) setTimeout(spawnThief,i*300);
+  for(const bot of state.fakeBots.slice(0,Math.min(amount,state.fakeBots.length))){ bot.timer=0; if(Math.random()<(.55*modeCfg().botAggro) && getStealTarget()){ const t=getStealTarget(); bot.state='raidPlayer'; bot.target={petId:t.pet.id,x:t.pos.x,y:t.pos.y}; bot.targetKind='player'; } }
+  toast(`${modeCfg().label} RAID STORM! ${amount} hırsız + fake bot hareketi.`); beep('bad');
 }
 function defeatBossByBots(){
   if(!state.boss) return; const b=state.boss; particles(b.x,b.y,COLORS.red,90); toast('Fake botlar boss’u kesti! Ödülün çoğu gitti; arena yeniden dolacak.'); addRaidRep(1); state.boss=null; state.bossTimer=80; beep('bad'); saveGame();
@@ -1006,10 +1102,10 @@ function drawBoss(b){
   const w=160,ratio=clamp(b.hp/b.maxHp,0,1); roundedRect(b.x-w/2,b.y-78,w,16,8); ctx.fillStyle='rgba(0,0,0,.65)'; ctx.fill(); roundedRect(b.x-w/2,b.y-78,w*ratio,16,8); ctx.fillStyle=COLORS.red; ctx.fill(); drawText(b.name,b.x,b.y-88,14,COLORS.text,'center',1000);
 }
 function drawPlayer(){
-  const p=state.player; ctx.save(); ctx.translate(p.x,p.y); if(p.stunTimer>0) ctx.rotate(Math.sin(state.t*40)*.12); ctx.fillStyle=p.stunTimer>0?'#8e9ab3':COLORS.green; ctx.shadowColor=COLORS.green; ctx.shadowBlur=16; ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; ctx.fillStyle=COLORS.dark; ctx.beginPath(); ctx.arc(-7,-5,2.5,0,Math.PI*2); ctx.arc(7,-5,2.5,0,Math.PI*2); ctx.fill(); ctx.strokeStyle=COLORS.dark; ctx.lineWidth=2.4; ctx.beginPath(); ctx.arc(0,4,7,.2,Math.PI-.2); ctx.stroke(); if(p.swingTimer>0){ ctx.save(); ctx.rotate(-.7+(.22-p.swingTimer)*10); ctx.strokeStyle=COLORS.yellow; ctx.lineWidth=8; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(10,-7); ctx.lineTo(60,-25); ctx.stroke(); ctx.restore(); } ctx.restore(); drawText(p.stunTimer>0?'SERSEM':'SEN',p.x,p.y-31,12,COLORS.text,'center',1000); if(p.carrying){ drawBrainrot(p.carrying,p.x,p.y-48,.86); drawText('BASE’E GÖTÜR',p.x,p.y+44,12,COLORS.yellow,'center',1000); }
+  const p=state.player; ctx.save(); ctx.translate(p.x,p.y); if(p.stunTimer>0) ctx.rotate(Math.sin(state.t*40)*.12); ctx.fillStyle=p.stunTimer>0?'#8e9ab3':COLORS.green; ctx.shadowColor=COLORS.green; ctx.shadowBlur=16; ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; ctx.fillStyle=COLORS.dark; ctx.beginPath(); ctx.arc(-7,-5,2.5,0,Math.PI*2); ctx.arc(7,-5,2.5,0,Math.PI*2); ctx.fill(); ctx.strokeStyle=COLORS.dark; ctx.lineWidth=2.4; ctx.beginPath(); ctx.arc(0,4,7,.2,Math.PI-.2); ctx.stroke(); if(p.swingTimer>0){ ctx.save(); ctx.rotate(-.7+(.22-p.swingTimer)*10); const sw=swordDef(); ctx.strokeStyle=sw.color; ctx.lineWidth=7+weaponLevel(); ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(10,-7); ctx.lineTo(58+weaponLevel()*7,-25-weaponLevel()*3); ctx.stroke(); drawText(sw.emoji,45,-31,17,'#fff','center',1000); ctx.restore(); } ctx.restore(); drawText(p.stunTimer>0?'SERSEM':'SEN',p.x,p.y-31,12,COLORS.text,'center',1000); if(p.carrying){ drawBrainrot(p.carrying,p.x,p.y-48,.86); drawText('BASE’E GÖTÜR',p.x,p.y+44,12,COLORS.yellow,'center',1000); }
 }
 function drawBot(bot,label,color,icon,carrying=false){
-  ctx.save(); ctx.translate(bot.x,bot.y); ctx.fillStyle=color; ctx.shadowColor=color; ctx.shadowBlur=13; ctx.beginPath(); ctx.arc(0,0,18,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; drawText(icon,0,7,18,'#fff','center',1000); ctx.restore(); drawText(label,bot.x,bot.y-29,11,COLORS.text,'center',900); if(bot.carrying) drawBrainrot(bot.carrying,bot.x,bot.y-42,.72);
+  ctx.save(); ctx.translate(bot.x,bot.y); ctx.fillStyle=color; ctx.shadowColor=color; ctx.shadowBlur=13; ctx.beginPath(); ctx.arc(0,0,18,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; drawText(icon,0,7,18,'#fff','center',1000); ctx.restore(); drawText(label,bot.x,bot.y-29,11,COLORS.text,'center',900); if(bot.state==='raidRival'||bot.state==='defendHome') drawText('⚔️',bot.x+25,bot.y-10,16,COLORS.yellow,'center',1000); if(bot.carrying) drawBrainrot(bot.carrying,bot.x,bot.y-42,.72);
 }
 function drawBrainrot(item,x,y,scale=1){
   ctx.save(); const wob=Math.sin(state.t*4+item.mood)*3; ctx.translate(x,y+wob); ctx.scale(scale,scale); const ability=PET_ABILITIES[item.ability]||PET_ABILITIES.none; if(item.ability&&item.ability!=='none'){ ctx.globalAlpha=.32; ctx.strokeStyle=ability.color; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(0,0,36,0,Math.PI*2); ctx.stroke(); ctx.globalAlpha=1; } ctx.shadowColor=item.color; ctx.shadowBlur=18+item.tier*2; ctx.fillStyle=item.color; ctx.beginPath(); ctx.ellipse(0,0,26,21,Math.sin(state.t+item.mood)*.12,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; ctx.fillStyle='rgba(255,255,255,.35)'; ctx.beginPath(); ctx.ellipse(-8,-8,8,4,-.5,0,Math.PI*2); ctx.fill(); ctx.fillStyle=COLORS.dark; ctx.beginPath(); ctx.arc(-8,-1,2.5,0,Math.PI*2); ctx.arc(10,-1,2.5,0,Math.PI*2); ctx.fill(); ctx.strokeStyle=COLORS.dark; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(1,6,7,.15,Math.PI-.15); ctx.stroke(); drawText(item.icon,0,-31,19,'#fff','center',900); ctx.restore();
@@ -1018,7 +1114,7 @@ function drawPriceTag(item,x,y,black=false){ const text=`$${shortNum(item.price)
 function drawParticles(){ for(const p of state.particles){ ctx.save(); ctx.globalAlpha=clamp(p.life/p.max,0,1); ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill(); ctx.restore(); } for(const f of state.floatingTexts){ ctx.save(); ctx.globalAlpha=clamp(f.life/f.max,0,1); drawText(f.text,f.x,f.y,16,f.color,'center',1000); ctx.restore(); } }
 function drawHUD(){
   ctx.save(); const income=getIncome(); roundedRect(14,14,Math.min(760,view.w-28),86,20); ctx.fillStyle='rgba(8,14,30,.78)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.13)'; ctx.stroke();
-  drawText(`$${shortNum(state.player.cash)}`,32,42,22,COLORS.green,'left',1000); drawText(`+${shortNum(income)}/sn`,32,66,13,COLORS.muted,'left',900); drawText(`💎 ${shortNum(state.player.gems)}`,190,42,18,COLORS.cyan,'left',1000); drawText(`Level ${state.player.level}`,300,42,18,COLORS.yellow,'left',1000); drawText(`SP ${state.player.skillPoints||0}`,300,82,13,COLORS.green,'left',1000); drawText(`Rebirth ${state.player.rebirths}`,410,42,18,COLORS.purple,'left',1000); drawText(`Core ${shortNum(state.hardcore?.cores||0)} • Rep ${shortNum(state.hardcore?.raidRep||0)} • WT ${state.hardcore?.worldTier||1} • Threat ${hardcoreDifficulty()}`,615,66,12,COLORS.red,'left',1000);
+  drawText(`$${shortNum(state.player.cash)}`,32,42,22,COLORS.green,'left',1000); drawText(`+${shortNum(income)}/sn`,32,66,13,COLORS.muted,'left',900); drawText(`💎 ${shortNum(state.player.gems)}`,190,42,18,COLORS.cyan,'left',1000); drawText(`Level ${state.player.level}`,300,42,18,COLORS.yellow,'left',1000); drawText(`SP ${state.player.skillPoints||0}`,300,82,13,COLORS.green,'left',1000); drawText(`Rebirth ${state.player.rebirths}`,410,42,18,COLORS.purple,'left',1000); drawText(`${modeCfg().emoji} ${modeCfg().label} • ⚔️ ${swordDef().name} Lv.${weaponLevel()} • Core ${shortNum(state.hardcore?.cores||0)} • Rep ${shortNum(state.hardcore?.raidRep||0)} • WT ${state.hardcore?.worldTier||1} • Threat ${hardcoreDifficulty()}`,615,66,12,modeId()==='easy'?COLORS.green:COLORS.red,'left',1000);
   const need=xpNeed(), ratio=clamp(state.player.xp/need,0,1); roundedRect(410,55,190,12,7); ctx.fillStyle='rgba(255,255,255,.10)'; ctx.fill(); roundedRect(410,55,190*ratio,12,7); ctx.fillStyle=COLORS.yellow; ctx.fill();
   const shield=state.player.shieldTimer>0?`Kilit ${Math.ceil(state.player.shieldTimer)}sn`:'Kilit açık'; drawText(shield,615,42,15,state.player.shieldTimer>0?COLORS.cyan:COLORS.red,'left',1000);
   const stars=state.wanted.level>0?'★'.repeat(state.wanted.level)+'☆'.repeat(5-state.wanted.level):'TEMİZ'; drawText(`Wanted ${stars}`,32,88,14,state.wanted.level>0?COLORS.red:COLORS.muted,'left',1000);
@@ -1030,8 +1126,8 @@ function drawMiniMap(){
   if(view.w<650) return; const w=190,h=125,x=view.w-w-16,y=112; ctx.save(); roundedRect(x,y,w,h,16); ctx.fillStyle='rgba(8,14,30,.75)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.13)'; ctx.stroke(); const sx=w/WORLD.w, sy=h/WORLD.h; function dot(px,py,c,r=4){ctx.fillStyle=c;ctx.beginPath();ctx.arc(x+px*sx,y+py*sy,r,0,Math.PI*2);ctx.fill();} for(const z of Object.values(ZONES)){ctx.fillStyle='rgba(255,255,255,.08)';ctx.fillRect(x+z.x*sx,y+z.y*sy,z.w*sx,z.h*sy);} for(const r of state.rivals) dot(r.x+r.w/2,r.y+r.h/2,r.edge,3); for(const bot of state.fakeBots||[]) dot(bot.x,bot.y,bot.carrying?COLORS.red:COLORS.yellow,3); for(const th of state.thieves) dot(th.x,th.y,COLORS.red,3); for(const cop of state.police) dot(cop.x,cop.y,COLORS.cyan,3); if(state.boss) dot(state.boss.x,state.boss.y,COLORS.red,5); dot(state.player.x,state.player.y,COLORS.green,5); drawText('Mini Map',x+12,y+18,12,COLORS.muted,'left',900); ctx.restore();
 }
 function drawPrompt(){
-  let hint='E: al/çal/koy • Space: vur • H: skill • M: heist'; const p=state.player;
-  if(p.carrying) hint='Kendi base’e gir ve E / AL ile peti koy. Polis görürse ceza kesebilir.'; else if(nearestMarketItem(70)) hint='Market peti: E / AL ile satın al.'; else if(nearestBlackItem(80)) hint='Black Market: E ile al, wanted az da olsa yükselir.'; else if(nearestRivalPet(72)) hint='Rakip peti: E / AL ile çal. Değer yükseldikçe wanted artar.'; else if(nearestOwnPet(70)) hint='Kendi petin: V sat, F kilitle, I envanter.'; else if(pointInRect(p,ZONES.quest)) hint='Quest Board: E veya Q ile görevleri aç.'; else if(pointInRect(p,ZONES.heist)) hint='Heist Hub: E veya M ile kontrat seç.'; else if(pointInRect(p,ZONES.police)) hint='Police HQ: E ile wanted cezası öde ve temizlen.'; else if(pointInRect(p,ZONES.skills)) hint='Skill Dojo: E veya H ile skill tree aç.'; else if(pointInRect(p,ZONES.crate)) hint='Crate Shop: E veya K ile kasa aç.'; else if(pointInRect(p,ZONES.upgrade)) hint='Upgrade Plaza: E veya U ile güçlen.'; else if(pointInRect(p,ZONES.fusion)) hint='Fusion Lab: E ile 3 aynı rarity peti birleştir.'; else if(pointInRect(p,ZONES.boss)) hint='Boss Arena: E veya R ile boss raid başlat.';
+  let hint='E: al/çal/koy • Space: kılıç • H: skill • M: heist'; const p=state.player;
+  if(p.carrying) hint='Kendi base’e gir ve E / AL ile peti koy. Polis görürse ceza kesebilir.'; else if(nearestMarketItem(70)) hint='Market peti: E / AL ile satın al.'; else if(nearestBlackItem(80)) hint='Black Market: E ile al, wanted az da olsa yükselir.'; else if(nearestRivalPet(72)) hint='Rakip peti: E / AL ile çal. Değer yükseldikçe wanted artar.'; else if(nearestOwnPet(70)) hint='Kendi petin: V sat, F kilitle, I envanter.'; else if(pointInRect(p,ZONES.quest)) hint='Quest Board: E veya Q ile görevleri aç.'; else if(pointInRect(p,ZONES.heist)) hint='Heist Hub: E veya M ile kontrat seç.'; else if(pointInRect(p,ZONES.police)) hint='Police HQ: E ile wanted cezası öde ve temizlen.'; else if(pointInRect(p,ZONES.skills)) hint='Skill Dojo: E veya H ile skill tree aç.'; else if(pointInRect(p,ZONES.crate)) hint='Crate Shop: E veya K ile kasa aç.'; else if(pointInRect(p,ZONES.upgrade)) hint='Upgrade Plaza: E veya U ile güçlen.'; else if(pointInRect(p,ZONES.fusion)) hint='Fusion Lab: E ile 3 aynı rarity peti birleştir.'; else if(pointInRect(p,ZONES.boss)) hint=`Boss Arena: E/R boss başlat. Space/KILIÇ ile vur. Hasar: ${shortNum(swordDamage())}`;
   ctx.save(); ctx.font='1000 15px system-ui'; const w=Math.min(view.w-26,ctx.measureText(hint).width+30); roundedRect(view.w/2-w/2,view.h-74,w,42,18); ctx.fillStyle='rgba(8,14,30,.80)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.13)'; ctx.stroke(); drawText(hint,view.w/2,view.h-48,15,COLORS.text,'center',1000); ctx.restore();
   if(state.messageTimer>0 && state.message){ ctx.save(); ctx.font='1000 16px system-ui'; const mw=Math.min(view.w-40,ctx.measureText(state.message).width+34); roundedRect(view.w/2-mw/2,view.h-124,mw,38,16); ctx.fillStyle='rgba(126,240,193,.90)'; ctx.fill(); drawText(state.message,view.w/2,view.h-100,16,COLORS.dark,'center',1000); ctx.restore(); }
 }
@@ -1062,14 +1158,24 @@ function renderCollection(){
   panelBody.innerHTML=`<h3>En iyi keşif</h3><div class="grid">${best}</div><h3 style="margin-top:18px">Rarity sayıları</h3><div class="grid">${rar}</div>`;
 }
 function renderCrates(){
-  panelTitle.textContent='📦 Crate Shop'; panelSub.textContent='Kasa aç, çıkan pet envantere gelir. Sonra envanterden base’e koy.';
-  panelBody.innerHTML=`<div class="grid">${Object.entries(CRATES).map(([k,c])=>`<div class="card"><h3>${htmlEscape(c.name)}</h3><p>Minimum tier ${c.minTier}, şans boost +${Math.round(c.boost*100)}%</p><p>Fiyat: ${c.cash?'$'+shortNum(c.cash):''} ${c.gems?c.gems+'💎':''} ${c.cores?c.cores+' core':''} ${c.rep?c.rep+' rep':''}</p><button class="small gold" data-cmd="crate" data-kind="${k}">Aç</button></div>`).join('')}</div>`;
+  panelTitle.textContent='📦 Crate Shop'; panelSub.textContent=`Kasa aç, çıkan pet envantere gelir. Mod: ${modeCfg().emoji} ${modeCfg().label}`;
+  const cfg=modeCfg();
+  panelBody.innerHTML=`<div class="grid">${Object.entries(CRATES).map(([k,c])=>{const cost={cash:Math.round((c.cash||0)*cfg.crateCostMult),gems:c.gems||0,cores:Math.max(0,Math.ceil((c.cores||0)*cfg.coreReqMult)),rep:Math.max(0,Math.ceil((c.rep||0)*cfg.coreReqMult))};return `<div class="card"><h3>${htmlEscape(c.name)}</h3><p>Minimum tier ${c.minTier}, şans boost +${Math.round(c.boost*100)}%</p><p>Fiyat: ${cost.cash?'$'+shortNum(cost.cash):''} ${cost.gems?cost.gems+'💎':''} ${cost.cores?cost.cores+' core':''} ${cost.rep?cost.rep+' rep':''}</p><button class="small gold" data-cmd="crate" data-kind="${k}">Aç</button></div>`}).join('')}</div>`;
 }
 function renderUpgrades(){
-  panelTitle.textContent='⚙️ Upgrade Plaza'; panelSub.textContent='Base, karakter ve savunma sistemini büyüt.';
-  panelBody.innerHTML=`<div class="grid">${Object.entries(UPGRADE_DEFS).map(([k,d])=>{const lvl=state.player[upgradeProp(k)]||0;const cost=Math.round(d.base*Math.pow(d.scale,lvl)*hardcoreCostMult());return `<div class="card"><h3>${htmlEscape(d.name)} Lv.${lvl}/${d.max}</h3><p>${htmlEscape(d.desc)}</p><p>Fiyat: $${shortNum(cost)}</p><button class="small good" data-cmd="upgrade" data-key="${k}" ${lvl>=d.max?'disabled':''}>Yükselt</button></div>`}).join('')}<div class="card"><h3>♻️ Güvenli Rebirth</h3><p>Petleri silmez. Para harcar, gelir çarpanı ve gem verir.</p><p>Gereken: $${shortNum(35000000*Math.pow(state.player.rebirths+1,3.35)*Math.pow(state.hardcore?.worldTier||1,1.9))} ve +${shortNum(85000*Math.pow(state.player.rebirths+1,2.25)*Math.pow(state.hardcore?.worldTier||1,1.35))}/sn</p><button class="small gold" data-cmd="rebirth">Rebirth Al</button></div>${renderHardcoreCards()}</div>`;
+  panelTitle.textContent='⚙️ Upgrade Plaza'; panelSub.textContent=`Base, karakter, kılıç ve mod sistemi. Aktif mod: ${modeCfg().emoji} ${modeCfg().label}`;
+  panelBody.innerHTML=`<div class="grid">${Object.entries(UPGRADE_DEFS).map(([k,d])=>{const lvl=state.player[upgradeProp(k)]||0;const cost=Math.round(d.base*Math.pow(d.scale,lvl)*hardcoreCostMult());return `<div class="card"><h3>${htmlEscape(d.name)} Lv.${lvl}/${d.max}</h3><p>${htmlEscape(d.desc)}</p><p>Fiyat: $${shortNum(cost)}</p><button class="small good" data-cmd="upgrade" data-key="${k}" ${lvl>=d.max?'disabled':''}>Yükselt</button></div>`}).join('')}<div class="card"><h3>♻️ Güvenli Rebirth</h3><p>Petleri silmez. Para harcar, gelir çarpanı ve gem verir.</p><p>Gereken: $${shortNum(Math.round(35000000*Math.pow(state.player.rebirths+1,3.35)*Math.pow(state.hardcore?.worldTier||1,1.9)*modeCfg().rebirthCostMult))} ve +${shortNum(Math.round(85000*Math.pow(state.player.rebirths+1,2.25)*Math.pow(state.hardcore?.worldTier||1,1.35)*modeCfg().rebirthCostMult))}/sn</p><button class="small gold" data-cmd="rebirth">Rebirth Al</button></div>${renderModeCards()}${renderSwordCard()}${renderHardcoreCards()}</div>`;
 }
 
+function renderModeCards(){
+  const m=modeId();
+  return `<div class="card"><h3>🎮 Oyun Modu: ${modeCfg().emoji} ${modeCfg().label}</h3><p>${htmlEscape(modeCfg().desc)}</p><p>Easy mod save’i silmez; sadece fiyat, polis, raid ve boss baskısını düşürür. Bot savaşları iki modda da aktif.</p><div class="row"><button class="small good" data-cmd="mode" data-mode="easy" ${m==='easy'?'disabled':''}>Easy Mod</button><button class="small bad" data-cmd="mode" data-mode="hardcore" ${m==='hardcore'?'disabled':''}>Hardcore Mod</button></div></div>`;
+}
+function renderSwordCard(){
+  const lvl=weaponLevel(); const sword=swordDef(); const c=swordCost();
+  const next=lvl<SWORDS.length?SWORDS[lvl]:null;
+  return `<div class="card"><h3>${sword.emoji} Kılıç: ${htmlEscape(sword.name)} Lv.${lvl}/${SWORDS.length}</h3><p>Boss’a Space/KILIÇ ile vururken hasarı belirler. Şu an boss hasarı: ${shortNum(swordDamage())}</p>${next?`<p>Sonraki: ${htmlEscape(next.name)} • $${shortNum(c.cash)}${c.gems?` • ${c.gems}💎`:''}${c.cores?` • ${c.cores} core`:''}</p><button class="small gold" data-cmd="sword">Kılıcı Yükselt</button>`:'<p>Maksimum kılıç açıldı.</p>'}</div>`;
+}
 function renderHardcoreCards(){
   ensureV22Fields(); const rn=rankNeed(), wn=worldTierNeed();
   return `<div class="card"><h3>🔥 Hardcore Rank ${state.hardcore.rank}</h3><p>Para tek başına yetmez. Rank; Omega/Cosmic/Forbidden gibi rarityleri, yüksek kasaları ve yeni world tierları açar.</p><p>Gereken: $${shortNum(rn.cash)} • ${rn.cores} core • ${rn.rep} rep • +${shortNum(rn.income)}/sn</p><button class="small bad" data-cmd="hardcoreRank">Hardcore Rank Al</button></div><div class="card"><h3>🌍 World Tier ${state.hardcore.worldTier}</h3><p>8 rival base yeniden güçlenir, pet tierleri yükselir, botlar daha agresif olur. Endgame burada başlar.</p><p>Gereken: Rank ${wn.rank} • $${shortNum(wn.cash)} • ${wn.cores} core • ${wn.rep} rep</p><button class="small gold" data-cmd="worldTier">World Tier Yükselt</button></div><div class="card"><h3>🤖 Fake Multiplayer Threat</h3><p>Threat ${hardcoreDifficulty()} • Bot steal ${state.hardcore.totalBotSteals||0} • Rival war ${state.hardcore.totalRivalWars||0}</p><p>Eski zengin save’ler korunur ama threat servetine göre yükselir.</p></div>`;
@@ -1086,12 +1192,12 @@ function renderHeists(){
   panelBody.innerHTML=`${activeHtml}<div class="grid">${HEIST_CONTRACTS.map(h=>{const done=(state.heist.completed||[]).filter(x=>x.id===h.id).length;return `<div class="card"><h3>${done?'✅ ':''}${htmlEscape(h.title)}</h3><p>${htmlEscape(h.desc)}</p><p>Level ${h.level}+ • Süre ${h.time}sn • Ödül $${shortNum(h.reward.cash)} ${h.reward.gems}💎 +${h.reward.xp}XP</p><button class="small gold" data-cmd="heist" data-id="${h.id}" ${state.heist.active||state.player.level<h.level?'disabled':''}>Kontrat Başlat</button></div>`}).join('')}</div>`;
 }
 
-function renderMap(){ panelTitle.textContent='🗺️ Hardcore Rival City Haritası'; panelSub.textContent='Bölgeler ve kısayollar'; panelBody.innerHTML='<div class="grid"><div class="card"><h3>Senin Base</h3><p>Petleri buraya koy. Gelir üretirler. Hırsızlar buraya girer.</p></div><div class="card"><h3>Heist Hub</h3><p>M ile kontrat seç. Büyük risk, büyük ödül.</p></div><div class="card"><h3>Police HQ</h3><p>Wanted seviyen varsa E ile ceza ödeyip temizleyebilirsin.</p></div><div class="card"><h3>Skill Dojo</h3><p>H ile Thief, Defender ve Tycoon skill ağacını aç.</p></div><div class="card"><h3>Market / Black Market</h3><p>Brainrot satın al. Black Market wanted riski yaratır ama güçlüdür.</p></div><div class="card"><h3>Boss Arena</h3><p>R ile boss başlat. Kesersen kasa gibi özel drop verir.</p></div></div>'; }
+function renderMap(){ panelTitle.textContent='🗺️ Mode Sword Wars Haritası'; panelSub.textContent='Bölgeler ve kısayollar'; panelBody.innerHTML='<div class="grid"><div class="card"><h3>Senin Base</h3><p>Petleri buraya koy. Gelir üretirler. Hırsızlar buraya girer.</p></div><div class="card"><h3>Heist Hub</h3><p>M ile kontrat seç. Büyük risk, büyük ödül.</p></div><div class="card"><h3>Police HQ</h3><p>Wanted seviyen varsa E ile ceza ödeyip temizleyebilirsin.</p></div><div class="card"><h3>Skill Dojo</h3><p>H ile Thief, Defender ve Tycoon skill ağacını aç.</p></div><div class="card"><h3>Market / Black Market</h3><p>Brainrot satın al. Black Market wanted riski yaratır ama güçlüdür.</p></div><div class="card"><h3>Boss Arena</h3><p>R ile boss başlat. Kesersen kasa gibi özel drop verir.</p></div></div>'; }
 
 panelEl.addEventListener('click', e=>{
   const close=e.target.closest('#panelClose'); if(close){closePanel(); return;}
   const btn=e.target.closest('[data-cmd]'); if(!btn) return; const cmd=btn.dataset.cmd;
-  if(cmd==='sell') sellPet(btn.dataset.scope,btn.dataset.id); else if(cmd==='lock') togglePetLock(btn.dataset.scope,btn.dataset.id); else if(cmd==='activate') activatePet(btn.dataset.id); else if(cmd==='stash') stashActivePet(btn.dataset.id); else if(cmd==='claim') claimQuest(btn.dataset.id); else if(cmd==='crate') openCrate(btn.dataset.kind); else if(cmd==='upgrade') buyUpgrade(btn.dataset.key); else if(cmd==='rebirth') rebirth(); else if(cmd==='skill') buySkill(btn.dataset.key); else if(cmd==='respec') respecSkills(); else if(cmd==='heist') startHeist(btn.dataset.id); else if(cmd==='hardcoreRank') buyHardcoreRank(); else if(cmd==='worldTier') buyWorldTier();
+  if(cmd==='sell') sellPet(btn.dataset.scope,btn.dataset.id); else if(cmd==='lock') togglePetLock(btn.dataset.scope,btn.dataset.id); else if(cmd==='activate') activatePet(btn.dataset.id); else if(cmd==='stash') stashActivePet(btn.dataset.id); else if(cmd==='claim') claimQuest(btn.dataset.id); else if(cmd==='crate') openCrate(btn.dataset.kind); else if(cmd==='upgrade') buyUpgrade(btn.dataset.key); else if(cmd==='rebirth') rebirth(); else if(cmd==='skill') buySkill(btn.dataset.key); else if(cmd==='respec') respecSkills(); else if(cmd==='heist') startHeist(btn.dataset.id); else if(cmd==='hardcoreRank') buyHardcoreRank(); else if(cmd==='worldTier') buyWorldTier(); else if(cmd==='mode') setGameMode(btn.dataset.mode); else if(cmd==='sword') buySword();
 });
 
 function resize(){ view.dpr=Math.max(1,Math.min(2.5,window.devicePixelRatio||1)); view.w=Math.floor(window.innerWidth); view.h=Math.floor(window.innerHeight); canvas.width=Math.floor(view.w*view.dpr); canvas.height=Math.floor(view.h*view.dpr); ctx.setTransform(view.dpr,0,0,view.dpr,0,0); updateCamera(); }
@@ -1111,6 +1217,8 @@ function resetJoy(e){ if(e && e.pointerId!==joy.id) return; joy.active=false; jo
 document.querySelectorAll('[data-action]').forEach(btn=>btn.addEventListener('click',()=>{ const a=btn.dataset.action; if(a==='act') interact(); else if(a==='swing') swing(); else if(a==='lock') lockBase(); else if(a==='inventory') openPanel('inventory'); else if(a==='quest') openPanel('quests'); else if(a==='skills') openPanel('skills'); else if(a==='heist') openPanel('heists'); else if(a==='crate') openPanel('crates'); else if(a==='upgrade') openPanel('upgrades'); else if(a==='book') openPanel('collection'); }));
 
 document.getElementById('btnStart').onclick=()=>{menuEl.classList.add('hidden');state.started=true;state.paused=false;beep('ok');};
+document.getElementById('btnEasyMode').onclick=()=>setGameMode('easy');
+document.getElementById('btnHardMode').onclick=()=>setGameMode('hardcore');
 document.getElementById('btnMenu').onclick=()=>{menuEl.classList.toggle('hidden');state.paused=!menuEl.classList.contains('hidden');};
 document.getElementById('btnInventory').onclick=()=>openPanel('inventory');
 document.getElementById('btnQuests').onclick=()=>openPanel('quests');
@@ -1126,7 +1234,7 @@ resetPhraseEl.addEventListener('keydown', e=>{ if(e.key==='Enter') confirmReset(
 function loop(now){ const dt=clamp((now-lastFrame)/1000,0,.05); lastFrame=now; update(dt); draw(); requestAnimationFrame(loop); }
 
 resize();
-const loaded=loadSave(); ensureTransientWorld(); if(!loaded) showMessage('V2.2 Hardcore Rival City hazır. Save key sabit.',3); saveGame(); requestAnimationFrame(loop);
+const loaded=loadSave(); ensureTransientWorld(); refreshModeButtons(); if(!loaded) showMessage('V2.3 Mode Sword Wars hazır. Save key sabit.',3); saveGame(); requestAnimationFrame(loop);
 })();
 </script>
 </body>
