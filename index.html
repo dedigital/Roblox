@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Brainrot Heist V2.3 Mode Sword Wars</title>
+<title>Brainrot Heist V2.4 Sector City</title>
 <style>
   :root{
     --bg:#060914;--panel:rgba(8,14,30,.86);--panel2:rgba(255,255,255,.08);--line:rgba(255,255,255,.14);
@@ -62,7 +62,7 @@
 </head>
 <body>
 <div id="app">
-  <canvas id="game" aria-label="Brainrot Heist V2.3 Mode Sword Wars oyun alanı"></canvas>
+  <canvas id="game" aria-label="Brainrot Heist V2.4 Sector City oyun alanı"></canvas>
   <div id="toast" class="toast" aria-live="polite"></div>
   <div class="topbar">
     <button id="btnMenu" type="button">MENÜ</button>
@@ -91,14 +91,14 @@
   </div>
   <section id="menu" class="menu">
     <div class="menuCard">
-      <p class="eyebrow">V2.3 Easy / Hardcore Sword Wars Update</p>
-      <h1>Brainrot Heist<br>MODE SWORD WARS</h1>
-      <p class="lead">V2.3 güncelleme: menüden Easy / Hardcore seçimi, 8 rival base, fake multiplayer bot savaşları, botların birbirine raid atması, boss için kılıç sistemi ve güvenli kayıt sistemi.</p>
+      <p class="eyebrow">V2.4 Sector City Expansion</p>
+      <h1>Brainrot Heist<br>SECTOR CITY</h1>
+      <p class="lead">V2.4 güncelleme: map yaklaşık 5 kat büyüdü, 3 dev bölgeye ayrıldı, mağazalar artık bina + counter mantığında, hız ayarı ve araç altyapısı geldi, fake bot savaşları daha geniş haritaya yayıldı.</p>
       <div class="patch">
-        <div><b>8 Rival Base</b>Şehir artık 8 farklı rakip base, merkez market, black market, boss arena, police HQ, skill dojo ve raid bölgeleriyle büyüdü.</div>
+        <div><b>3 Dev Bölge</b>Downtown, Neon District ve Void Frontier olarak ayrılmış çok daha büyük açık şehir. Arabasız yürümek uzun sürebilir.</div>
         <div><b>Hardcore ilerleme</b>Para tek başına yetmez: boss core, raid rep, world tier, hardcore rank, skill ve zone ilerlemesi gerekir.</div>
-        <div><b>Fake multiplayer botları</b>Bot oyuncular marketten pet alır, senden ve birbirinden çalar, bazen birlikte boss’a dalar.</div>
-        <div><b>Mod seçimi</b>Easy mod rahat ekonomi ve düşük baskı verir. Hardcore mod eski aşırı zorluk olarak kalır.</div>
+        <div><b>Bina + Counter sistemi</b>Market, kasa, upgrade, skill, heist, polis, garaj ve boss artık bina gibi durur. Counter’a gidince panel açılır.</div>
+        <div><b>Hız / Araç altyapısı</b>Oyuncu hızı artık ayarlanabilir. Garaj BETA ile sonraki update’lerde araç sistemi büyütülebilir.</div>
       </div>
       <div class="difficultyBox" aria-label="Oyun modu seçimi">
         <button id="btnEasyMode" class="modeBtn" type="button"><b>😄 EASY MOD</b><span>Az önceki gibi daha rahat: ucuz upgrade, daha az polis, botlar var ama oyuncuya baskı düşük. Enis modu.</span></button>
@@ -112,7 +112,7 @@
         <button id="btnUndoReset" type="button">SON RESETİ GERİ AL</button>
         <button id="btnReset" type="button">KAYDI SIFIRLA</button>
       </div>
-      <p class="smallNote">Klavye: WASD/Oklar hareket, Shift koş, E al/çal/koy, Space kılıçla vur, L kilit, I envanter, Q görev, H/T skill, M heist, K kasa, U upgrade/Hardcore, C koleksiyon, F pet kilitle, V pet sat, R boss raid, B rebirth, P pause. <b>N ile reset yok.</b></p>
+      <p class="smallNote">Klavye: WASD/Oklar hareket, Shift koş, E counter/al/çal/koy, Space kılıç, G garaj aracı aç/kapat, L kilit, I envanter, Q görev, H/T skill, M heist, K kasa, U upgrade/hız, C koleksiyon, F pet kilitle, V pet sat, R boss raid, B rebirth, P pause. <b>N ile reset yok.</b></p>
     </div>
   </section>
   <section id="panel" class="panel hidden" aria-modal="true" role="dialog">
@@ -177,7 +177,7 @@ const SWORDS = [
   {name:'Admin Slayer',emoji:'👑',color:'#ffffff'},
   {name:'Infinite Core Blade',emoji:'♾️',color:'#7ef0c1'}
 ];
-const WORLD = { w: 4300, h: 2700 };
+const WORLD = { w: 9800, h: 6200 };
 const COLORS = {
   text:'#eef4ff', muted:'#9fb1d7', dark:'#07101f', green:'#7ef0c1', cyan:'#79d9ff', yellow:'#ffe680', red:'#ff6688', purple:'#be95ff', orange:'#ffb86c', road:'#1d2a4b', road2:'#293b68'
 };
@@ -191,31 +191,58 @@ const uid = () => {
 };
 
 const ZONES = {
-  playerBase:{x:90,y:520,w:520,h:820,name:'SENİN BASE',color:'#15564c',edge:'#7ef0c1'},
-  upgrade:{x:700,y:535,w:295,h:530,name:'UPGRADE + HARDCORE',color:'#26345f',edge:'#79d9ff'},
-  market:{x:1110,y:130,w:620,h:1280,name:'CENTRAL MEGA MARKET',color:'#273763',edge:'#ffe680'},
-  crate:{x:1840,y:760,w:470,h:350,name:'CRATE SHOP',color:'#4b3a16',edge:'#ffe680'},
-  black:{x:1840,y:1235,w:520,h:360,name:'BLACK MARKET',color:'#2d183f',edge:'#be95ff'},
-  quest:{x:700,y:1420,w:390,h:360,name:'QUEST BOARD',color:'#16304d',edge:'#79d9ff'},
-  fusion:{x:1160,y:1420,w:430,h:360,name:'FUSION LAB',color:'#123d38',edge:'#7ef0c1'},
-  heist:{x:720,y:1980,w:460,h:210,name:'HEIST HUB',color:'#213150',edge:'#79d9ff'},
-  police:{x:1260,y:1980,w:470,h:210,name:'POLICE HQ',color:'#17263f',edge:'#88b4ff'},
-  skills:{x:1800,y:1980,w:470,h:210,name:'SKILL DOJO',color:'#243018',edge:'#7ef0c1'},
-  boss:{x:2780,y:1260,w:720,h:680,name:'BOSS RAID ARENA',color:'#4d1729',edge:'#ff6688'},
-  voidGate:{x:2780,y:2040,w:720,h:380,name:'VOID GATE',color:'#23153f',edge:'#be95ff'},
-  botPlaza:{x:2440,y:560,w:390,h:390,name:'BOT PLAZA',color:'#2b2f4f',edge:'#79d9ff'}
+  playerBase:{x:180,y:720,w:680,h:980,name:'SENİN BASE',color:'#15564c',edge:'#7ef0c1',district:'downtown'},
+  upgrade:{x:1110,y:780,w:500,h:470,name:'UPGRADE CENTER',color:'#26345f',edge:'#79d9ff',district:'downtown'},
+  market:{x:1780,y:420,w:980,h:1420,name:'MEGA MARKET MALL',color:'#273763',edge:'#ffe680',district:'downtown'},
+  crate:{x:1120,y:1420,w:500,h:420,name:'CRATE DEPOT',color:'#4b3a16',edge:'#ffe680',district:'downtown'},
+  quest:{x:410,y:2020,w:520,h:420,name:'QUEST OFFICE',color:'#16304d',edge:'#79d9ff',district:'downtown'},
+  fusion:{x:1710,y:2050,w:580,h:420,name:'FUSION LAB',color:'#123d38',edge:'#7ef0c1',district:'downtown'},
+  garage:{x:2400,y:2050,w:560,h:420,name:'GARAGE BETA',color:'#263a45',edge:'#ffb86c',district:'downtown'},
+  heist:{x:3620,y:720,w:600,h:430,name:'HEIST HUB',color:'#213150',edge:'#79d9ff',district:'neon'},
+  police:{x:4390,y:720,w:600,h:430,name:'POLICE HQ',color:'#17263f',edge:'#88b4ff',district:'neon'},
+  skills:{x:5160,y:720,w:600,h:430,name:'SKILL DOJO',color:'#243018',edge:'#7ef0c1',district:'neon'},
+  black:{x:3940,y:1740,w:760,h:500,name:'BLACK MARKET CLUB',color:'#2d183f',edge:'#be95ff',district:'neon'},
+  botPlaza:{x:5150,y:1780,w:600,h:470,name:'BOT PLAZA',color:'#2b2f4f',edge:'#79d9ff',district:'neon'},
+  museum:{x:3610,y:2740,w:650,h:410,name:'PET MUSEUM',color:'#2c2c42',edge:'#ffffff',district:'neon'},
+  boss:{x:7440,y:1040,w:1160,h:880,name:'BOSS RAID STADIUM',color:'#4d1729',edge:'#ff6688',district:'void'},
+  voidGate:{x:7440,y:2300,w:1160,h:540,name:'VOID GATE TERMINAL',color:'#23153f',edge:'#be95ff',district:'void'},
+  forge:{x:8550,y:3320,w:700,h:520,name:'CORE FORGE',color:'#3a1d16',edge:'#ffb86c',district:'void'}
 };
 const RIVAL_CONFIG = [
-  {id:'enis',owner:'Enis iPad',name:'ENİS iPAD BASE',x:3160,y:120,w:520,h:410,color:'#1d405c',edge:'#79d9ff',minTier:3,slots:10,ai:'balanced',threat:2},
-  {id:'kardes',owner:'Kardeş Rival',name:'KARDEŞ RIVAL BASE',x:3660,y:600,w:500,h:430,color:'#5b2032',edge:'#ff6688',minTier:4,slots:11,ai:'aggressive',threat:3},
-  {id:'richkid',owner:'RichKid9000',name:'RICH KID VAULT',x:3060,y:620,w:500,h:410,color:'#534016',edge:'#ffe680',minTier:5,slots:10,ai:'tycoon',threat:4},
-  {id:'void',owner:'VoidGuest',name:'VOID GLITCH BASE',x:3580,y:1130,w:540,h:430,color:'#2d1b52',edge:'#be95ff',minTier:6,slots:10,ai:'sneaky',threat:5},
-  {id:'admin',owner:'AdminBot',name:'ADMIN BOT BASE',x:3520,y:1740,w:560,h:440,color:'#353b48',edge:'#ffffff',minTier:7,slots:12,ai:'boss',threat:7},
-  {id:'sigma',owner:'SigmaNoob',name:'SIGMA NOOB BASE',x:2520,y:80,w:470,h:410,color:'#3b244c',edge:'#ff8ed4',minTier:3,slots:9,ai:'chaos',threat:2},
-  {id:'dragon',owner:'DragonTR',name:'DRAGON TR BASE',x:2460,y:1000,w:470,h:420,color:'#4b271b',edge:'#ffb86c',minTier:4,slots:10,ai:'defender',threat:3},
-  {id:'quantum',owner:'QuantumKid',name:'QUANTUM SECRET BASE',x:2220,y:2190,w:460,h:370,color:'#123d38',edge:'#6ffcff',minTier:6,slots:9,ai:'raider',threat:6}
+  {id:'enis',owner:'Enis iPad',name:'ENİS iPAD TOWER',x:3450,y:1350,w:650,h:520,color:'#1d405c',edge:'#79d9ff',minTier:3,slots:12,ai:'balanced',threat:2,district:'neon'},
+  {id:'kardes',owner:'Kardeş Rival',name:'KARDEŞ MEGA BASE',x:4300,y:1340,w:680,h:540,color:'#5b2032',edge:'#ff6688',minTier:4,slots:13,ai:'aggressive',threat:3,district:'neon'},
+  {id:'richkid',owner:'RichKid9000',name:'RICHKID SKY VAULT',x:5380,y:1280,w:660,h:530,color:'#534016',edge:'#ffe680',minTier:5,slots:12,ai:'tycoon',threat:4,district:'neon'},
+  {id:'sigma',owner:'SigmaNoob',name:'SIGMA NOOB MOTEL',x:3400,y:3820,w:620,h:500,color:'#3b244c',edge:'#ff8ed4',minTier:3,slots:10,ai:'chaos',threat:2,district:'neon'},
+  {id:'dragon',owner:'DragonTR',name:'DRAGON TR DOCKS',x:5300,y:3860,w:640,h:520,color:'#4b271b',edge:'#ffb86c',minTier:4,slots:12,ai:'defender',threat:3,district:'neon'},
+  {id:'void',owner:'VoidGuest',name:'VOID GLITCH BASE',x:6920,y:3400,w:760,h:600,color:'#2d1b52',edge:'#be95ff',minTier:6,slots:13,ai:'sneaky',threat:5,district:'void'},
+  {id:'admin',owner:'AdminBot',name:'ADMIN BOT FORTRESS',x:8030,y:4140,w:800,h:620,color:'#353b48',edge:'#ffffff',minTier:7,slots:14,ai:'boss',threat:7,district:'void'},
+  {id:'quantum',owner:'QuantumKid',name:'QUANTUM SECRET BASE',x:8770,y:870,w:760,h:570,color:'#123d38',edge:'#6ffcff',minTier:6,slots:12,ai:'raider',threat:6,district:'void'}
 ];
 const FAKE_BOT_NAMES = ['Enis iPad','Kardeş Rival','RichKid9000','VoidGuest','AdminBot','SigmaNoob','DragonTR','QuantumKid','Guest_404','NoobMasterTR','EfeBoss','KuzeyRunner'];
+const DISTRICTS = [
+  {id:'downtown',name:'DOWNTOWN STARTER CITY',x:40,y:40,w:3100,h:6120,color:'rgba(126,240,193,.045)',edge:'#7ef0c1',desc:'Başlangıç base, mall, crate, fusion ve garaj bölgesi.'},
+  {id:'neon',name:'NEON RIVAL DISTRICT',x:3220,y:40,w:3220,h:6120,color:'rgba(121,217,255,.045)',edge:'#79d9ff',desc:'Heist, polis, skill, black market ve bot savaşlarının yoğun olduğu bölge.'},
+  {id:'void',name:'VOID FRONTIER ENDGAME',x:6500,y:40,w:3260,h:6120,color:'rgba(190,149,255,.050)',edge:'#be95ff',desc:'Boss stadium, void gate, core forge ve en güçlü rival base bölgesi.'}
+];
+const BIG_ROADS = [
+  {x:920,y:70,w:270,h:5900},{x:2980,y:70,w:240,h:5900},{x:6280,y:70,w:240,h:5900},{x:70,y:1840,w:9550,h:260},{x:70,y:3080,w:9550,h:270},{x:70,y:4920,w:9550,h:260},{x:4500,y:70,w:250,h:5900},{x:8050,y:70,w:260,h:5900}
+];
+const BUILDINGS = [
+  {id:'marketCounter',panel:'marketInfo',name:'Mega Market Counter',icon:'🛒',zone:'market',counter:{x:1835,y:480,w:870,h:90},hint:'Counter: market rehberi / refresh'},
+  {id:'upgradeCounter',panel:'upgrades',name:'Upgrade Desk',icon:'⚙️',zone:'upgrade',counter:{x:1160,y:840,w:400,h:82},hint:'Counter: upgrade + hız'},
+  {id:'crateCounter',panel:'crates',name:'Crate Cashier',icon:'📦',zone:'crate',counter:{x:1185,y:1490,w:370,h:82},hint:'Counter: kasa aç'},
+  {id:'questCounter',panel:'quests',name:'Quest Reception',icon:'📋',zone:'quest',counter:{x:465,y:2090,w:410,h:82},hint:'Counter: görev al'},
+  {id:'fusionCounter',panel:'fusionInfo',name:'Fusion Counter',icon:'🧪',zone:'fusion',counter:{x:1780,y:2120,w:430,h:82},hint:'Counter: fusion yap'},
+  {id:'garageCounter',panel:'garage',name:'Garage Beta Counter',icon:'🏎️',zone:'garage',counter:{x:2470,y:2125,w:420,h:82},hint:'Counter: hız / araç beta'},
+  {id:'heistCounter',panel:'heists',name:'Heist Contract Desk',icon:'🎭',zone:'heist',counter:{x:3690,y:790,w:460,h:82},hint:'Counter: heist kontratı'},
+  {id:'policeCounter',panel:'policePay',name:'Police Desk',icon:'👮',zone:'police',counter:{x:4460,y:790,w:460,h:82},hint:'Counter: wanted temizle'},
+  {id:'skillsCounter',panel:'skills',name:'Skill Trainer',icon:'🌳',zone:'skills',counter:{x:5230,y:790,w:460,h:82},hint:'Counter: skill tree'},
+  {id:'blackCounter',panel:'blackInfo',name:'Black Market Bouncer',icon:'🕶️',zone:'black',counter:{x:4040,y:1815,w:560,h:82},hint:'Counter: black market bilgisi'},
+  {id:'museumCounter',panel:'collection',name:'Museum Archive',icon:'🏛️',zone:'museum',counter:{x:3700,y:2810,w:480,h:82},hint:'Counter: koleksiyon'},
+  {id:'bossCounter',panel:'bossStart',name:'Boss Stadium Gate',icon:'👹',zone:'boss',counter:{x:7610,y:1150,w:820,h:94},hint:'Counter: boss raid başlat'},
+  {id:'voidCounter',panel:'districtMap',name:'Void Terminal',icon:'🌀',zone:'voidGate',counter:{x:7610,y:2405,w:820,h:94},hint:'Counter: bölge haritası'},
+  {id:'forgeCounter',panel:'forgeInfo',name:'Core Forge Desk',icon:'🔥',zone:'forge',counter:{x:8630,y:3410,w:540,h:88},hint:'Counter: core forge altyapısı'}
+];
 const CRATES = {
   basic:{name:'Basic Crate',cash:6500,gems:0,cores:0,rep:0,minTier:1,boost:.10},
   rare:{name:'Rare Crate',cash:95000,gems:2,cores:0,rep:0,minTier:2,boost:.38},
@@ -318,7 +345,7 @@ let lastFrame = performance.now();
 
 function defaultState(){
   return {
-    version:SAVE_VERSION,t:0,started:false,paused:true,settings:{mode:'easy'},weapon:{level:1,xp:0},botWarTimer:12,saveTimer:1.5,message:'',messageTimer:0,toastTimer:0,
+    version:SAVE_VERSION,t:0,started:false,paused:true,settings:{mode:'easy',speedMult:.72,vehicleOwned:false,vehicleActive:false},weapon:{level:1,xp:0},botWarTimer:12,saveTimer:1.5,message:'',messageTimer:0,toastTimer:0,
     player:{x:330,y:900,r:20,cash:2500,highCash:2500,gems:20,xp:0,level:1,skillPoints:0,skills:defaultSkills(),rebirths:0,speedLevel:0,slotBonus:0,luckLevel:0,lockLevel:0,trapLevel:0,guardLevel:0,scannerLevel:0,vaultLevel:0,shieldTimer:0,swingTimer:0,stunTimer:0,carrying:null},
     activeSlots:[], inventory:[], market:[], blackOffers:[], rivals:[], fakeBots:[], thieves:[], police:[], traps:[], boss:null, guard:{x:220,y:500,mode:'idle'}, particles:[], floatingTexts:[],
     activeEvent:null,eventTimer:28,marketTimer:0,blackTimer:8,thiefTimer:6,bossTimer:95,policeTimer:4,botActionTimer:2.5,raidStormTimer:42,
@@ -349,11 +376,11 @@ function ensureTransientWorld(){
   ensureV22Fields();
   state.rivals = RIVAL_CONFIG.map((cfg,idx)=>createRival(cfg,idx));
   state.market = [];
-  for(let i=0;i<24;i++){
-    const minTier = i>19?3:i>13?2:1;
-    const item = makeBrainrot({minTier, boost:i>18?.25:0});
-    item.x = ZONES.market.x + 75 + (i%5)*112 + rand(-12,12);
-    item.y = ZONES.market.y + 90 + Math.floor(i/5)*128;
+  for(let i=0;i<34;i++){
+    const minTier = i>27?3:i>18?2:1;
+    const item = makeBrainrot({minTier, boost:i>26?.25:0});
+    item.x = ZONES.market.x + 90 + (i%7)*122 + rand(-12,12);
+    item.y = ZONES.market.y + 170 + Math.floor(i/7)*132;
     item.vy = rand(18,36);
     state.market.push(item);
   }
@@ -480,8 +507,11 @@ function ensureV22Fields(){
 }
 
 function ensureV23Fields(){
-  state.settings = {mode:'easy', ...(state.settings||{})};
+  state.settings = {mode:'easy',speedMult:.72,vehicleOwned:false,vehicleActive:false, ...(state.settings||{})};
   if(!GAME_MODES[state.settings.mode]) state.settings.mode='easy';
+  state.settings.speedMult = clamp(Number(state.settings.speedMult)||.72,.45,1.65);
+  state.settings.vehicleOwned = Boolean(state.settings.vehicleOwned);
+  state.settings.vehicleActive = Boolean(state.settings.vehicleActive) && state.settings.vehicleOwned;
   state.weapon = {level:1,xp:0, ...(state.weapon||{})};
   state.weapon.level = clamp(Number(state.weapon.level)||1,1,SWORDS.length);
   state.weapon.xp = Math.max(0, Number(state.weapon.xp)||0);
@@ -502,6 +532,16 @@ function refreshModeButtons(){
   document.getElementById('btnEasyMode')?.classList.toggle('active',m==='easy');
   document.getElementById('btnHardMode')?.classList.toggle('active',m==='hardcore');
 }
+
+function speedPreferenceMult(){ ensureV23Fields(); return clamp(Number(state.settings.speedMult)||.72,.45,1.65); }
+function setSpeedPreset(mult,label=''){ ensureV23Fields(); state.settings.speedMult=clamp(Number(mult)||.72,.45,1.65); toast(`Oyuncu hızı ${Math.round(state.settings.speedMult*100)}% ${label?`• ${label}`:''}`); saveGame(); if(!panelEl.classList.contains('hidden')) openPanel('upgrades'); }
+function vehicleCost(){ const wt=state.hardcore?.worldTier||1; return Math.round(250000*Math.pow(3.5,Math.max(0,wt-1))*modeCfg().upgradeCostMult); }
+function buyVehicle(){ ensureV23Fields(); if(state.settings.vehicleOwned){ showMessage('Garaj aracı zaten sende. G ile aç/kapat.'); return; } const cost=vehicleCost(); if(state.player.cash<cost){ showMessage(`Garaj aracı için $${shortNum(cost)} lazım.`); beep('bad'); return; } state.player.cash-=cost; state.settings.vehicleOwned=true; state.settings.vehicleActive=true; toast('🏎️ Garaj BETA aracı açıldı. G ile bin/in. Pet taşırken araç kapanır.'); beep('win'); saveGame(); if(!panelEl.classList.contains('hidden')) openPanel('upgrades'); }
+function toggleVehicle(){ ensureV23Fields(); if(!state.settings.vehicleOwned){ showMessage('Önce Garaj BETA counterından aracı aç.'); beep('bad'); return; } if(state.player.carrying){ showMessage('Pet taşırken araca binemezsin.'); beep('bad'); return; } state.settings.vehicleActive=!state.settings.vehicleActive; toast(state.settings.vehicleActive?'🏎️ Araç modu açık. Büyük mapte daha hızlısın.':'🚶 Araç modu kapalı.'); saveGame(); }
+function nearestCounter(maxD=92){ const p=state.player; let best=null,bd=maxD; for(const b of BUILDINGS){ const c=b.counter; const cx=c.x+c.w/2, cy=c.y+c.h/2; const d=Math.hypot(p.x-cx,p.y-cy); if(pointInRect(p,c) || d<bd){ best=b; bd=d; } } return best; }
+function openCounter(b){ if(!b) return false; const p=b.panel; if(p==='marketInfo'){ openPanel('marketInfo'); return true; } if(p==='fusionInfo'){ fuseBest(); return true; } if(p==='garage'){ openPanel('garage'); return true; } if(p==='policePay'){ payFine(); return true; } if(p==='bossStart'){ startBossRaid(); return true; } if(p==='blackInfo'){ openPanel('blackInfo'); return true; } if(p==='districtMap'){ openPanel('districtMap'); return true; } if(p==='forgeInfo'){ openPanel('forgeInfo'); return true; } openPanel(p); return true; }
+function currentDistrict(){ return DISTRICTS.find(d=>pointInRect(state.player,d)) || DISTRICTS[0]; }
+function travelToDistrict(id){ const target={downtown:{x:520,y:1220},neon:{x:4080,y:1980},void:{x:7700,y:2480}}[id]; if(!target) return; const cost=id==='downtown'?0:Math.round((id==='neon'?6500:40000)*modeCfg().upgradeCostMult); if(state.player.cash<cost){showMessage(`Metro için $${shortNum(cost)} lazım.`);beep('bad');return;} state.player.cash-=cost; state.player.x=target.x; state.player.y=target.y; state.player.carrying=null; updateCamera(); toast(`Metro ile ${DISTRICTS.find(d=>d.id===id)?.name||id} bölgesine geçtin.`); saveGame(); closePanel(); }
 function weaponLevel(){ ensureV23Fields(); return clamp(Number(state.weapon.level)||1,1,SWORDS.length); }
 function swordDef(level=weaponLevel()){ return SWORDS[clamp(Math.round(level),1,SWORDS.length)-1] || SWORDS[0]; }
 function swordDamage(){
@@ -710,7 +750,7 @@ function restoreSave(saved){
   state.stats={...state.stats,...(saved.stats||{})}; state.muted=Boolean(saved.muted); document.getElementById('btnMute').textContent=state.muted?'SESSİZ':'SES'; ensureV22Fields(); updateBestIncome(); return true;
 }
 function mergeQuests(old){ const fresh=initQuests(); for(const q of fresh){ const o=old.find(x=>x.id===q.id); if(o){q.progress=clamp(Number(o.progress)||0,0,q.goal); q.claimed=Boolean(o.claimed);} } return fresh; }
-function loadSave(){ try{ const candidates=saveCandidates(); if(!candidates.length) return false; for(const c of candidates){ try{ if(restoreSave(c.data)){ saveGame(); showMessage(c.key===SAVE_KEY?'Kayıt V2.3’e yüklendi.':'Eski kayıt bulundu, V2.3’e taşındı.',3); return true; } }catch(e){ console.warn('candidate failed',c.key,e); } } }catch(e){ console.warn(e); } return false; }
+function loadSave(){ try{ const candidates=saveCandidates(); if(!candidates.length) return false; for(const c of candidates){ try{ if(restoreSave(c.data)){ saveGame(); showMessage(c.key===SAVE_KEY?'Kayıt V2.4’e yüklendi.':'Eski kayıt bulundu, V2.4’e taşındı.',3); return true; } }catch(e){ console.warn('candidate failed',c.key,e); } } }catch(e){ console.warn(e); } return false; }
 function encodeSave(data){ const json=JSON.stringify(data); const bytes=new TextEncoder().encode(json); let bin=''; for(const b of bytes) bin+=String.fromCharCode(b); return 'BRAINROT_MEGA_V'+SAVE_VERSION+':'+btoa(bin); }
 function decodeSave(text){ let raw=String(text||'').trim(); if(!raw) throw new Error('empty'); if(raw.startsWith('{')) return JSON.parse(raw); raw=raw.replace(/^BRAINROT_(SAVE|MEGA)_V\d+:/,''); const bin=atob(raw); const bytes=new Uint8Array([...bin].map(ch=>ch.charCodeAt(0))); return JSON.parse(new TextDecoder().decode(bytes)); }
 async function exportSave(){ const code=encodeSave(serializeSave()); try{ await navigator.clipboard?.writeText(code); showMessage('Kayıt kodu kopyalandı. Notlar’a sakla.'); }catch(_){ prompt('Kayıt kodunu kopyala:',code); } saveGame(); }
@@ -741,7 +781,7 @@ function lockBase(){
 }
 function spawnMarket(forceKey=null){
   const item=makeBrainrot({forceKey,boost:state.activeEvent?.type==='gold'?.9:0});
-  item.x=ZONES.market.x+80+Math.floor(Math.random()*4)*115+rand(-15,15); item.y=ZONES.market.y-60-rand(0,180);
+  item.x=ZONES.market.x+95+Math.floor(Math.random()*7)*122+rand(-15,15); item.y=ZONES.market.y+140-rand(0,220);
   state.market.push(item);
   if(item.tier>=6 || item.mutation!=='Normal'){ toast(`${item.rarity} ${item.mutation!=='Normal'?item.mutation:''} çıktı: ${item.name}`); particles(item.x,item.y,item.color,item.tier>=7?80:45); beep('win'); }
   return item;
@@ -786,6 +826,7 @@ function interact(){
     } else { showMessage('Taşıdığın peti kendi base’e götür.'); return; }
   }
   const own=nearestOwnPet(70); if(own){ showMessage('Pet satmak için V, kilitlemek için F. Envanterden de yönetebilirsin.'); return; }
+  const counter=nearestCounter(88); if(counter){ openCounter(counter); return; }
   const market = nearestMarketItem(70); if(market){ buyMarketItem(market); return; }
   const black = nearestBlackItem(80); if(black){ buyBlackItem(black); return; }
   const rival = nearestRivalPet(72); if(rival){ stealRivalPet(rival); return; }
@@ -793,11 +834,14 @@ function interact(){
   if(pointInRect(p,ZONES.heist)){ openPanel('heists'); return; }
   if(pointInRect(p,ZONES.police)){ payFine(); return; }
   if(pointInRect(p,ZONES.skills)){ openPanel('skills'); return; }
+  if(pointInRect(p,ZONES.garage)){ openPanel('garage'); return; }
+  if(pointInRect(p,ZONES.museum)){ openPanel('collection'); return; }
   if(pointInRect(p,ZONES.crate)){ openPanel('crates'); return; }
   if(pointInRect(p,ZONES.upgrade)){ openPanel('upgrades'); return; }
   if(pointInRect(p,ZONES.fusion)){ fuseBest(); return; }
   if(pointInRect(p,ZONES.boss)){ startBossRaid(); return; }
-  showMessage('Bir pet, market, görev panosu veya bölgeye yaklaş.');
+  if(pointInRect(p,ZONES.forge)){ openPanel('forgeInfo'); return; }
+  showMessage('Bir pet, counter, market, görev ofisi veya bölgeye yaklaş.');
 }
 function nearestMarketItem(maxD=80){ let best=null,bd=maxD; for(const item of state.market){ const d=Math.hypot(state.player.x-item.x,state.player.y-item.y); if(d<bd){best=item;bd=d;} } return best; }
 function nearestBlackItem(maxD=85){ let best=null,bd=maxD; for(const item of state.blackOffers){ const d=Math.hypot(state.player.x-item.x,state.player.y-item.y); if(d<bd){best=item;bd=d;} } return best; }
@@ -1024,11 +1068,13 @@ function updatePlayer(dt){
   if(keys.has('arrowup')||keys.has('w')) ay-=1; if(keys.has('arrowdown')||keys.has('s')) ay+=1; if(keys.has('arrowleft')||keys.has('a')) ax-=1; if(keys.has('arrowright')||keys.has('d')) ax+=1;
   ax+=joy.dx; ay+=joy.dy; const len=Math.hypot(ax,ay)||1; if(len>1){ax/=len;ay/=len;}
   const sprint=keys.has('shift'); const carryMult=p.carrying ? (.82 + getSkill('turboCarry')*.055 + getSkill('quickHands')*.03) : 1;
-  const speed=(170+state.player.speedLevel*18+state.player.rebirths*7+getSkill('quickHands')*6)*(sprint?1.35:1)*carryMult;
+  let speed=(135+state.player.speedLevel*10+state.player.rebirths*4+getSkill('quickHands')*4)*(sprint?1.22:1)*carryMult*speedPreferenceMult();
+  if(state.settings.vehicleActive && !p.carrying){ speed*=2.65; }
+  if(p.carrying && state.settings.vehicleActive) state.settings.vehicleActive=false;
   p.x=clamp(p.x+ax*speed*dt,30,WORLD.w-30); p.y=clamp(p.y+ay*speed*dt,30,WORLD.h-30);
 }
 function updateMarket(dt){
-  state.marketTimer-=dt; if(state.marketTimer<=0){ if(state.market.length<18) spawnMarket(); state.marketTimer=state.activeEvent?.type==='gold'?1.2:2.4; }
+  state.marketTimer-=dt; if(state.marketTimer<=0){ if(state.market.length<30) spawnMarket(); state.marketTimer=state.activeEvent?.type==='gold'?1.2:2.4; }
   for(const item of [...state.market]){ item.y += item.vy*dt; if(item.y > ZONES.market.y+ZONES.market.h+70) removeFromArray(state.market,item.id); }
 }
 function updateEconomy(dt){
@@ -1041,8 +1087,8 @@ function updateParticles(dt){
 }
 function updateCamera(){ view.camX=clamp(state.player.x-view.w/2,0,Math.max(0,WORLD.w-view.w)); view.camY=clamp(state.player.y-view.h/2,0,Math.max(0,WORLD.h-view.h)); }
 function updateActionLabel(){
-  let label='AL / ÇAL'; const p=state.player;
-  if(p.carrying) label='BASE’E KOY'; else if(nearestOwnPet(70)) label='V SAT / F KİLİT'; else if(pointInRect(p,ZONES.quest)) label='GÖREV'; else if(pointInRect(p,ZONES.heist)) label='HEIST'; else if(pointInRect(p,ZONES.police)) label='CEZA ÖDE'; else if(pointInRect(p,ZONES.skills)) label='SKILL'; else if(pointInRect(p,ZONES.crate)) label='KASA'; else if(pointInRect(p,ZONES.upgrade)) label='UPGRADE'; else if(pointInRect(p,ZONES.fusion)) label='FUSION'; else if(pointInRect(p,ZONES.boss)) label='BOSS';
+  let label='AL / ÇAL'; const p=state.player; const c=nearestCounter(86);
+  if(p.carrying) label='BASE’E KOY'; else if(c) label='COUNTER'; else if(nearestOwnPet(70)) label='V SAT / F KİLİT'; else if(pointInRect(p,ZONES.quest)) label='GÖREV'; else if(pointInRect(p,ZONES.heist)) label='HEIST'; else if(pointInRect(p,ZONES.police)) label='CEZA ÖDE'; else if(pointInRect(p,ZONES.skills)) label='SKILL'; else if(pointInRect(p,ZONES.garage)) label='GARAJ'; else if(pointInRect(p,ZONES.crate)) label='KASA'; else if(pointInRect(p,ZONES.upgrade)) label='UPGRADE'; else if(pointInRect(p,ZONES.fusion)) label='FUSION'; else if(pointInRect(p,ZONES.boss)) label='BOSS';
   if(actionButton) actionButton.textContent=label;
 }
 
@@ -1058,16 +1104,26 @@ function drawBackground(){
   ctx.save(); ctx.globalAlpha=.18; ctx.strokeStyle='#2a3d6d'; ctx.lineWidth=1; const grid=80; const ox=-(view.camX%grid), oy=-(view.camY%grid); for(let x=ox;x<view.w;x+=grid){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,view.h);ctx.stroke();} for(let y=oy;y<view.h;y+=grid){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(view.w,y);ctx.stroke();} ctx.restore();
 }
 function drawWorld(){
-  roundedRect(40,40,WORLD.w-80,WORLD.h-80,42); ctx.fillStyle='rgba(255,255,255,.025)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.08)'; ctx.lineWidth=3; ctx.stroke();
-  ctx.fillStyle=COLORS.road;
-  for(const r of [{x:640,y:80,w:320,h:2460},{x:1020,y:720,w:2600,h:280},{x:2360,y:80,w:300,h:2420},{x:3000,y:420,w:1050,h:260},{x:1750,y:1900,w:1900,h:250}]) roundedRect(r.x,r.y,r.w,r.h,60), ctx.fill();
-  ctx.strokeStyle=COLORS.road2; ctx.lineWidth=6; ctx.setLineDash([28,30]);
-  ctx.beginPath(); ctx.moveTo(800,130); ctx.lineTo(800,2460); ctx.moveTo(1040,860); ctx.lineTo(3550,860); ctx.moveTo(2510,120); ctx.lineTo(2510,2430); ctx.moveTo(1770,2025); ctx.lineTo(3580,2025); ctx.moveTo(3030,550); ctx.lineTo(4000,550); ctx.stroke(); ctx.setLineDash([]);
+  roundedRect(30,30,WORLD.w-60,WORLD.h-60,42); ctx.fillStyle='rgba(255,255,255,.022)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.08)'; ctx.lineWidth=3; ctx.stroke();
+  for(const d of DISTRICTS){ ctx.save(); roundedRect(d.x,d.y,d.w,d.h,38); ctx.fillStyle=d.color; ctx.fill(); ctx.strokeStyle=d.edge; ctx.globalAlpha=.45; ctx.lineWidth=4; ctx.stroke(); ctx.globalAlpha=1; drawText(d.name,d.x+36,d.y+54,30,d.edge,'left',1000); drawText(d.desc,d.x+38,d.y+82,14,COLORS.muted,'left',900); ctx.restore(); }
+  ctx.fillStyle=COLORS.road; for(const r of BIG_ROADS){ roundedRect(r.x,r.y,r.w,r.h,60); ctx.fill(); }
+  ctx.strokeStyle=COLORS.road2; ctx.lineWidth=7; ctx.setLineDash([38,36]); ctx.beginPath();
+  for(const r of BIG_ROADS){ if(r.h>r.w){ ctx.moveTo(r.x+r.w/2,r.y+35); ctx.lineTo(r.x+r.w/2,r.y+r.h-35); } else { ctx.moveTo(r.x+35,r.y+r.h/2); ctx.lineTo(r.x+r.w-35,r.y+r.h/2); } }
+  ctx.stroke(); ctx.setLineDash([]);
+  // küçük blok sokakları
+  ctx.save(); ctx.globalAlpha=.22; ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.lineWidth=2; for(let x=300;x<WORLD.w;x+=620){ ctx.beginPath(); ctx.moveTo(x,80); ctx.lineTo(x,WORLD.h-80); ctx.stroke(); } for(let y=620;y<WORLD.h;y+=620){ ctx.beginPath(); ctx.moveTo(80,y); ctx.lineTo(WORLD.w-80,y); ctx.stroke(); } ctx.restore();
 }
 function drawZones(){
   for(const z of Object.values(ZONES)) drawZone(z);
+  drawBuildings();
   for(const r of state.rivals) drawZone({x:r.x,y:r.y,w:r.w,h:r.h,name:r.name,color:r.color,edge:r.edge});
-  drawText('🛣️ HARDCORE RIVAL CITY • 8 BASE • FAKE MULTIPLAYER',WORLD.w/2,58,26,COLORS.muted,'center',1000);
+  drawText('🏙️ V2.4 SECTOR CITY • 3 DEV BÖLGE • 8 BASE • COUNTER MAĞAZALAR • GARAGE BETA',WORLD.w/2,58,27,COLORS.muted,'center',1000);
+}
+function drawBuildings(){
+  for(const b of BUILDINGS){ const z=ZONES[b.zone]; if(!z) continue; ctx.save();
+    roundedRect(z.x+22,z.y+58,z.w-44,z.h-80,24); ctx.fillStyle='rgba(5,10,22,.34)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.10)'; ctx.lineWidth=2; ctx.stroke();
+    const c=b.counter; const active=pointInRect(state.player,c); ctx.shadowColor=z.edge; ctx.shadowBlur=active?22:3; roundedRect(c.x,c.y,c.w,c.h,18); ctx.fillStyle=active?'rgba(126,240,193,.32)':'rgba(255,255,255,.10)'; ctx.fill(); ctx.strokeStyle=active?COLORS.green:z.edge; ctx.lineWidth=3; ctx.stroke(); ctx.shadowBlur=0;
+    drawText(`${b.icon} ${b.name}`,c.x+18,c.y+34,16,COLORS.text,'left',1000); drawText('COUNTER • E',c.x+c.w-18,c.y+34,13,active?COLORS.green:COLORS.muted,'right',1000); drawText(b.hint,c.x+18,c.y+61,12,COLORS.muted,'left',900); ctx.restore(); }
 }
 function drawZone(z){
   ctx.save(); ctx.shadowColor=z.edge; ctx.shadowBlur=pointInRect(state.player,z)?22:6; roundedRect(z.x,z.y,z.w,z.h,28); ctx.fillStyle=z.color; ctx.fill(); ctx.lineWidth=4; ctx.strokeStyle=z.edge; ctx.stroke(); ctx.shadowBlur=0; drawText(z.name,z.x+22,z.y+34,18,COLORS.text,'left',1000); ctx.restore();
@@ -1102,7 +1158,7 @@ function drawBoss(b){
   const w=160,ratio=clamp(b.hp/b.maxHp,0,1); roundedRect(b.x-w/2,b.y-78,w,16,8); ctx.fillStyle='rgba(0,0,0,.65)'; ctx.fill(); roundedRect(b.x-w/2,b.y-78,w*ratio,16,8); ctx.fillStyle=COLORS.red; ctx.fill(); drawText(b.name,b.x,b.y-88,14,COLORS.text,'center',1000);
 }
 function drawPlayer(){
-  const p=state.player; ctx.save(); ctx.translate(p.x,p.y); if(p.stunTimer>0) ctx.rotate(Math.sin(state.t*40)*.12); ctx.fillStyle=p.stunTimer>0?'#8e9ab3':COLORS.green; ctx.shadowColor=COLORS.green; ctx.shadowBlur=16; ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; ctx.fillStyle=COLORS.dark; ctx.beginPath(); ctx.arc(-7,-5,2.5,0,Math.PI*2); ctx.arc(7,-5,2.5,0,Math.PI*2); ctx.fill(); ctx.strokeStyle=COLORS.dark; ctx.lineWidth=2.4; ctx.beginPath(); ctx.arc(0,4,7,.2,Math.PI-.2); ctx.stroke(); if(p.swingTimer>0){ ctx.save(); ctx.rotate(-.7+(.22-p.swingTimer)*10); const sw=swordDef(); ctx.strokeStyle=sw.color; ctx.lineWidth=7+weaponLevel(); ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(10,-7); ctx.lineTo(58+weaponLevel()*7,-25-weaponLevel()*3); ctx.stroke(); drawText(sw.emoji,45,-31,17,'#fff','center',1000); ctx.restore(); } ctx.restore(); drawText(p.stunTimer>0?'SERSEM':'SEN',p.x,p.y-31,12,COLORS.text,'center',1000); if(p.carrying){ drawBrainrot(p.carrying,p.x,p.y-48,.86); drawText('BASE’E GÖTÜR',p.x,p.y+44,12,COLORS.yellow,'center',1000); }
+  const p=state.player; ctx.save(); ctx.translate(p.x,p.y); if(p.stunTimer>0) ctx.rotate(Math.sin(state.t*40)*.12); if(state.settings.vehicleActive && !p.carrying){ roundedRect(-36,-22,72,44,14); ctx.fillStyle='rgba(255,184,108,.88)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.55)'; ctx.lineWidth=3; ctx.stroke(); drawText('🏎️',0,9,24,'#fff','center',1000); } ctx.fillStyle=p.stunTimer>0?'#8e9ab3':(state.settings.vehicleActive?COLORS.orange:COLORS.green); ctx.shadowColor=COLORS.green; ctx.shadowBlur=16; ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; ctx.fillStyle=COLORS.dark; ctx.beginPath(); ctx.arc(-7,-5,2.5,0,Math.PI*2); ctx.arc(7,-5,2.5,0,Math.PI*2); ctx.fill(); ctx.strokeStyle=COLORS.dark; ctx.lineWidth=2.4; ctx.beginPath(); ctx.arc(0,4,7,.2,Math.PI-.2); ctx.stroke(); if(p.swingTimer>0){ ctx.save(); ctx.rotate(-.7+(.22-p.swingTimer)*10); const sw=swordDef(); ctx.strokeStyle=sw.color; ctx.lineWidth=7+weaponLevel(); ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(10,-7); ctx.lineTo(58+weaponLevel()*7,-25-weaponLevel()*3); ctx.stroke(); drawText(sw.emoji,45,-31,17,'#fff','center',1000); ctx.restore(); } ctx.restore(); drawText(p.stunTimer>0?'SERSEM':'SEN',p.x,p.y-31,12,COLORS.text,'center',1000); if(p.carrying){ drawBrainrot(p.carrying,p.x,p.y-48,.86); drawText('BASE’E GÖTÜR',p.x,p.y+44,12,COLORS.yellow,'center',1000); }
 }
 function drawBot(bot,label,color,icon,carrying=false){
   ctx.save(); ctx.translate(bot.x,bot.y); ctx.fillStyle=color; ctx.shadowColor=color; ctx.shadowBlur=13; ctx.beginPath(); ctx.arc(0,0,18,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; drawText(icon,0,7,18,'#fff','center',1000); ctx.restore(); drawText(label,bot.x,bot.y-29,11,COLORS.text,'center',900); if(bot.state==='raidRival'||bot.state==='defendHome') drawText('⚔️',bot.x+25,bot.y-10,16,COLORS.yellow,'center',1000); if(bot.carrying) drawBrainrot(bot.carrying,bot.x,bot.y-42,.72);
@@ -1114,7 +1170,7 @@ function drawPriceTag(item,x,y,black=false){ const text=`$${shortNum(item.price)
 function drawParticles(){ for(const p of state.particles){ ctx.save(); ctx.globalAlpha=clamp(p.life/p.max,0,1); ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill(); ctx.restore(); } for(const f of state.floatingTexts){ ctx.save(); ctx.globalAlpha=clamp(f.life/f.max,0,1); drawText(f.text,f.x,f.y,16,f.color,'center',1000); ctx.restore(); } }
 function drawHUD(){
   ctx.save(); const income=getIncome(); roundedRect(14,14,Math.min(760,view.w-28),86,20); ctx.fillStyle='rgba(8,14,30,.78)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.13)'; ctx.stroke();
-  drawText(`$${shortNum(state.player.cash)}`,32,42,22,COLORS.green,'left',1000); drawText(`+${shortNum(income)}/sn`,32,66,13,COLORS.muted,'left',900); drawText(`💎 ${shortNum(state.player.gems)}`,190,42,18,COLORS.cyan,'left',1000); drawText(`Level ${state.player.level}`,300,42,18,COLORS.yellow,'left',1000); drawText(`SP ${state.player.skillPoints||0}`,300,82,13,COLORS.green,'left',1000); drawText(`Rebirth ${state.player.rebirths}`,410,42,18,COLORS.purple,'left',1000); drawText(`${modeCfg().emoji} ${modeCfg().label} • ⚔️ ${swordDef().name} Lv.${weaponLevel()} • Core ${shortNum(state.hardcore?.cores||0)} • Rep ${shortNum(state.hardcore?.raidRep||0)} • WT ${state.hardcore?.worldTier||1} • Threat ${hardcoreDifficulty()}`,615,66,12,modeId()==='easy'?COLORS.green:COLORS.red,'left',1000);
+  drawText(`$${shortNum(state.player.cash)}`,32,42,22,COLORS.green,'left',1000); drawText(`+${shortNum(income)}/sn`,32,66,13,COLORS.muted,'left',900); drawText(`💎 ${shortNum(state.player.gems)}`,190,42,18,COLORS.cyan,'left',1000); drawText(`Level ${state.player.level}`,300,42,18,COLORS.yellow,'left',1000); drawText(`SP ${state.player.skillPoints||0}`,300,82,13,COLORS.green,'left',1000); drawText(`Rebirth ${state.player.rebirths}`,410,42,18,COLORS.purple,'left',1000); drawText(`${modeCfg().emoji} ${modeCfg().label} • Hız ${Math.round(speedPreferenceMult()*100)}%${state.settings.vehicleActive?' 🏎️':''} • ${currentDistrict().name.split(' ')[0]} • ⚔️ ${swordDef().name} Lv.${weaponLevel()} • Core ${shortNum(state.hardcore?.cores||0)} • Rep ${shortNum(state.hardcore?.raidRep||0)} • WT ${state.hardcore?.worldTier||1}`,615,66,12,modeId()==='easy'?COLORS.green:COLORS.red,'left',1000);
   const need=xpNeed(), ratio=clamp(state.player.xp/need,0,1); roundedRect(410,55,190,12,7); ctx.fillStyle='rgba(255,255,255,.10)'; ctx.fill(); roundedRect(410,55,190*ratio,12,7); ctx.fillStyle=COLORS.yellow; ctx.fill();
   const shield=state.player.shieldTimer>0?`Kilit ${Math.ceil(state.player.shieldTimer)}sn`:'Kilit açık'; drawText(shield,615,42,15,state.player.shieldTimer>0?COLORS.cyan:COLORS.red,'left',1000);
   const stars=state.wanted.level>0?'★'.repeat(state.wanted.level)+'☆'.repeat(5-state.wanted.level):'TEMİZ'; drawText(`Wanted ${stars}`,32,88,14,state.wanted.level>0?COLORS.red:COLORS.muted,'left',1000);
@@ -1123,11 +1179,13 @@ function drawHUD(){
   ctx.restore();
 }
 function drawMiniMap(){
-  if(view.w<650) return; const w=190,h=125,x=view.w-w-16,y=112; ctx.save(); roundedRect(x,y,w,h,16); ctx.fillStyle='rgba(8,14,30,.75)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.13)'; ctx.stroke(); const sx=w/WORLD.w, sy=h/WORLD.h; function dot(px,py,c,r=4){ctx.fillStyle=c;ctx.beginPath();ctx.arc(x+px*sx,y+py*sy,r,0,Math.PI*2);ctx.fill();} for(const z of Object.values(ZONES)){ctx.fillStyle='rgba(255,255,255,.08)';ctx.fillRect(x+z.x*sx,y+z.y*sy,z.w*sx,z.h*sy);} for(const r of state.rivals) dot(r.x+r.w/2,r.y+r.h/2,r.edge,3); for(const bot of state.fakeBots||[]) dot(bot.x,bot.y,bot.carrying?COLORS.red:COLORS.yellow,3); for(const th of state.thieves) dot(th.x,th.y,COLORS.red,3); for(const cop of state.police) dot(cop.x,cop.y,COLORS.cyan,3); if(state.boss) dot(state.boss.x,state.boss.y,COLORS.red,5); dot(state.player.x,state.player.y,COLORS.green,5); drawText('Mini Map',x+12,y+18,12,COLORS.muted,'left',900); ctx.restore();
+  if(view.w<650) return; const w=220,h=142,x=view.w-w-16,y=112; ctx.save(); roundedRect(x,y,w,h,16); ctx.fillStyle='rgba(8,14,30,.75)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.13)'; ctx.stroke(); const sx=w/WORLD.w, sy=h/WORLD.h; function dot(px,py,c,r=4){ctx.fillStyle=c;ctx.beginPath();ctx.arc(x+px*sx,y+py*sy,r,0,Math.PI*2);ctx.fill();}
+  for(const d of DISTRICTS){ctx.fillStyle=d.color;ctx.fillRect(x+d.x*sx,y+d.y*sy,d.w*sx,d.h*sy);ctx.strokeStyle=d.edge;ctx.strokeRect(x+d.x*sx,y+d.y*sy,d.w*sx,d.h*sy);} for(const z of Object.values(ZONES)){ctx.fillStyle='rgba(255,255,255,.10)';ctx.fillRect(x+z.x*sx,y+z.y*sy,Math.max(2,z.w*sx),Math.max(2,z.h*sy));}
+  for(const r of state.rivals) dot(r.x+r.w/2,r.y+r.h/2,r.edge,3); for(const bot of state.fakeBots||[]) dot(bot.x,bot.y,bot.carrying?COLORS.red:COLORS.yellow,3); for(const th of state.thieves) dot(th.x,th.y,COLORS.red,3); for(const cop of state.police) dot(cop.x,cop.y,COLORS.cyan,3); if(state.boss) dot(state.boss.x,state.boss.y,COLORS.red,5); dot(state.player.x,state.player.y,state.settings.vehicleActive?COLORS.orange:COLORS.green,5); drawText('Sector Map',x+12,y+18,12,COLORS.muted,'left',900); drawText(currentDistrict().name.replace(' DISTRICT',''),x+12,y+h-12,11,currentDistrict().edge,'left',900); ctx.restore();
 }
 function drawPrompt(){
-  let hint='E: al/çal/koy • Space: kılıç • H: skill • M: heist'; const p=state.player;
-  if(p.carrying) hint='Kendi base’e gir ve E / AL ile peti koy. Polis görürse ceza kesebilir.'; else if(nearestMarketItem(70)) hint='Market peti: E / AL ile satın al.'; else if(nearestBlackItem(80)) hint='Black Market: E ile al, wanted az da olsa yükselir.'; else if(nearestRivalPet(72)) hint='Rakip peti: E / AL ile çal. Değer yükseldikçe wanted artar.'; else if(nearestOwnPet(70)) hint='Kendi petin: V sat, F kilitle, I envanter.'; else if(pointInRect(p,ZONES.quest)) hint='Quest Board: E veya Q ile görevleri aç.'; else if(pointInRect(p,ZONES.heist)) hint='Heist Hub: E veya M ile kontrat seç.'; else if(pointInRect(p,ZONES.police)) hint='Police HQ: E ile wanted cezası öde ve temizlen.'; else if(pointInRect(p,ZONES.skills)) hint='Skill Dojo: E veya H ile skill tree aç.'; else if(pointInRect(p,ZONES.crate)) hint='Crate Shop: E veya K ile kasa aç.'; else if(pointInRect(p,ZONES.upgrade)) hint='Upgrade Plaza: E veya U ile güçlen.'; else if(pointInRect(p,ZONES.fusion)) hint='Fusion Lab: E ile 3 aynı rarity peti birleştir.'; else if(pointInRect(p,ZONES.boss)) hint=`Boss Arena: E/R boss başlat. Space/KILIÇ ile vur. Hasar: ${shortNum(swordDamage())}`;
+  let hint='E: counter/al/çal/koy • Space: kılıç • G: araç • U: hız/upgrade'; const p=state.player; const c=nearestCounter(88);
+  if(p.carrying) hint='Kendi base’e gir ve E / AL ile peti koy. Pet taşırken araç otomatik kapanır.'; else if(c) hint=`${c.icon} ${c.name}: E / AL ile counter panelini aç.`; else if(nearestMarketItem(70)) hint='Market peti: E / AL ile satın al. Mall counterından market rehberi açılır.'; else if(nearestBlackItem(80)) hint='Black Market peti: E ile al, wanted az da olsa yükselir.'; else if(nearestRivalPet(72)) hint='Rakip peti: E / AL ile çal. Değer yükseldikçe wanted artar.'; else if(nearestOwnPet(70)) hint='Kendi petin: V sat, F kilitle, I envanter.'; else if(pointInRect(p,ZONES.garage)) hint='Garaj BETA: E ile hız/araç paneli. G ile araç aç/kapat.'; else if(pointInRect(p,ZONES.quest)) hint='Quest Office: E veya Q ile görevleri aç.'; else if(pointInRect(p,ZONES.heist)) hint='Heist Hub: E veya M ile kontrat seç.'; else if(pointInRect(p,ZONES.police)) hint='Police HQ: E ile wanted cezası öde ve temizlen.'; else if(pointInRect(p,ZONES.skills)) hint='Skill Dojo: E veya H ile skill tree aç.'; else if(pointInRect(p,ZONES.crate)) hint='Crate Depot: E veya K ile kasa aç.'; else if(pointInRect(p,ZONES.upgrade)) hint='Upgrade Center: E veya U ile güçlen ve hız ayarla.'; else if(pointInRect(p,ZONES.fusion)) hint='Fusion Lab: E ile 3 aynı rarity peti birleştir.'; else if(pointInRect(p,ZONES.boss)) hint=`Boss Stadium: E/R boss başlat. Space/KILIÇ ile vur. Hasar: ${shortNum(swordDamage())}`;
   ctx.save(); ctx.font='1000 15px system-ui'; const w=Math.min(view.w-26,ctx.measureText(hint).width+30); roundedRect(view.w/2-w/2,view.h-74,w,42,18); ctx.fillStyle='rgba(8,14,30,.80)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.13)'; ctx.stroke(); drawText(hint,view.w/2,view.h-48,15,COLORS.text,'center',1000); ctx.restore();
   if(state.messageTimer>0 && state.message){ ctx.save(); ctx.font='1000 16px system-ui'; const mw=Math.min(view.w-40,ctx.measureText(state.message).width+34); roundedRect(view.w/2-mw/2,view.h-124,mw,38,16); ctx.fillStyle='rgba(126,240,193,.90)'; ctx.fill(); drawText(state.message,view.w/2,view.h-100,16,COLORS.dark,'center',1000); ctx.restore(); }
 }
@@ -1137,7 +1195,7 @@ function drawText(text,x,y,size,color,align='left',weight=800){ ctx.font=`${weig
 
 function openPanel(kind){
   state.paused=true; panelEl.classList.remove('hidden'); ensureV21Fields();
-  if(kind==='inventory') renderInventory(); else if(kind==='quests') renderQuests(); else if(kind==='collection') renderCollection(); else if(kind==='crates') renderCrates(); else if(kind==='upgrades') renderUpgrades(); else if(kind==='skills') renderSkills(); else if(kind==='heists') renderHeists(); else renderMap();
+  if(kind==='inventory') renderInventory(); else if(kind==='quests') renderQuests(); else if(kind==='collection') renderCollection(); else if(kind==='crates') renderCrates(); else if(kind==='upgrades') renderUpgrades(); else if(kind==='skills') renderSkills(); else if(kind==='heists') renderHeists(); else if(kind==='marketInfo') renderMarketInfo(); else if(kind==='garage') renderGarage(); else if(kind==='blackInfo') renderBlackInfo(); else if(kind==='forgeInfo') renderForgeInfo(); else if(kind==='fusionInfo') renderFusionInfo(); else if(kind==='districtMap') renderMap(); else renderMap();
 }
 function closePanel(){ panelEl.classList.add('hidden'); state.paused=false; saveGame(); }
 function renderInventory(){
@@ -1164,9 +1222,17 @@ function renderCrates(){
 }
 function renderUpgrades(){
   panelTitle.textContent='⚙️ Upgrade Plaza'; panelSub.textContent=`Base, karakter, kılıç ve mod sistemi. Aktif mod: ${modeCfg().emoji} ${modeCfg().label}`;
-  panelBody.innerHTML=`<div class="grid">${Object.entries(UPGRADE_DEFS).map(([k,d])=>{const lvl=state.player[upgradeProp(k)]||0;const cost=Math.round(d.base*Math.pow(d.scale,lvl)*hardcoreCostMult());return `<div class="card"><h3>${htmlEscape(d.name)} Lv.${lvl}/${d.max}</h3><p>${htmlEscape(d.desc)}</p><p>Fiyat: $${shortNum(cost)}</p><button class="small good" data-cmd="upgrade" data-key="${k}" ${lvl>=d.max?'disabled':''}>Yükselt</button></div>`}).join('')}<div class="card"><h3>♻️ Güvenli Rebirth</h3><p>Petleri silmez. Para harcar, gelir çarpanı ve gem verir.</p><p>Gereken: $${shortNum(Math.round(35000000*Math.pow(state.player.rebirths+1,3.35)*Math.pow(state.hardcore?.worldTier||1,1.9)*modeCfg().rebirthCostMult))} ve +${shortNum(Math.round(85000*Math.pow(state.player.rebirths+1,2.25)*Math.pow(state.hardcore?.worldTier||1,1.35)*modeCfg().rebirthCostMult))}/sn</p><button class="small gold" data-cmd="rebirth">Rebirth Al</button></div>${renderModeCards()}${renderSwordCard()}${renderHardcoreCards()}</div>`;
+  panelBody.innerHTML=`<div class="grid">${Object.entries(UPGRADE_DEFS).map(([k,d])=>{const lvl=state.player[upgradeProp(k)]||0;const cost=Math.round(d.base*Math.pow(d.scale,lvl)*hardcoreCostMult());return `<div class="card"><h3>${htmlEscape(d.name)} Lv.${lvl}/${d.max}</h3><p>${htmlEscape(d.desc)}</p><p>Fiyat: $${shortNum(cost)}</p><button class="small good" data-cmd="upgrade" data-key="${k}" ${lvl>=d.max?'disabled':''}>Yükselt</button></div>`}).join('')}<div class="card"><h3>♻️ Güvenli Rebirth</h3><p>Petleri silmez. Para harcar, gelir çarpanı ve gem verir.</p><p>Gereken: $${shortNum(Math.round(35000000*Math.pow(state.player.rebirths+1,3.35)*Math.pow(state.hardcore?.worldTier||1,1.9)*modeCfg().rebirthCostMult))} ve +${shortNum(Math.round(85000*Math.pow(state.player.rebirths+1,2.25)*Math.pow(state.hardcore?.worldTier||1,1.35)*modeCfg().rebirthCostMult))}/sn</p><button class="small gold" data-cmd="rebirth">Rebirth Al</button></div>${renderSpeedCard()}${renderGarageCard()}${renderModeCards()}${renderSwordCard()}${renderHardcoreCards()}</div>`;
 }
 
+function renderSpeedCard(){
+  const pct=Math.round(speedPreferenceMult()*100);
+  return `<div class="card"><h3>🏃 Oyuncu Hızı: ${pct}%</h3><p>Oyun artık çok büyük map olduğu için hız tamamen ayarlanabilir. Eski sürüme göre varsayılan hız düşürüldü.</p><div class="row"><button class="small" data-cmd="speed" data-mult="0.50">Çok Yavaş</button><button class="small good" data-cmd="speed" data-mult="0.72">Dengeli</button><button class="small gold" data-cmd="speed" data-mult="1.00">Hızlı</button><button class="small bad" data-cmd="speed" data-mult="1.35">Aşırı</button><button class="small bad" data-cmd="speed" data-mult="1.65">Delirmiş</button></div></div>`;
+}
+function renderGarageCard(){
+  const owned=state.settings.vehicleOwned; const active=state.settings.vehicleActive;
+  return `<div class="card"><h3>🏎️ Garaj BETA ${owned?'Açık':'Kilitli'}</h3><p>Büyük map için araç altyapısı. Şimdilik BETA hız modu: G ile bin/in. Pet taşırken araç kapanır. Sonraki update’te gerçek arabalar/mağazalar büyütülebilir.</p><p>Fiyat: $${shortNum(vehicleCost())}</p><div class="row"><button class="small gold" data-cmd="vehicleBuy" ${owned?'disabled':''}>Aracı Aç</button><button class="small good" data-cmd="vehicleToggle" ${owned?'':'disabled'}>${active?'Araçtan İn':'Araca Bin'}</button></div></div>`;
+}
 function renderModeCards(){
   const m=modeId();
   return `<div class="card"><h3>🎮 Oyun Modu: ${modeCfg().emoji} ${modeCfg().label}</h3><p>${htmlEscape(modeCfg().desc)}</p><p>Easy mod save’i silmez; sadece fiyat, polis, raid ve boss baskısını düşürür. Bot savaşları iki modda da aktif.</p><div class="row"><button class="small good" data-cmd="mode" data-mode="easy" ${m==='easy'?'disabled':''}>Easy Mod</button><button class="small bad" data-cmd="mode" data-mode="hardcore" ${m==='hardcore'?'disabled':''}>Hardcore Mod</button></div></div>`;
@@ -1192,12 +1258,17 @@ function renderHeists(){
   panelBody.innerHTML=`${activeHtml}<div class="grid">${HEIST_CONTRACTS.map(h=>{const done=(state.heist.completed||[]).filter(x=>x.id===h.id).length;return `<div class="card"><h3>${done?'✅ ':''}${htmlEscape(h.title)}</h3><p>${htmlEscape(h.desc)}</p><p>Level ${h.level}+ • Süre ${h.time}sn • Ödül $${shortNum(h.reward.cash)} ${h.reward.gems}💎 +${h.reward.xp}XP</p><button class="small gold" data-cmd="heist" data-id="${h.id}" ${state.heist.active||state.player.level<h.level?'disabled':''}>Kontrat Başlat</button></div>`}).join('')}</div>`;
 }
 
-function renderMap(){ panelTitle.textContent='🗺️ Mode Sword Wars Haritası'; panelSub.textContent='Bölgeler ve kısayollar'; panelBody.innerHTML='<div class="grid"><div class="card"><h3>Senin Base</h3><p>Petleri buraya koy. Gelir üretirler. Hırsızlar buraya girer.</p></div><div class="card"><h3>Heist Hub</h3><p>M ile kontrat seç. Büyük risk, büyük ödül.</p></div><div class="card"><h3>Police HQ</h3><p>Wanted seviyen varsa E ile ceza ödeyip temizleyebilirsin.</p></div><div class="card"><h3>Skill Dojo</h3><p>H ile Thief, Defender ve Tycoon skill ağacını aç.</p></div><div class="card"><h3>Market / Black Market</h3><p>Brainrot satın al. Black Market wanted riski yaratır ama güçlüdür.</p></div><div class="card"><h3>Boss Arena</h3><p>R ile boss başlat. Kesersen kasa gibi özel drop verir.</p></div></div>'; }
+function renderMap(){ panelTitle.textContent='🗺️ V2.4 Sector City Haritası'; panelSub.textContent='3 dev bölge, bina-counter sistemi ve metro kısayolları.'; panelBody.innerHTML=`<div class="grid">${DISTRICTS.map(d=>`<div class="card"><h3 style="color:${d.edge}">${htmlEscape(d.name)}</h3><p>${htmlEscape(d.desc)}</p><p>Koordinat: ${Math.round(d.x)}, ${Math.round(d.y)} • Boyut: ${Math.round(d.w)}x${Math.round(d.h)}</p><button class="small gold" data-cmd="travel" data-zone="${d.id}">Metro ile Git</button></div>`).join('')}<div class="card"><h3>🏬 Counter Mantığı</h3><p>Mağaza/merkezler artık bina gibi çiziliyor. Işıklı counter’a girince E ile panel açılır. Market petleri hâlâ raflardan alınır.</p></div><div class="card"><h3>🏎️ Büyük Map Notu</h3><p>Hız ayarı U → Upgrade panelinde. Garaj BETA büyük map için araç altyapısıdır. G ile araç aç/kapat.</p></div></div>`; }
+function renderMarketInfo(){ panelTitle.textContent='🛒 Mega Market Mall'; panelSub.textContent='Raflardaki petlere yaklaşarak E ile satın al. Counter sadece rehber ve refresh içindir.'; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Raf sistemi</h3><p>Petler market binasının içinde akar. Yaklaş ve E ile al. Peti base’e götürmeden gelir üretmez.</p><button class="small gold" data-cmd="marketRefresh">Market Yenile $${shortNum(12000*modeCfg().upgradeCostMult)}</button></div><div class="card"><h3>Zone bilgisi</h3><p>Downtown market güvenli ama üst rarity için rank/core gerekir. Black Market daha tehlikeli ama daha güçlüdür.</p></div></div>`; }
+function renderGarage(){ panelTitle.textContent='🏎️ Garage BETA'; panelSub.textContent=`Hız ${Math.round(speedPreferenceMult()*100)}% • Araç ${state.settings.vehicleOwned?(state.settings.vehicleActive?'aktif':'pasif'):'kilitli'}`; panelBody.innerHTML=`<div class="grid">${renderSpeedCard()}${renderGarageCard()}<div class="card"><h3>Sonraki Araç Sistemi</h3><p>Bu update’te altyapı kuruldu: dev map, garaj counterı ve araç hız modu var. Sonraki update’te gerçek araba modelleri, yakıt, drift ve garaj mağazası eklenebilir.</p></div></div>`; }
+function renderBlackInfo(){ panelTitle.textContent='🕶️ Black Market Club'; panelSub.textContent='Black Market ürünleri pahalı, güçlü ve wanted riski taşır.'; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Nasıl alınır?</h3><p>Black Market binasındaki petlere yaklaş ve E ile satın al. Aldıktan sonra base’e taşı.</p></div><div class="card"><h3>Risk</h3><p>Her black market alışverişi wanted artırır. Police HQ’dan temizleyebilirsin.</p></div></div>`; }
+function renderForgeInfo(){ panelTitle.textContent='🔥 Core Forge'; panelSub.textContent='Endgame para yakma ve core dönüştürme sistemi için hazırlık.'; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Yakında</h3><p>Core Forge bu update’te bina olarak eklendi. Sonraki büyük update’te para + core yakıp silah enchant, boss key ve özel materyal üretilecek.</p></div><div class="card"><h3>Şimdilik</h3><p>Core kasmak için boss kesmeye devam et. V2.4 map endgame alanı burada başlıyor.</p></div></div>`; }
+function renderFusionInfo(){ panelTitle.textContent='🧪 Fusion Lab'; panelSub.textContent='Fusion counterındasın.'; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Fusion</h3><p>Aynı rarity’den 3 kilitsiz pet varsa E ile otomatik birleştirme yapılır. Envanterden petleri kilitleyerek koruyabilirsin.</p><button class="small good" data-cmd="fuseNow">Fusion Dene</button></div></div>`; }
 
 panelEl.addEventListener('click', e=>{
   const close=e.target.closest('#panelClose'); if(close){closePanel(); return;}
   const btn=e.target.closest('[data-cmd]'); if(!btn) return; const cmd=btn.dataset.cmd;
-  if(cmd==='sell') sellPet(btn.dataset.scope,btn.dataset.id); else if(cmd==='lock') togglePetLock(btn.dataset.scope,btn.dataset.id); else if(cmd==='activate') activatePet(btn.dataset.id); else if(cmd==='stash') stashActivePet(btn.dataset.id); else if(cmd==='claim') claimQuest(btn.dataset.id); else if(cmd==='crate') openCrate(btn.dataset.kind); else if(cmd==='upgrade') buyUpgrade(btn.dataset.key); else if(cmd==='rebirth') rebirth(); else if(cmd==='skill') buySkill(btn.dataset.key); else if(cmd==='respec') respecSkills(); else if(cmd==='heist') startHeist(btn.dataset.id); else if(cmd==='hardcoreRank') buyHardcoreRank(); else if(cmd==='worldTier') buyWorldTier(); else if(cmd==='mode') setGameMode(btn.dataset.mode); else if(cmd==='sword') buySword();
+  if(cmd==='sell') sellPet(btn.dataset.scope,btn.dataset.id); else if(cmd==='lock') togglePetLock(btn.dataset.scope,btn.dataset.id); else if(cmd==='activate') activatePet(btn.dataset.id); else if(cmd==='stash') stashActivePet(btn.dataset.id); else if(cmd==='claim') claimQuest(btn.dataset.id); else if(cmd==='crate') openCrate(btn.dataset.kind); else if(cmd==='upgrade') buyUpgrade(btn.dataset.key); else if(cmd==='rebirth') rebirth(); else if(cmd==='skill') buySkill(btn.dataset.key); else if(cmd==='respec') respecSkills(); else if(cmd==='heist') startHeist(btn.dataset.id); else if(cmd==='hardcoreRank') buyHardcoreRank(); else if(cmd==='worldTier') buyWorldTier(); else if(cmd==='mode') setGameMode(btn.dataset.mode); else if(cmd==='sword') buySword(); else if(cmd==='speed') setSpeedPreset(btn.dataset.mult); else if(cmd==='vehicleBuy') buyVehicle(); else if(cmd==='vehicleToggle') toggleVehicle(); else if(cmd==='travel') travelToDistrict(btn.dataset.zone); else if(cmd==='marketRefresh'){ const cost=Math.round(12000*modeCfg().upgradeCostMult); if(state.player.cash<cost){showMessage('Market yenilemek için para yetmedi.'); beep('bad');} else {state.player.cash-=cost; state.market=[]; for(let i=0;i<24;i++) spawnMarket(); showMessage('Market rafları yenilendi.'); saveGame(); openPanel('marketInfo');}} else if(cmd==='fuseNow') fuseBest();
 });
 
 function resize(){ view.dpr=Math.max(1,Math.min(2.5,window.devicePixelRatio||1)); view.w=Math.floor(window.innerWidth); view.h=Math.floor(window.innerHeight); canvas.width=Math.floor(view.w*view.dpr); canvas.height=Math.floor(view.h*view.dpr); ctx.setTransform(view.dpr,0,0,view.dpr,0,0); updateCamera(); }
@@ -1205,7 +1276,7 @@ window.addEventListener('resize',resize,{passive:true});
 function setInputMode(mode){ if(mode==='keyboard'){ document.body.classList.add('keyboardMode'); mobileControls?.setAttribute('aria-hidden','true'); joy.active=false; joy.dx=joy.dy=0; joyStick.style.transform='translate(0,0)'; if(!keyboardToastShown){toast('Klavye modu: joystick gizlendi. Ekrana dokununca geri gelir.');keyboardToastShown=true;} } else { document.body.classList.remove('keyboardMode'); mobileControls?.removeAttribute('aria-hidden'); } }
 window.addEventListener('keydown', e=>{
   setInputMode('keyboard'); const k=e.key.toLowerCase(); keys.add(k); if(['arrowup','arrowdown','arrowleft','arrowright',' ','space'].includes(k)) e.preventDefault(); if(e.repeat) return;
-  if(k==='e') interact(); else if(k===' ') swing(); else if(k==='l') lockBase(); else if(k==='i') openPanel('inventory'); else if(k==='q') openPanel('quests'); else if(k==='h'||k==='t') openPanel('skills'); else if(k==='m') openPanel('heists'); else if(k==='c') openPanel('collection'); else if(k==='k') openPanel('crates'); else if(k==='u') openPanel('upgrades'); else if(k==='f') toggleNearestLock(); else if(k==='v'||k==='x') sellNearestPet(); else if(k==='r') startBossRaid(); else if(k==='b') rebirth(); else if(k==='p'){ state.paused=!state.paused; } else if(k==='n'){ showMessage('N ile reset kaldırıldı. Save güvende.'); beep('bad'); }
+  if(k==='e') interact(); else if(k===' ') swing(); else if(k==='l') lockBase(); else if(k==='i') openPanel('inventory'); else if(k==='q') openPanel('quests'); else if(k==='h'||k==='t') openPanel('skills'); else if(k==='m') openPanel('heists'); else if(k==='c') openPanel('collection'); else if(k==='k') openPanel('crates'); else if(k==='u') openPanel('upgrades'); else if(k==='f') toggleNearestLock(); else if(k==='v'||k==='x') sellNearestPet(); else if(k==='r') startBossRaid(); else if(k==='g') toggleVehicle(); else if(k==='b') rebirth(); else if(k==='p'){ state.paused=!state.paused; } else if(k==='n'){ showMessage('N ile reset kaldırıldı. Save güvende.'); beep('bad'); }
 });
 window.addEventListener('keyup', e=>keys.delete(e.key.toLowerCase()));
 window.addEventListener('pointerdown', e=>{ if(e.pointerType==='touch') setInputMode('touch'); }, {passive:true});
@@ -1234,7 +1305,7 @@ resetPhraseEl.addEventListener('keydown', e=>{ if(e.key==='Enter') confirmReset(
 function loop(now){ const dt=clamp((now-lastFrame)/1000,0,.05); lastFrame=now; update(dt); draw(); requestAnimationFrame(loop); }
 
 resize();
-const loaded=loadSave(); ensureTransientWorld(); refreshModeButtons(); if(!loaded) showMessage('V2.3 Mode Sword Wars hazır. Save key sabit.',3); saveGame(); requestAnimationFrame(loop);
+const loaded=loadSave(); ensureTransientWorld(); refreshModeButtons(); if(!loaded) showMessage('V2.4 Sector City hazır. Save key sabit.',3); saveGame(); requestAnimationFrame(loop);
 })();
 </script>
 </body>
