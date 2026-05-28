@@ -5,106 +5,93 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Brainrot Heist V1.3.3</title>
+<title>Brainrot Heist V2 Mega City</title>
 <style>
   :root{
-    --bg:#07101f;
-    --panel:rgba(7,16,31,.78);
-    --panel2:rgba(255,255,255,.09);
-    --text:#eef3ff;
-    --muted:#9fb0d4;
-    --accent:#7ef0c1;
-    --danger:#ff6688;
-    --yellow:#ffe680;
+    --bg:#060914;--panel:rgba(8,14,30,.86);--panel2:rgba(255,255,255,.08);--line:rgba(255,255,255,.14);
+    --text:#eef4ff;--muted:#9fb1d7;--green:#7ef0c1;--cyan:#79d9ff;--yellow:#ffe680;--red:#ff6688;--purple:#be95ff;
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050914;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;touch-action:none;user-select:none;-webkit-user-select:none}
-  #app{position:fixed;inset:0;overflow:hidden;background:radial-gradient(circle at 18% 18%,rgba(126,240,193,.18),transparent 30%),radial-gradient(circle at 82% 14%,rgba(190,149,255,.16),transparent 34%),radial-gradient(circle at 50% 100%,rgba(255,102,136,.14),transparent 34%),#07101f}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#050812;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;touch-action:none;user-select:none;-webkit-user-select:none}
+  #app{position:fixed;inset:0;overflow:hidden;background:radial-gradient(circle at 20% 10%,rgba(126,240,193,.14),transparent 30%),radial-gradient(circle at 86% 18%,rgba(190,149,255,.16),transparent 33%),radial-gradient(circle at 55% 100%,rgba(255,102,136,.12),transparent 34%),#06101e}
   canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-  .toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 14px);transform:translateX(-50%);z-index:20;min-width:min(680px,calc(100vw - 28px));max-width:calc(100vw - 28px);padding:11px 18px;border-radius:999px;background:rgba(126,240,193,.94);color:#07101f;text-align:center;font-weight:900;box-shadow:0 14px 45px rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease}
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(3px)}
-  .topbar{position:fixed;z-index:18;right:calc(env(safe-area-inset-right) + 12px);top:calc(env(safe-area-inset-top) + 12px);display:flex;gap:8px;align-items:center}
-  .chip,.topbar button,.menu button,.mButton{border:1px solid rgba(255,255,255,.16);background:rgba(7,16,31,.68);color:var(--text);border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.32);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-  .topbar button{height:42px;padding:0 13px;font-weight:900;font-size:13px}
-  .topbar button:active,.menu button:active,.mButton:active{transform:scale(.96)}
-  .menu{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:22px;background:linear-gradient(180deg,rgba(2,5,12,.74),rgba(2,5,12,.92));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-  .menu.hidden{display:none}
-  .menuCard{width:min(760px,100%);max-height:calc(100dvh - 34px);overflow:auto;border:1px solid rgba(255,255,255,.14);border-radius:28px;padding:24px;background:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.055));box-shadow:0 30px 110px rgba(0,0,0,.5);scrollbar-width:thin}
-  .eyebrow{margin:0 0 8px;color:var(--accent);font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:1000}
-  h1{margin:0;font-size:clamp(34px,8vw,74px);line-height:.9;letter-spacing:-.06em}
-  .lead{margin:14px 0 0;color:var(--muted);font-size:16px;line-height:1.45;max-width:620px}
-  .patch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:18px 0}
-  .patch div{border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px;background:rgba(0,0,0,.18);font-size:14px;color:#c9d6f3}
-  .patch b{display:block;color:#fff;margin-bottom:3px}
+  button{font-family:inherit;cursor:pointer}
+  .toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 14px);transform:translateX(-50%);z-index:75;width:max-content;min-width:min(640px,calc(100vw - 30px));max-width:calc(100vw - 30px);padding:12px 18px;border-radius:999px;background:rgba(126,240,193,.96);color:#07101f;text-align:center;font-weight:1000;box-shadow:0 20px 65px rgba(0,0,0,.44);opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(4px)}
+  .topbar{position:fixed;z-index:45;right:calc(env(safe-area-inset-right) + 12px);top:calc(env(safe-area-inset-top) + 12px);display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+  .topbar button,.menu button,.panel button,.mButton,.resetCard button{border:1px solid var(--line);background:rgba(8,14,30,.72);color:var(--text);border-radius:14px;box-shadow:0 14px 40px rgba(0,0,0,.34);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);font-weight:1000}
+  .topbar button{height:42px;padding:0 13px;font-size:13px}
+  button:active{transform:scale(.965)}
+  .menu{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;padding:22px;background:linear-gradient(180deg,rgba(2,5,12,.74),rgba(2,5,12,.94));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+  .hidden{display:none!important}
+  .menuCard{width:min(860px,100%);max-height:calc(100dvh - 34px);overflow:auto;border:1px solid rgba(255,255,255,.16);border-radius:30px;padding:26px;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.055));box-shadow:0 35px 120px rgba(0,0,0,.58);scrollbar-width:thin}
+  .eyebrow{margin:0 0 8px;color:var(--green);font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:1000}
+  h1{margin:0;font-size:clamp(36px,8.4vw,84px);line-height:.88;letter-spacing:-.065em}
+  .lead{margin:14px 0 0;color:var(--muted);font-size:16px;line-height:1.45;max-width:720px}
+  .patch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:20px 0}
+  .patch div{border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:12px;background:rgba(0,0,0,.20);font-size:14px;color:#d2ddf6;min-height:74px}
+  .patch b{display:block;color:#fff;margin-bottom:4px;font-size:15px}
   .menuBtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-  .menu button{height:48px;padding:0 18px;font-weight:1000;font-size:15px;background:rgba(126,240,193,.16)}
+  .menu button,.resetCard button{height:48px;padding:0 18px;font-size:15px;background:rgba(126,240,193,.15)}
   .menu button.primary{background:linear-gradient(135deg,#7ef0c1,#79d9ff);color:#07101f;border:0}
-  .smallNote{margin:14px 0 0;color:#93a7ce;font-size:13px}
-  #rotateHint{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 112px);transform:translateX(-50%);z-index:19;display:none;width:min(520px,calc(100vw - 28px));padding:10px 14px;border-radius:18px;background:rgba(7,16,31,.78);border:1px solid rgba(255,255,255,.14);text-align:center;color:#dbe6ff;font-weight:850;box-shadow:0 18px 55px rgba(0,0,0,.36)}
-  .mobileControls{position:fixed;inset:0;z-index:16;pointer-events:none;display:none}
-  #joyWrap{position:absolute;left:calc(env(safe-area-inset-left) + 18px);bottom:calc(env(safe-area-inset-bottom) + 24px);width:142px;height:142px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);box-shadow:0 18px 50px rgba(0,0,0,.36);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);pointer-events:auto}
-  #joyStick{position:absolute;left:50%;top:50%;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;background:linear-gradient(135deg,rgba(126,240,193,.92),rgba(121,217,255,.92));box-shadow:0 8px 26px rgba(0,0,0,.36)}
+  .smallNote{margin:14px 0 0;color:#93a7ce;font-size:13px;line-height:1.45}
+  #rotateHint{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 126px);transform:translateX(-50%);z-index:38;display:none;width:min(540px,calc(100vw - 28px));padding:10px 14px;border-radius:18px;background:rgba(8,14,30,.84);border:1px solid rgba(255,255,255,.14);text-align:center;color:#dbe6ff;font-weight:900;box-shadow:0 18px 55px rgba(0,0,0,.36)}
+  .mobileControls{position:fixed;inset:0;z-index:37;pointer-events:none;display:none}
+  #joyWrap{position:absolute;left:calc(env(safe-area-inset-left) + 18px);bottom:calc(env(safe-area-inset-bottom) + 24px);width:144px;height:144px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);box-shadow:0 18px 50px rgba(0,0,0,.36);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);pointer-events:auto;touch-action:none}
+  #joyStick{position:absolute;left:50%;top:50%;width:62px;height:62px;margin:-31px 0 0 -31px;border-radius:50%;background:linear-gradient(135deg,rgba(126,240,193,.95),rgba(121,217,255,.95));box-shadow:0 10px 30px rgba(0,0,0,.42)}
   .mButtons{position:absolute;right:calc(env(safe-area-inset-right) + 16px);bottom:calc(env(safe-area-inset-bottom) + 24px);display:grid;grid-template-columns:82px 82px;gap:10px;pointer-events:auto}
-  .mButton{height:62px;font-weight:1000;font-size:13px;line-height:1.1;background:rgba(7,16,31,.74)}
-  .mButton.big{height:76px;background:rgba(126,240,193,.18);color:#effff9}
+  .mButton{height:58px;font-size:12px;line-height:1.05;background:rgba(8,14,30,.78);padding:0 6px}
+  .mButton.big{height:74px;background:rgba(126,240,193,.18);color:#effff9;font-size:13px}
   .mButton.warn{background:rgba(255,230,128,.16)}
   .mButton.danger{background:rgba(255,102,136,.16)}
   .keyboardMode .mobileControls,.keyboardMode #rotateHint{display:none!important}
   .keyboardMode canvas{cursor:crosshair}
-  @media (pointer:coarse), (max-width:900px){.mobileControls{display:block}.topbar button{height:38px;padding:0 10px;font-size:12px}.patch{grid-template-columns:1fr}.menuCard{padding:19px}}
-  @media (orientation:portrait) and (pointer:coarse){#rotateHint{display:block}.mButtons{grid-template-columns:76px 76px}.mButton{height:58px;font-size:12px}#joyWrap{width:132px;height:132px}}
-
-
-  .dangerText{color:#ff6688}
-  .resetModal{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(2,5,12,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
-  .resetModal.hidden{display:none}
-  .resetCard{width:min(560px,100%);border:1px solid rgba(255,102,136,.38);border-radius:26px;padding:22px;background:linear-gradient(180deg,rgba(70,15,30,.92),rgba(7,16,31,.94));box-shadow:0 35px 120px rgba(0,0,0,.62)}
-  .resetCard h2{margin:0;font-size:clamp(27px,6vw,44px);line-height:.95;letter-spacing:-.04em}
-  .resetLead{font-size:15px;margin-top:12px}
-  .resetInput{width:100%;height:52px;margin-top:10px;border-radius:16px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.10);color:#fff;font-size:22px;font-weight:1000;text-align:center;letter-spacing:.12em;outline:none;text-transform:uppercase}
-  .resetInput:focus{border-color:#ffe680;box-shadow:0 0 0 4px rgba(255,230,128,.12)}
-  .dangerBtn{background:rgba(255,102,136,.26)!important;color:#fff!important;border-color:rgba(255,102,136,.5)!important}
-  @media (max-width:760px){.topbar{left:calc(env(safe-area-inset-left) + 8px);right:calc(env(safe-area-inset-right) + 8px);justify-content:flex-end;gap:6px}.topbar button{height:34px;padding:0 8px;font-size:11px}.mButtons{right:calc(env(safe-area-inset-right) + 10px);bottom:calc(env(safe-area-inset-bottom) + 14px);grid-template-columns:70px 70px;gap:8px}.mButton{height:50px;font-size:11px;border-radius:14px}.mButton.big{height:58px}#joyWrap{left:calc(env(safe-area-inset-left) + 12px);bottom:calc(env(safe-area-inset-bottom) + 16px);width:116px;height:116px}#joyStick{width:52px;height:52px;margin:-26px 0 0 -26px}#rotateHint{bottom:calc(env(safe-area-inset-bottom) + 174px);font-size:12px;padding:8px 10px}}
-  @media (max-height:500px){#rotateHint{display:none!important}.mButtons{grid-template-columns:68px 68px;gap:7px}.mButton{height:42px;font-size:10px}.mButton.big{height:50px}#joyWrap{width:106px;height:106px}.menu{align-items:flex-start}.menuCard{margin-top:8px}}
+  .panel{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(2,5,12,.58);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  .panelCard{width:min(980px,100%);max-height:calc(100dvh - 28px);overflow:auto;border:1px solid rgba(255,255,255,.16);border-radius:26px;background:linear-gradient(180deg,rgba(8,14,30,.96),rgba(8,14,30,.90));box-shadow:0 30px 110px rgba(0,0,0,.54);padding:18px;scrollbar-width:thin}
+  .panelHead{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;position:sticky;top:-18px;padding:14px 0 12px;background:linear-gradient(180deg,rgba(8,14,30,.98),rgba(8,14,30,.88));z-index:2}
+  .panel h2{margin:0;font-size:clamp(24px,5vw,38px);letter-spacing:-.035em}.panel .sub{color:var(--muted);font-size:13px;margin-top:5px}.panel .close{height:42px;min-width:42px;padding:0 14px;background:rgba(255,102,136,.16)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}.card{border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(255,255,255,.065);padding:12px;min-height:92px}.card h3{margin:0 0 5px;font-size:15px}.card p{margin:4px 0;color:#bdcae7;font-size:12px;line-height:1.35}.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.pill{display:inline-flex;align-items:center;height:24px;border-radius:999px;padding:0 9px;background:rgba(255,255,255,.10);font-size:12px;font-weight:900;color:#dce7ff}.panel button.small{height:34px;padding:0 10px;font-size:12px;border-radius:11px;margin-top:8px}.panel button.good{background:rgba(126,240,193,.18)}.panel button.bad{background:rgba(255,102,136,.18)}.panel button.gold{background:rgba(255,230,128,.18)}.bar{height:12px;border-radius:999px;background:rgba(255,255,255,.10);overflow:hidden;border:1px solid rgba(255,255,255,.08);margin:8px 0}.bar span{display:block;height:100%;background:linear-gradient(90deg,#7ef0c1,#79d9ff);border-radius:999px}.dangerText{color:#ff6688}.resetModal{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(2,5,12,.84);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}.resetCard{width:min(580px,100%);border:1px solid rgba(255,102,136,.38);border-radius:26px;padding:22px;background:linear-gradient(180deg,rgba(70,15,30,.94),rgba(8,14,30,.96));box-shadow:0 35px 120px rgba(0,0,0,.62)}.resetCard h2{margin:0;font-size:clamp(28px,6vw,45px);line-height:.95;letter-spacing:-.04em}.resetInput{width:100%;height:52px;margin-top:12px;border-radius:16px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.10);color:#fff;font-size:22px;font-weight:1000;text-align:center;letter-spacing:.12em;outline:none;text-transform:uppercase}.dangerBtn{background:rgba(255,102,136,.28)!important;color:#fff!important;border-color:rgba(255,102,136,.5)!important}
+  @media (pointer:coarse), (max-width:900px){.mobileControls{display:block}.topbar button{height:38px;padding:0 10px;font-size:12px}.patch{grid-template-columns:1fr}.menuCard{padding:19px}.panelCard{padding:14px}.panelHead{top:-14px}.grid{grid-template-columns:1fr}}
+  @media (orientation:portrait) and (pointer:coarse){#rotateHint{display:block}.mButtons{grid-template-columns:76px 76px}.mButton{height:54px;font-size:11px}.mButton.big{height:66px}#joyWrap{width:132px;height:132px}}
+  @media (max-width:760px){.topbar{left:calc(env(safe-area-inset-left) + 8px);right:calc(env(safe-area-inset-right) + 8px);justify-content:flex-end;gap:6px}.topbar button{height:34px;padding:0 8px;font-size:11px}.mButtons{right:calc(env(safe-area-inset-right) + 10px);bottom:calc(env(safe-area-inset-bottom) + 14px);grid-template-columns:69px 69px;gap:8px}.mButton{height:48px;font-size:10px;border-radius:14px}.mButton.big{height:57px}#joyWrap{left:calc(env(safe-area-inset-left) + 12px);bottom:calc(env(safe-area-inset-bottom) + 16px);width:116px;height:116px}#joyStick{width:52px;height:52px;margin:-26px 0 0 -26px}#rotateHint{bottom:calc(env(safe-area-inset-bottom) + 170px);font-size:12px;padding:8px 10px}}
+  @media (max-height:500px){#rotateHint{display:none!important}.mButtons{grid-template-columns:66px 66px;gap:7px}.mButton{height:40px;font-size:10px}.mButton.big{height:48px}#joyWrap{width:104px;height:104px}.menu{align-items:flex-start}.menuCard{margin-top:8px}}
 </style>
 </head>
 <body>
 <div id="app">
-  <canvas id="game" aria-label="Brainrot Heist V1.3.3 oyun alanı"></canvas>
+  <canvas id="game" aria-label="Brainrot Heist V2 Mega City oyun alanı"></canvas>
   <div id="toast" class="toast" aria-live="polite"></div>
-
   <div class="topbar">
     <button id="btnMenu" type="button">MENÜ</button>
+    <button id="btnInventory" type="button">ENVANTER</button>
+    <button id="btnQuests" type="button">GÖREV</button>
     <button id="btnFull" type="button">TAM EKRAN</button>
     <button id="btnMute" type="button">SES</button>
   </div>
-
-  <div id="rotateHint">📱 Daha iyi oynamak için telefonu yan çevir. Yine de dik modda oynayabilirsin.</div>
-
+  <div id="rotateHint">📱 Büyük harita için telefonu yan çevirmen daha rahat olur. Klavye algılanırsa joystick otomatik gizlenir.</div>
   <div class="mobileControls" aria-label="Mobil kontroller">
     <div id="joyWrap"><div id="joyStick"></div></div>
     <div class="mButtons">
-      <button class="mButton big" data-action="act" type="button">AL / ÇAL / SAT</button>
+      <button class="mButton big" data-action="act" type="button">AL / ÇAL</button>
       <button class="mButton big danger" data-action="swing" type="button">VUR</button>
       <button class="mButton warn" data-action="lock" type="button">KİLİT</button>
-      <button class="mButton" data-action="trap" type="button">TUZAK</button>
-      <button class="mButton" data-action="speed" type="button">HIZ</button>
-      <button class="mButton" data-action="slot" type="button">SLOT</button>
-      <button class="mButton" data-action="luck" type="button">ŞANS</button>
+      <button class="mButton" data-action="inventory" type="button">ENVANTER</button>
+      <button class="mButton" data-action="quest" type="button">GÖREV</button>
+      <button class="mButton" data-action="crate" type="button">KASA</button>
+      <button class="mButton" data-action="upgrade" type="button">UPGRADE</button>
       <button class="mButton" data-action="book" type="button">KİTAP</button>
     </div>
   </div>
-
   <section id="menu" class="menu">
     <div class="menuCard">
-      <p class="eyebrow">V1.3.3 Reset Guard</p>
-      <h1>Brainrot Heist</h1>
-      <p class="lead">Yanlış reset koruması eklendi, hırsız AI düzeltildi, pet satma var, kayıt update'lerde korunuyor ve klavye algılanınca mobil kontroller gizleniyor.</p>
+      <p class="eyebrow">V2.0 Mega City Update</p>
+      <h1>Brainrot Heist<br>MEGA CITY</h1>
+      <p class="lead">Aşırı büyük güncelleme: dev harita, 3 rival base, envanter, görev sistemi, kasa açma, boss raid, fusion lab, black market, guard bot, mini map ve güvenli kayıt sistemi.</p>
       <div class="patch">
-        <div><b>Kontrol patch</b>iPad klavye algılanınca joystick ve mobil butonlar otomatik gizlenir; ekrana dokununca geri gelir.</div>
-        <div><b>Hırsız fix</b>Bot artık kapıda takılmaz; kilit açıkken üsse girip en değerli peti çalmaya çalışır.</div>
-        <div><b>Pet satma</b>Kendi üssündeki pete yaklaşınca E veya AL/ÇAL/SAT butonu peti satar.</div>
-        <div><b>Reset koruması</b>Reset artık klavye kısayolunda yok; önce uyarı ekranı açılır ve SIFIRLA yazmadan çalışmaz.</div>
+        <div><b>Dev şehir haritası</b>Base, market, 3 rakip üs, Black Market, Crate Shop, Fusion Lab, Quest Board ve Boss Arena.</div>
+        <div><b>Yeni ilerleme sistemi</b>Level, XP, görev ödülleri, kasa drop’ları, gems, güvenli rebirth ve daha pahalı upgrade’ler.</div>
+        <div><b>AI raid sistemi</b>Hırsızlar base’e girer, pet çalar, guard/trap yakalar. Boss raid başlatıp dev ödül alabilirsin.</div>
+        <div><b>Save koruması</b>Eski V1/V1.3 kayıtlarını taşır, update ile silmemeye çalışır, export/import ve reset geri alma var.</div>
       </div>
       <div class="menuBtns">
         <button id="btnStart" class="primary" type="button">OYUNA BAŞLA</button>
@@ -114,16 +101,21 @@
         <button id="btnUndoReset" type="button">SON RESETİ GERİ AL</button>
         <button id="btnReset" type="button">KAYDI SIFIRLA</button>
       </div>
-      <p class="smallNote">Klavye: WASD/Oklar hareket, Shift koş, E al/çal/sat, Space vur, L kilit, 1 tuzak, 2 hız, 3 slot, 4 şans, C kitap, B rebirth, P pause. N/klavye ile reset yok. Sıfırlama için menüde SIFIRLA yazman gerekir. KAYDI KOPYALA ile update öncesi yedek alabilirsin.</p>
+      <p class="smallNote">Klavye: WASD/Oklar hareket, Shift koş, E al/çal/koy, Space vur, L kilit, I envanter, Q görev, K kasa, U upgrade, C koleksiyon, F pet kilitle, V pet sat, R boss raid, B rebirth, P pause. <b>N ile reset yok.</b></p>
     </div>
   </section>
-
+  <section id="panel" class="panel hidden" aria-modal="true" role="dialog">
+    <div class="panelCard">
+      <div class="panelHead"><div><h2 id="panelTitle">Panel</h2><div id="panelSub" class="sub"></div></div><button class="close" id="panelClose" type="button">KAPAT</button></div>
+      <div id="panelBody"></div>
+    </div>
+  </section>
   <section id="resetModal" class="resetModal hidden" aria-modal="true" role="dialog">
     <div class="resetCard">
       <p class="eyebrow dangerText">TEHLİKELİ İŞLEM</p>
       <h2>Kaydı sıfırlamak üzeresin</h2>
-      <p class="lead resetLead">Bu işlem yeni oyun başlatır. Önce otomatik geri alma yedeği alınacak ama yine de yanlış basmayı engellemek için onay istiyorum.</p>
-      <p class="smallNote">Devam etmek için aşağıdaki kutuya <b>SIFIRLA</b> yaz. Vazgeçersen save’e dokunulmaz.</p>
+      <p class="lead">Bu işlem yeni oyun başlatır. Önce otomatik reset yedeği alınır ama yanlışlık olmasın diye yazılı onay istiyorum.</p>
+      <p class="smallNote">Devam etmek için kutuya <b>SIFIRLA</b> yaz. Vazgeçersen save’e dokunulmaz.</p>
       <input id="resetPhrase" class="resetInput" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="SIFIRLA yaz" />
       <div class="menuBtns">
         <button id="btnCancelReset" type="button">VAZGEÇ</button>
@@ -135,1041 +127,648 @@
 </div>
 <script>
 (() => {
-  'use strict';
+'use strict';
 
-  const canvas = document.getElementById('game');
-  const ctx = canvas.getContext('2d');
-  const toastEl = document.getElementById('toast');
-  const menuEl = document.getElementById('menu');
-  const joyWrap = document.getElementById('joyWrap');
-  const joyStick = document.getElementById('joyStick');
-  const actionButton = document.querySelector('[data-action="act"]');
-  const mobileControls = document.querySelector('.mobileControls');
-  const resetModalEl = document.getElementById('resetModal');
-  const resetPhraseEl = document.getElementById('resetPhrase');
-  const WORLD = { w: 1100, h: 660 };
-  const SAVE_KEY = 'brainrot-heist-save';
-  const SAVE_VERSION = 5;
-  const RESET_BACKUP_KEY = 'brainrot-heist-reset-backup';
-  const LEGACY_SAVE_KEYS = [
-    SAVE_KEY,
-    'brainrot-heist-v12-save',
-    'brainrot-heist-standalone-v12',
-    'brainrot-heist-standalone-v2',
-    'brainrot-heist-standalone-v1',
-    'brainrot-heist-deluxe-v12',
-    'brainrot-heist-v13-save'
-  ];
-  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-  const rand = (min, max) => min + Math.random() * (max - min);
-  const choice = arr => arr[Math.floor(Math.random() * arr.length)];
-  const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+const toastEl = document.getElementById('toast');
+const menuEl = document.getElementById('menu');
+const panelEl = document.getElementById('panel');
+const panelTitle = document.getElementById('panelTitle');
+const panelSub = document.getElementById('panelSub');
+const panelBody = document.getElementById('panelBody');
+const resetModalEl = document.getElementById('resetModal');
+const resetPhraseEl = document.getElementById('resetPhrase');
+const joyWrap = document.getElementById('joyWrap');
+const joyStick = document.getElementById('joyStick');
+const mobileControls = document.querySelector('.mobileControls');
+const actionButton = document.querySelector('[data-action="act"]');
 
-  const COLORS = {
-    bgA:'#10182d', bgB:'#17213d', lane:'#263762', lane2:'#40558f',
-    playerBase:'#144a44', enemyBase:'#4a1b30', playerEdge:'#69f0c4', enemyEdge:'#ff7d9a',
-    text:'#eef3ff', muted:'#a8b8d8', dark:'#07101f', cash:'#84f3a3', yellow:'#ffe680',
-    red:'#ff6688', cyan:'#79d9ff', purple:'#be95ff', orange:'#ffb86c'
+const SAVE_KEY = 'brainrot-heist-save';
+const SAVE_VERSION = 6;
+const RESET_BACKUP_KEY = 'brainrot-heist-reset-backup';
+const LEGACY_SAVE_KEYS = [
+  SAVE_KEY,
+  'brainrot-heist-v13-save','brainrot-heist-v12-save','brainrot-heist-deluxe-v12',
+  'brainrot-heist-standalone-v12','brainrot-heist-standalone-v2','brainrot-heist-standalone-v1'
+];
+const WORLD = { w: 2800, h: 1800 };
+const COLORS = {
+  text:'#eef4ff', muted:'#9fb1d7', dark:'#07101f', green:'#7ef0c1', cyan:'#79d9ff', yellow:'#ffe680', red:'#ff6688', purple:'#be95ff', orange:'#ffb86c', road:'#1d2a4b', road2:'#293b68'
+};
+const clamp = (v,min,max) => Math.max(min, Math.min(max, v));
+const rand = (min,max) => min + Math.random() * (max - min);
+const choice = arr => arr[Math.floor(Math.random() * arr.length)];
+const dist = (a,b) => Math.hypot(a.x-b.x, a.y-b.y);
+const uid = () => {
+  if (crypto?.getRandomValues) { const a = new Uint32Array(2); crypto.getRandomValues(a); return 'id' + a[0].toString(36) + a[1].toString(36); }
+  return 'id' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+};
+
+const ZONES = {
+  playerBase:{x:90,y:390,w:500,h:760,name:'SENİN BASE',color:'#15564c',edge:'#7ef0c1'},
+  upgrade:{x:660,y:395,w:260,h:520,name:'UPGRADE PLAZA',color:'#26345f',edge:'#79d9ff'},
+  market:{x:990,y:90,w:520,h:1040,name:'MEGA MARKET',color:'#273763',edge:'#ffe680'},
+  crate:{x:1580,y:725,w:410,h:320,name:'CRATE SHOP',color:'#4b3a16',edge:'#ffe680'},
+  black:{x:1585,y:1220,w:460,h:330,name:'BLACK MARKET',color:'#2d183f',edge:'#be95ff'},
+  quest:{x:680,y:1225,w:380,h:330,name:'QUEST BOARD',color:'#16304d',edge:'#79d9ff'},
+  fusion:{x:1120,y:1225,w:390,h:330,name:'FUSION LAB',color:'#123d38',edge:'#7ef0c1'},
+  boss:{x:2170,y:1080,w:520,h:520,name:'BOSS ARENA',color:'#4d1729',edge:'#ff6688'}
+};
+const RIVAL_CONFIG = [
+  {id:'red',name:'Kırmızı Rival',x:2110,y:120,w:500,h:470,color:'#5b2032',edge:'#ff6688',minTier:2,slots:8},
+  {id:'gold',name:'Zengin Rival',x:1580,y:115,w:405,h:470,color:'#534016',edge:'#ffe680',minTier:3,slots:7},
+  {id:'void',name:'Void Rival',x:2140,y:640,w:455,h:330,color:'#2d1b52',edge:'#be95ff',minTier:4,slots:6}
+];
+const CRATES = {
+  basic:{name:'Basic Crate',cash:2500,gems:0,minTier:1,boost:.15},
+  rare:{name:'Rare Crate',cash:15000,gems:0,minTier:2,boost:.55},
+  mythic:{name:'Mythic Crate',cash:0,gems:18,minTier:4,boost:1.4},
+  glitch:{name:'Glitch Crate',cash:0,gems:55,minTier:6,boost:2.3}
+};
+const UPGRADE_DEFS = {
+  speed:{name:'Hız',desc:'Daha hızlı koşarsın.',base:900,scale:1.8,max:15},
+  slots:{name:'Slot',desc:'Base aktif pet kapasitesi artar.',base:1800,scale:2.15,max:19},
+  luck:{name:'Şans',desc:'Rare/Secret/Godly spawn şansı artar.',base:3000,scale:2.25,max:20},
+  lock:{name:'Kilit Süresi',desc:'Base kilidi daha uzun sürer.',base:2400,scale:1.9,max:12},
+  trap:{name:'Tuzak',desc:'Hırsızları yakalayan lazer tuzakları güçlenir.',base:2600,scale:1.95,max:10},
+  guard:{name:'Guard Bot',desc:'Base içinde hırsız kovalayan bot güçlenir.',base:4500,scale:2.05,max:10}
+};
+
+function upgradeProp(key){ return key === 'slots' ? 'slotBonus' : key + 'Level'; }
+const RARITIES = [
+  {key:'common',name:'Sıradan',tier:1,chance:54,price:[35,110],income:[2,8],color:'#88b4ff'},
+  {key:'rare',name:'Nadir',tier:2,chance:24,price:[150,420],income:[15,44],color:'#7ef0c1'},
+  {key:'epic',name:'Epik',tier:3,chance:11,price:[700,1800],income:[85,220],color:'#be95ff'},
+  {key:'legendary',name:'Efsane',tier:4,chance:5,price:[3500,8800],income:[480,1200],color:'#ffe680'},
+  {key:'mythic',name:'Mitik',tier:5,chance:1.8,price:[16000,42000],income:[2500,6500],color:'#ff8ed4'},
+  {key:'secret',name:'Secret',tier:6,chance:.55,price:[85000,180000],income:[15000,38000],color:'#6ffcff'},
+  {key:'godly',name:'Godly',tier:7,chance:.22,price:[320000,700000],income:[70000,155000],color:'#ffef5f'},
+  {key:'glitched',name:'Glitched',tier:8,chance:.08,price:[950000,1800000],income:[260000,540000],color:'#ff4dff'},
+  {key:'admin',name:'Admin',tier:9,chance:.025,price:[3500000,7500000],income:[1200000,2600000],color:'#ffffff'}
+];
+const rarityAliases = {'sıradan':'common','siradan':'common','common':'common','nadir':'rare','rare':'rare','epik':'epic','epic':'epic','efsane':'legendary','legendary':'legendary','legend':'legendary','mitik':'mythic','mythic':'mythic','secret':'secret','godly':'godly','glitch':'glitched','glitched':'glitched','admin':'admin'};
+const MUTATIONS = [
+  {name:'Normal',chance:86,mult:1,glow:null}, {name:'Altın',chance:6,mult:2.15,glow:'#ffe680'},
+  {name:'Rainbow',chance:3,mult:4,glow:'#79d9ff'}, {name:'Cursed',chance:2.1,mult:6.5,glow:'#ff6688'},
+  {name:'Glitch',chance:1.6,mult:11,glow:'#ff4dff'}, {name:'Void',chance:.8,mult:18,glow:'#be95ff'}, {name:'Celestial',chance:.5,mult:30,glow:'#ffffff'}
+];
+const NAME_A = ['Bongo','Cappu','Tung','Bombini','Lirili','Tralalo','Pesto','Mango','Turbo','Zaza','Frigo','Nebula','Quantum','Boba','Noodle','Wobble','Skibidi','Patapim','Glubo','Krakato'];
+const NAME_B = ['Kedi','Kurbağa','Rakun','Kaktüs','Martı','Ejder','Robot','Kavanoz','Köfte','Penguen','Tost','Karpuz','Balık','UFO','Korsan','Papatya','Tavuk','Kertenkele','Patates','Şimşek'];
+const NAME_C = ['Mini','Max','Deluxe','Prime','Ultra','Supreme','NoScope','Galaktik','Şapkalı','Patatesli','Quantum','Hyper','3000','Infinite','Mega','Sigma','Boss','Delulu'];
+const ICONS = ['🧠','🐸','🍝','🦝','🍉','🐱','🤖','🦈','🌮','🍟','🛸','🥁','🦄','🐲','🧃','🍕','🐧','🌵','👾','⚡','💎'];
+
+const keys = new Set();
+const view = {w:1,h:1,dpr:1,camX:0,camY:0};
+const joy = {active:false,id:null,dx:0,dy:0,cx:0,cy:0};
+let state = defaultState();
+let audioCtx = null;
+let keyboardToastShown = false;
+let lastFrame = performance.now();
+
+function defaultState(){
+  return {
+    version:SAVE_VERSION,t:0,started:false,paused:true,saveTimer:1.5,message:'',messageTimer:0,toastTimer:0,
+    player:{x:330,y:800,r:20,cash:2500,highCash:2500,gems:20,xp:0,level:1,rebirths:0,speedLevel:0,slotBonus:0,luckLevel:0,lockLevel:0,trapLevel:0,guardLevel:0,shieldTimer:0,swingTimer:0,stunTimer:0,carrying:null},
+    activeSlots:[], inventory:[], market:[], blackOffers:[], rivals:[], thieves:[], traps:[], boss:null, guard:{x:220,y:500,mode:'idle'}, particles:[], floatingTexts:[],
+    activeEvent:null,eventTimer:36,marketTimer:0,blackTimer:8,thiefTimer:11,bossTimer:130,
+    collection:{total:0,rarities:{},seen:{},best:null}, quests:initQuests(), stats:{bought:0,stolen:0,sold:0,defended:0,stolenFromUs:0,crates:0,bosses:0,quests:0,fused:0,totalEarned:0,bestIncome:0,thievesCaught:0}, muted:false
   };
-
-  const rarityTable = [
-    { key:'common', name:'Sıradan', chance:54, tier:1, price:[25,75], income:[1.4,5.5], color:'#88b4ff' },
-    { key:'rare', name:'Nadir', chance:24, tier:2, price:[95,220], income:[9,24], color:'#7ef0c1' },
-    { key:'epic', name:'Epik', chance:11, tier:3, price:[320,760], income:[38,95], color:'#be95ff' },
-    { key:'legendary', name:'Efsane', chance:5, tier:4, price:[1100,2300], income:[150,360], color:'#ffe680' },
-    { key:'mythic', name:'Mitik', chance:1.9, tier:5, price:[3600,7600], income:[650,1450], color:'#ff8ed4' },
-    { key:'secret', name:'Secret', chance:.55, tier:6, price:[12000,26000], income:[2600,6200], color:'#6ffcff' },
-    { key:'godly', name:'Godly', chance:.22, tier:7, price:[42000,88000], income:[10500,24500], color:'#ffef5f' },
-    { key:'glitched', name:'Glitched', chance:.08, tier:8, price:[125000,240000], income:[42000,90000], color:'#ff4dff' },
+}
+function initQuests(){
+  return [
+    {id:'earn',type:'earn',title:'Para Yağmuru',desc:'Toplam $50K kazan.',goal:50000,progress:0,reward:{cash:8000,xp:160,gems:4},claimed:false},
+    {id:'buy',type:'buy',title:'Market Avcısı',desc:'8 brainrot satın al.',goal:8,progress:0,reward:{cash:7000,xp:120,gems:2},claimed:false},
+    {id:'steal',type:'steal',title:'Rival Soygunu',desc:'Rakip üslerden 5 pet çal.',goal:5,progress:0,reward:{cash:11000,xp:180,gems:5},claimed:false},
+    {id:'catch',type:'catch',title:'Base Koruyucu',desc:'4 hırsız yakala.',goal:4,progress:0,reward:{cash:9000,xp:170,gems:4},claimed:false},
+    {id:'crate',type:'crate',title:'Kasa Bağımlısı',desc:'3 kasa aç.',goal:3,progress:0,reward:{cash:6000,xp:130,gems:8},claimed:false},
+    {id:'boss',type:'boss',title:'Boss Kesici',desc:'1 boss yen.',goal:1,progress:0,reward:{cash:25000,xp:350,gems:18},claimed:false},
+    {id:'sell',type:'sell',title:'Pet Tüccarı',desc:'6 pet sat.',goal:6,progress:0,reward:{cash:10000,xp:140,gems:4},claimed:false},
+    {id:'fuse',type:'fuse',title:'Fusion Deneyi',desc:'1 fusion yap.',goal:1,progress:0,reward:{cash:14000,xp:220,gems:10},claimed:false}
   ];
-  const rarityByName = new Map(rarityTable.map(r => [r.name, r]));
-  const rarityAliases = {
-    'common':'common','sıradan':'common','siradan':'common',
-    'rare':'rare','nadir':'rare',
-    'epic':'epic','epik':'epic',
-    'legendary':'legendary','legend':'legendary','efsane':'legendary',
-    'mythic':'mythic','mitik':'mythic',
-    'secret':'secret',
-    'godly':'godly',
-    'glitched':'glitched','glitch':'glitched'
-  };
-  function resolveRarity(item={}) {
-    const rawKey = String(item.rarityKey || '').toLowerCase().trim();
-    const rawName = String(item.rarity || '').toLowerCase().trim();
-    const key = rarityAliases[rawKey] || rarityAliases[rawName] || rawKey;
-    return rarityTable.find(r => r.key === key) || rarityByName.get(item.rarity) || rarityTable[0];
+}
+function ensureTransientWorld(){
+  state.rivals = RIVAL_CONFIG.map((cfg,idx)=>createRival(cfg,idx));
+  state.market = [];
+  for(let i=0;i<12;i++){ const item = makeBrainrot({minTier:i>8?2:1}); item.x = ZONES.market.x + 70 + (i%4)*120; item.y = ZONES.market.y + 80 + Math.floor(i/4)*130; item.vy = rand(22,42); state.market.push(item); }
+  state.blackOffers = [];
+  refreshBlackMarket();
+  state.thieves = [];
+  state.traps = makeBaseTraps();
+  state.guard = {x:ZONES.playerBase.x+100,y:ZONES.playerBase.y+120,mode:'idle'};
+  if(!state.activeSlots.length && !state.inventory.length){
+    const starter = makeBrainrot({forceKey:'rare'}); starter.name='Starter Cappu Kedi'; starter.income=28; starter.price=250; starter.mutation='Normal'; starter.locked=true; addActiveSlot(starter,true);
   }
-  const mutations = [
-    { name:'', chance:88, mult:1, tag:'Normal' },
-    { name:'Altın', chance:6, mult:2, tag:'Gold', glow:'#ffe680' },
-    { name:'Rainbow', chance:2.5, mult:4, tag:'Rainbow', glow:'#79d9ff' },
-    { name:'Cursed', chance:2, mult:6, tag:'Cursed', glow:'#ff6688' },
-    { name:'Glitch', chance:1.5, mult:10, tag:'Glitch', glow:'#ff4dff' },
-  ];
-  const nameA = ['Bongo','Cappu','Zaza','Mango','Turbo','Giga','Pesto','Frito','Noodle','Wobble','Boba','Pixel','Lirili','Tralalo','Bombini','Tung','Frigo','Nebula'];
-  const nameB = ['Kurbağa','Kedi','Kaktüs','Rakun','Köfte','Tost','Karpuz','Martı','Ejder','Tavuk','Balık','Robot','Kavanoz','Korsan','Penguen','Papatya','Kertenkele','UFO'];
-  const nameC = ['3000','Deluxe','Max','Mini','Prime','Ultra','Şapkalı','Patatesli','Galaktik','Çılgın','Hyper','Quantum','NoScope','Supreme'];
-  const icons = ['🧠','🐸','🍝','🦝','🍉','🐱','🤖','🦈','🌮','🍟','🛸','🥁','🦄','🐲','🧃','🍕','🐧','🌵','👾'];
-
-  const bases = {
-    player: { x: 38, y: 98, w: 268, h: 500, name: 'Senin Üssün' },
-    enemy: { x: 794, y: 98, w: 268, h: 500, name: 'Bot Üssü' },
-  };
-  const conveyor = { x: 474, y: 56, w: 152, h: 548 };
-
-  const keys = new Set();
-  const justPressed = new Set();
-  const joy = { active:false, x:0, y:0, dx:0, dy:0 };
-  let view = { cssW:1, cssH:1, dpr:1, scale:1, ox:0, oy:0 };
-  let last = performance.now();
-  let audioContext = null;
-
-  const defaultState = () => ({
-    t:0,
-    paused:true,
-    muted:false,
-    showBook:false,
-    market:[],
-    particles:[],
-    floatingTexts:[],
-    message:'Merkez banttan al, bot üssünden çal, kendi üssünü koru!',
-    messageTimer:5,
-    spawnTimer:.4,
-    eventCooldown:42,
-    activeEvent:null,
-    saveTimer:2,
-    player:{
-      x:172,y:352,r:17,cash:150,highCash:150,rebirths:0,speedLevel:0,slotBonus:0,luckLevel:0,
-      lockTimer:8,lockCooldown:26,batCooldown:0,swingTimer:0,stunTimer:0,stamina:100,trapCount:0,
-      carrying:null,slots:[],incomeBank:0
-    },
-    enemy:{cash:600,lockTimer:18,lockCooldown:20,slots:[]},
-    thief:{x:930,y:350,r:15,speed:95,stunTimer:0,carrying:null,thinkTimer:0,patrolX:930,patrolY:350,kind:'Noob Thief'},
-    guard:{x:930,y:235,r:16,speed:114,stunTimer:0,patrolX:930,patrolY:235,patrolTimer:0},
-    collection:{total:0,rarities:{},best:null,seen:{}},
-    stats:{bought:0,stolen:0,sold:0,defended:0,lost:0,rebirthed:0,bestIncome:0,events:0}
-  });
-  let state = defaultState();
-
-  function resize() {
-    const cssW = Math.max(1, window.innerWidth);
-    const cssH = Math.max(1, window.innerHeight);
-    const dpr = Math.min(2.5, window.devicePixelRatio || 1);
-    canvas.width = Math.round(cssW * dpr);
-    canvas.height = Math.round(cssH * dpr);
-    canvas.style.width = cssW + 'px';
-    canvas.style.height = cssH + 'px';
-    const cssScale = Math.min(cssW / WORLD.w, cssH / WORLD.h);
-    view = {
-      cssW, cssH, dpr,
-      scale: cssScale * dpr,
-      ox: (cssW * dpr - WORLD.w * cssScale * dpr) / 2,
-      oy: (cssH * dpr - WORLD.h * cssScale * dpr) / 2,
-      cssScale
-    };
+  updateBestIncome();
+}
+function createRival(cfg,idx){
+  const slots=[];
+  for(let i=0;i<cfg.slots;i++) slots.push({...makeBrainrot({minTier:cfg.minTier + (i>cfg.slots-3?1:0)}), slotIndex:i});
+  return {...cfg,idx,base:{x:cfg.x,y:cfg.y,w:cfg.w,h:cfg.h},slots,bank:0,lockTimer:rand(4,18)};
+}
+function makeBaseTraps(){
+  const z=ZONES.playerBase;
+  const count=clamp(1+state.player.trapLevel,1,8);
+  const arr=[];
+  for(let i=0;i<count;i++){
+    arr.push({x:z.x+70+(i%2)*(z.w-140),y:z.y+190+Math.floor(i/2)*120,r:34+state.player.trapLevel*2,cool:0});
   }
-  window.addEventListener('resize', resize, { passive:true });
-  window.visualViewport?.addEventListener('resize', resize, { passive:true });
-  resize();
+  return arr;
+}
+function rarityFromKey(key){return RARITIES.find(r=>r.key===key)||RARITIES[0];}
+function resolveRarity(item={}){
+  const raw = String(item.rarityKey||item.rarity||'').toLowerCase().trim();
+  const key = rarityAliases[raw] || raw;
+  return RARITIES.find(r=>r.key===key) || RARITIES.find(r=>r.name===item.rarity) || RARITIES[0];
+}
+function weightedRarity(opts={}){
+  if(opts.forceKey) return rarityFromKey(rarityAliases[String(opts.forceKey).toLowerCase()] || opts.forceKey);
+  const minTier = opts.minTier || 1;
+  const luck = 1 + state.player.luckLevel*.22 + state.player.rebirths*.12 + state.player.level*.015 + (state.activeEvent?.type==='gold'? .75:0) + (opts.boost||0);
+  const weights = RARITIES.map(r => r.tier < minTier ? 0 : r.chance * (r.tier<=2 ? 1 : Math.pow(luck, r.tier*.38)));
+  const total = weights.reduce((a,b)=>a+b,0) || 1;
+  let roll = Math.random()*total;
+  for(let i=0;i<RARITIES.length;i++){ roll-=weights[i]; if(roll<=0) return RARITIES[i]; }
+  return RARITIES[0];
+}
+function weightedMutation(boost=0){
+  const luck = state.player.luckLevel*.28 + state.player.rebirths*.1 + (state.activeEvent?.type==='gold'? .9:0) + boost;
+  const weights = MUTATIONS.map((m,i)=> i===0 ? m.chance : m.chance*(1+luck));
+  const total = weights.reduce((a,b)=>a+b,0);
+  let roll=Math.random()*total;
+  for(let i=0;i<MUTATIONS.length;i++){ roll-=weights[i]; if(roll<=0) return MUTATIONS[i]; }
+  return MUTATIONS[0];
+}
+function makeBrainrot(opts={}){
+  const r = weightedRarity(opts);
+  const m = weightedMutation(opts.boost||0);
+  const baseName = `${choice(NAME_A)} ${choice(NAME_B)} ${choice(NAME_C)}`;
+  const name = `${m.name !== 'Normal' ? m.name+' ' : ''}${baseName}`;
+  let income = rand(r.income[0],r.income[1])*m.mult*(1+state.player.rebirths*.06);
+  let price = rand(r.price[0],r.price[1])*(.95+m.mult*.35);
+  if(state.activeEvent?.type==='black'){ income*=1.25; price*=.82; }
+  return {id:uid(),name,rarity:r.name,rarityKey:r.key,tier:r.tier,mutation:m.name,icon:choice(ICONS),color:m.glow||r.color,price:Math.round(price/5)*5,income:+income.toFixed(1),mood:rand(0,Math.PI*2),scale:rand(.9,1.14),locked:false,x:0,y:0,vy:rand(25,48)};
+}
+function cleanBrainrot(item={},idx=0){
+  const r=resolveRarity(item);
+  const income=Number(item.income)||Math.max(1,Number(item.value)||1);
+  return {id:item.id||uid(),name:String(item.name||'Bilinmeyen Brainrot').slice(0,64),rarity:r.name,rarityKey:r.key,tier:Number(item.tier)||r.tier,mutation:item.mutation||'Normal',icon:item.icon||'🧠',color:item.color||r.color,price:Number(item.price)||Math.round(income*15/5)*5,income:+income.toFixed(1),mood:Number(item.mood)||rand(0,Math.PI*2),scale:Number(item.scale)||1,locked:Boolean(item.locked||item.favorite),slotIndex:Number.isFinite(Number(item.slotIndex))?Number(item.slotIndex):idx};
+}
+function shortNum(n){
+  n=Number(n)||0; const abs=Math.abs(n);
+  if(abs>=1e12) return (n/1e12).toFixed(abs>=1e13?1:2)+'T';
+  if(abs>=1e9) return (n/1e9).toFixed(abs>=1e10?1:2)+'B';
+  if(abs>=1e6) return (n/1e6).toFixed(abs>=1e7?1:2)+'M';
+  if(abs>=1e3) return (n/1e3).toFixed(abs>=1e4?1:2)+'K';
+  return Math.floor(n).toString();
+}
+function htmlEscape(s){return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function getMaxSlots(){return clamp(6 + state.player.slotBonus + state.player.rebirths,6,30);}
+function incomeMult(){return 1 + state.player.rebirths*.22 + (state.player.level-1)*.015;}
+function getIncome(){return state.activeSlots.reduce((s,b)=>s+(Number(b.income)||0),0)*incomeMult();}
+function getInventoryValue(){return state.inventory.reduce((s,b)=>s+(b.price||b.income*18),0);}
+function updateBestIncome(){state.stats.bestIncome=Math.max(state.stats.bestIncome||0,getIncome());}
+function xpNeed(level=state.player.level){return Math.floor(80 + Math.pow(level,1.55)*52);}
+function addXp(n){
+  state.player.xp += n;
+  let leveled=false;
+  while(state.player.xp >= xpNeed()){
+    state.player.xp -= xpNeed(); state.player.level++; leveled=true;
+    const bonus = 500*state.player.level; state.player.cash += bonus; state.player.gems += state.player.level%3===0 ? 3 : 1;
+    floating(state.player.x,state.player.y-44,`LEVEL ${state.player.level}! +$${shortNum(bonus)}`,COLORS.yellow);
+  }
+  if(leveled){ toast(`Level ${state.player.level} oldun! Yeni bölgeler daha kârlı.`); beep('win'); }
+}
+function addProgress(type,amount=1){
+  for(const q of state.quests){ if(q.type===type && !q.claimed){ const before=q.progress; q.progress=clamp((q.progress||0)+amount,0,q.goal); if(before<q.goal && q.progress>=q.goal){ toast(`Görev tamamlandı: ${q.title}`); beep('win'); } } }
+}
+function claimQuest(id){
+  const q=state.quests.find(x=>x.id===id); if(!q || q.claimed || q.progress<q.goal) return;
+  q.claimed=true; state.player.cash += q.reward.cash||0; state.player.gems += q.reward.gems||0; addXp(q.reward.xp||0); state.stats.quests++; showMessage(`Görev ödülü alındı: ${q.title}`); saveGame(); openPanel('quests');
+}
+function discover(item){
+  const key = item.rarityKey+'|'+item.name;
+  if(!state.collection.seen[key]){
+    state.collection.seen[key]=true; state.collection.total++; state.collection.rarities[item.rarity]=(state.collection.rarities[item.rarity]||0)+1;
+    if(!state.collection.best || item.income > state.collection.best.income) state.collection.best=cleanBrainrot(item);
+  }
+}
+function addActiveSlot(item, silent=false){
+  if(state.activeSlots.length >= getMaxSlots()) return false;
+  const clean = cleanBrainrot(item,state.activeSlots.length); clean.slotIndex = nextFreeSlotIndex(); state.activeSlots.push(clean); discover(clean); updateBestIncome(); if(!silent) addXp(8+clean.tier*4); return true;
+}
+function nextFreeSlotIndex(){ const used=new Set(state.activeSlots.map(s=>s.slotIndex)); for(let i=0;i<getMaxSlots();i++) if(!used.has(i)) return i; return state.activeSlots.length; }
+function addToInventory(item, silent=false){ const clean=cleanBrainrot(item); state.inventory.push(clean); discover(clean); if(!silent) addXp(6+clean.tier*3); return clean; }
+function removeFromArray(arr,id){ const i=arr.findIndex(x=>x.id===id); if(i>=0) return arr.splice(i,1)[0]; return null; }
+function sellPet(scope,id){
+  const arr = scope==='active' ? state.activeSlots : state.inventory;
+  const pet = arr.find(p=>p.id===id); if(!pet) return;
+  if(pet.locked){ showMessage('Kilitli/favori pet satılamaz. Önce kilidi kaldır.'); beep('bad'); return; }
+  removeFromArray(arr,id); const gain=Math.round((pet.price||pet.income*18)*0.62); state.player.cash += gain; state.stats.sold++; addProgress('sell',1); addXp(18+pet.tier*8); floating(state.player.x,state.player.y-34,`SATILDI +$${shortNum(gain)}`,COLORS.green); showMessage(`${pet.name} satıldı: +$${shortNum(gain)}`); beep('buy'); saveGame(); if(!panelEl.classList.contains('hidden')) openPanel('inventory');
+}
+function togglePetLock(scope,id){ const arr=scope==='active'?state.activeSlots:state.inventory; const pet=arr.find(p=>p.id===id); if(!pet) return; pet.locked=!pet.locked; showMessage(pet.locked?'Pet kilitlendi.':'Pet kilidi açıldı.'); saveGame(); if(!panelEl.classList.contains('hidden')) openPanel('inventory'); }
+function activatePet(id){
+  if(state.activeSlots.length>=getMaxSlots()){showMessage('Aktif slot dolu. Slot upgrade al veya pet sat.'); beep('bad'); return;}
+  const pet=removeFromArray(state.inventory,id); if(!pet) return; addActiveSlot(pet,true); showMessage(`${pet.name} base’e yerleşti.`); saveGame(); openPanel('inventory');
+}
+function stashActivePet(id){
+  const pet=removeFromArray(state.activeSlots,id); if(!pet) return; state.inventory.push(pet); showMessage('Pet envantere alındı. Gelir üretmez.'); saveGame(); openPanel('inventory');
+}
+function nearestOwnPet(maxD=74){
+  let best=null,bestD=maxD; const positions=slotPositions(ZONES.playerBase,getMaxSlots());
+  for(const pet of state.activeSlots){ const pos=positions[pet.slotIndex]||positions[0]; const d=Math.hypot(state.player.x-pos.x,state.player.y-pos.y); if(d<bestD){best={pet,pos};bestD=d;} }
+  return best;
+}
+function sellNearestPet(){ const near=nearestOwnPet(84); if(!near){showMessage('Satmak için kendi base’indeki pete yaklaş.'); return;} sellPet('active',near.pet.id); }
+function toggleNearestLock(){ const near=nearestOwnPet(84); if(!near){showMessage('Kilitlemek için kendi pete yaklaş.'); return;} togglePetLock('active',near.pet.id); }
+function slotPositions(zone,max){
+  const cols = max>20?5:max>12?4:3; const rows=Math.ceil(max/cols);
+  const padX=62, padTop=105, padBottom=95; const out=[];
+  for(let i=0;i<max;i++){
+    const col=i%cols,row=Math.floor(i/cols);
+    const x=zone.x+padX + (cols<=1?0:(zone.w-padX*2)*(col/(cols-1)));
+    const y=zone.y+padTop + (rows<=1?0:(zone.h-padTop-padBottom)*(row/(rows-1)));
+    out.push({x,y});
+  }
+  return out;
+}
+function rivalSlotPositions(rival){ return slotPositions({x:rival.x,y:rival.y,w:rival.w,h:rival.h}, Math.max(6,rival.slots.length)); }
+function pointInRect(p,r){ return p.x>r.x && p.x<r.x+r.w && p.y>r.y && p.y<r.y+r.h; }
+function center(r){ return {x:r.x+r.w/2,y:r.y+r.h/2}; }
+function showMessage(text,t=1.8){ state.message=text; state.messageTimer=t; }
+function toast(text){ toastEl.textContent=text; toastEl.classList.add('show'); clearTimeout(state.toastTimer); state.toastTimer=setTimeout(()=>toastEl.classList.remove('show'),2600); }
+function floating(x,y,text,color=COLORS.text){state.floatingTexts.push({x,y,text,color,life:1.05,max:1.05});}
+function particles(x,y,color,count=26){ for(let i=0;i<count;i++) state.particles.push({x,y,vx:rand(-120,120),vy:rand(-140,80),life:rand(.4,.9),max:1,size:rand(2,5),color}); }
+function beep(type='ok'){
+  if(state.muted) return;
+  try{ audioCtx ||= new (window.AudioContext||window.webkitAudioContext)(); const o=audioCtx.createOscillator(), g=audioCtx.createGain(); o.type=type==='bad'?'sawtooth':'triangle'; const f=type==='win'?660:type==='buy'?520:type==='bad'?130:360; o.frequency.setValueAtTime(f,audioCtx.currentTime); o.frequency.exponentialRampToValueAtTime(f*(type==='win'?1.8:.72),audioCtx.currentTime+.11); g.gain.setValueAtTime(.001,audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(.075,audioCtx.currentTime+.018); g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.17); o.connect(g); g.connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+.19);}catch(_){ }
+}
 
-  function startGame() {
-    menuEl.classList.add('hidden');
-    state.paused = false;
-    toast('V1.3.3 başladı: reset koruması, hırsız fixi ve kayıt yedeği aktif!');
-    beep('ok');
+function serializeSave(){
+  return {version:SAVE_VERSION,savedAt:Date.now(),cash:Math.round(state.player.cash),highCash:Math.round(state.player.highCash),gems:Math.round(state.player.gems),xp:state.player.xp,level:state.player.level,rebirths:state.player.rebirths,speedLevel:state.player.speedLevel,slotBonus:state.player.slotBonus,luckLevel:state.player.luckLevel,lockLevel:state.player.lockLevel,trapLevel:state.player.trapLevel,guardLevel:state.player.guardLevel,activeSlots:state.activeSlots.map(cleanBrainrot),playerSlots:state.activeSlots.map(cleanBrainrot),inventory:state.inventory.map(cleanBrainrot),collection:state.collection,quests:state.quests,stats:state.stats,muted:state.muted};
+}
+function saveGame(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(serializeSave())); }catch(e){ console.warn('save failed',e); } }
+function saveProgressScore(data){
+  const active = Array.isArray(data.activeSlots)?data.activeSlots:(Array.isArray(data.playerSlots)?data.playerSlots:(Array.isArray(data.slots)?data.slots:(Array.isArray(data.player?.slots)?data.player.slots:[])));
+  const inv = Array.isArray(data.inventory)?data.inventory:[];
+  const income = active.reduce((s,p)=>s+(Number(p?.income)||0),0);
+  const invValue = inv.reduce((s,p)=>s+(Number(p?.price)||Number(p?.income)*18||0),0);
+  const upgrades=data.upgrades||{};
+  const up=(Number(data.speedLevel??upgrades.speed)||0)*25000+(Number(data.slotBonus??upgrades.slots)||0)*35000+(Number(data.luckLevel??upgrades.luck)||0)*45000+(Number(data.guardLevel)||0)*50000;
+  const collectionCount = data.collection?.total || (data.collection?.seen?Object.keys(data.collection.seen).length:0) || 0;
+  return (Number(data.highCash||data.cash||data.player?.cash)||0) + (Number(data.gems)||0)*65000 + income*1600 + invValue*.38 + active.length*15000 + inv.length*5000 + up + collectionCount*3500 + (Number(data.rebirths||data.player?.rebirths)||0)*800000 + (Number(data.level)||1)*65000;
+}
+function saveCandidates(){ const seen=new Set(), out=[]; for(const key of LEGACY_SAVE_KEYS){ if(seen.has(key)) continue; seen.add(key); try{ const raw=localStorage.getItem(key); if(!raw) continue; const data=JSON.parse(raw); if(data&&typeof data==='object') out.push({key,data,score:saveProgressScore(data),time:Number(data.savedAt||data.updatedAt||0)||0}); }catch(_){} } out.sort((a,b)=>(b.score-a.score)||(b.time-a.time)); return out; }
+function normalizeCollection(raw){
+  const base={total:0,rarities:{},seen:{},best:null}; if(!raw||typeof raw!=='object') return base;
+  if(raw.seen || raw.rarities || raw.total){ base.total=Number(raw.total)||Object.keys(raw.seen||{}).length||0; base.rarities={...(raw.rarities||{})}; base.seen={...(raw.seen||{})}; base.best=raw.best?cleanBrainrot(raw.best):null; return base; }
+  for(const v of Object.values(raw)){ if(v&&typeof v==='object'){ const pet=cleanBrainrot(v); const k=pet.rarityKey+'|'+pet.name; if(!base.seen[k]){base.seen[k]=true;base.total++;base.rarities[pet.rarity]=(base.rarities[pet.rarity]||0)+1;if(!base.best||pet.income>base.best.income)base.best=pet;} } }
+  return base;
+}
+function restoreSave(saved){
+  const num=(v,fb)=>{const n=Number(v);return Number.isFinite(n)?n:fb}; const upgrades=saved.upgrades||{};
+  state.player.cash=num(saved.cash??saved.player?.cash,2500); state.player.highCash=num(saved.highCash??saved.player?.highCash,state.player.cash);
+  state.player.gems=num(saved.gems??saved.player?.gems,20); state.player.xp=num(saved.xp??saved.player?.xp,0); state.player.level=clamp(num(saved.level??saved.player?.level,1),1,999); state.player.rebirths=num(saved.rebirths??saved.player?.rebirths,0);
+  state.player.speedLevel=num(saved.speedLevel??upgrades.speed??saved.player?.speedLevel,0); state.player.slotBonus=num(saved.slotBonus??upgrades.slots??saved.player?.slotBonus,0); state.player.luckLevel=num(saved.luckLevel??upgrades.luck??saved.player?.luckLevel,0);
+  state.player.lockLevel=num(saved.lockLevel??saved.player?.lockLevel,0); state.player.trapLevel=num(saved.trapLevel??saved.trapCount??saved.player?.trapLevel,0); state.player.guardLevel=num(saved.guardLevel??saved.player?.guardLevel,0);
+  const rawSlots=Array.isArray(saved.activeSlots)?saved.activeSlots:(Array.isArray(saved.playerSlots)?saved.playerSlots:(Array.isArray(saved.slots)?saved.slots:(Array.isArray(saved.player?.slots)?saved.player.slots:[])));
+  state.activeSlots=rawSlots.filter(Boolean).slice(0,getMaxSlots()).map((p,i)=>cleanBrainrot(p,i));
+  state.inventory=Array.isArray(saved.inventory)?saved.inventory.filter(Boolean).slice(0,120).map(cleanBrainrot):[];
+  state.collection=normalizeCollection(saved.collection); for(const p of [...state.activeSlots,...state.inventory]) discover(p);
+  state.quests=Array.isArray(saved.quests)&&saved.quests.length?mergeQuests(saved.quests):initQuests();
+  state.stats={...state.stats,...(saved.stats||{})}; state.muted=Boolean(saved.muted); document.getElementById('btnMute').textContent=state.muted?'SESSİZ':'SES'; updateBestIncome(); return true;
+}
+function mergeQuests(old){ const fresh=initQuests(); for(const q of fresh){ const o=old.find(x=>x.id===q.id); if(o){q.progress=clamp(Number(o.progress)||0,0,q.goal); q.claimed=Boolean(o.claimed);} } return fresh; }
+function loadSave(){ try{ const candidates=saveCandidates(); if(!candidates.length) return false; for(const c of candidates){ try{ if(restoreSave(c.data)){ saveGame(); showMessage(c.key===SAVE_KEY?'Kayıt V2’ye yüklendi.':'Eski kayıt bulundu, V2’ye taşındı.',3); return true; } }catch(e){ console.warn('candidate failed',c.key,e); } } }catch(e){ console.warn(e); } return false; }
+function encodeSave(data){ const json=JSON.stringify(data); const bytes=new TextEncoder().encode(json); let bin=''; for(const b of bytes) bin+=String.fromCharCode(b); return 'BRAINROT_MEGA_V'+SAVE_VERSION+':'+btoa(bin); }
+function decodeSave(text){ let raw=String(text||'').trim(); if(!raw) throw new Error('empty'); if(raw.startsWith('{')) return JSON.parse(raw); raw=raw.replace(/^BRAINROT_(SAVE|MEGA)_V\d+:/,''); const bin=atob(raw); const bytes=new Uint8Array([...bin].map(ch=>ch.charCodeAt(0))); return JSON.parse(new TextDecoder().decode(bytes)); }
+async function exportSave(){ const code=encodeSave(serializeSave()); try{ await navigator.clipboard?.writeText(code); showMessage('Kayıt kodu kopyalandı. Notlar’a sakla.'); }catch(_){ prompt('Kayıt kodunu kopyala:',code); } saveGame(); }
+function importSave(){ const text=prompt('Kayıt kodunu buraya yapıştır:'); if(!text) return; try{ restoreSave(decodeSave(text)); ensureTransientWorld(); saveGame(); showMessage('Kayıt yüklendi.'); beep('win'); }catch(e){ console.warn(e); showMessage('Kayıt kodu okunamadı.'); beep('bad'); } }
+function backupBeforeReset(){ try{ const snap=serializeSave(); snap.backupAt=Date.now(); localStorage.setItem(RESET_BACKUP_KEY,JSON.stringify(snap)); return true; }catch(_){return false;} }
+function restoreResetBackup(){ try{ const raw=localStorage.getItem(RESET_BACKUP_KEY); if(!raw){showMessage('Geri alınacak reset yedeği yok.');beep('bad');return;} restoreSave(JSON.parse(raw)); ensureTransientWorld(); saveGame(); closeResetModal(); showMessage('Son reset yedeği geri yüklendi.'); beep('win'); }catch(e){console.warn(e);showMessage('Reset yedeği okunamadı.');beep('bad');} }
+function openResetModal(){ resetModalEl.classList.remove('hidden'); resetPhraseEl.value=''; setTimeout(()=>resetPhraseEl.focus?.(),80); }
+function closeResetModal(){ resetModalEl.classList.add('hidden'); resetPhraseEl.value=''; }
+function confirmReset(){ const phrase=String(resetPhraseEl.value||'').trim().toUpperCase().replace(/İ/g,'I').replace(/ı/g,'I'); if(phrase!=='SIFIRLA'){showMessage('Sıfırlamak için SIFIRLA yazmalısın.');beep('bad');return;} resetSave(); closeResetModal(); }
+function resetSave(){ backupBeforeReset(); try{ for(const k of LEGACY_SAVE_KEYS) localStorage.removeItem(k); }catch(_){} state=defaultState(); ensureTransientWorld(); state.paused=menuEl.classList.contains('hidden')?false:true; showMessage('Kayıt sıfırlandı. Menüden geri alabilirsin.'); saveGame(); }
+
+function buyUpgrade(key){
+  const def=UPGRADE_DEFS[key]; if(!def) return; const prop=upgradeProp(key); const lvl=Number(state.player[prop]||0); if(lvl>=def.max){showMessage(`${def.name} maksimum seviye.`); return;} const cost=Math.round(def.base*Math.pow(def.scale,lvl)); if(state.player.cash<cost){showMessage(`Para yetmedi: $${shortNum(cost)}`);beep('bad');return;} state.player.cash-=cost; state.player[prop]=lvl+1; if(key==='trap') state.traps=makeBaseTraps(); showMessage(`${def.name} seviye ${lvl+1}!`); addXp(35+lvl*10); beep('buy'); saveGame(); if(!panelEl.classList.contains('hidden')) openPanel('upgrades');
+}
+function rebirth(){
+  const need=250000*Math.pow(state.player.rebirths+1,2); const incomeNeed=3500*Math.pow(state.player.rebirths+1,1.45);
+  if(state.player.cash<need || getIncome()<incomeNeed){ showMessage(`Rebirth için $${shortNum(need)} ve +${shortNum(incomeNeed)}/sn gelir lazım.`); beep('bad'); return; }
+  state.player.cash-=need; state.player.rebirths++; state.player.gems+=25+state.player.rebirths*5; addXp(500); toast(`Rebirth ${state.player.rebirths}! Gelir çarpanın yükseldi. Petler silinmedi.`); beep('win'); saveGame();
+}
+function lockBase(){
+  const duration=18+state.player.lockLevel*4+state.player.rebirths*2; const cost=Math.round(350*Math.pow(1.25,state.player.lockLevel)); if(state.player.shieldTimer>0){showMessage('Base zaten kilitli.'); return;} if(state.player.cash<cost){showMessage(`Kilit için $${shortNum(cost)} lazım.`);beep('bad');return;} state.player.cash-=cost; state.player.shieldTimer=duration; showMessage(`Base kilitlendi: ${Math.ceil(duration)}sn`); particles(ZONES.playerBase.x+ZONES.playerBase.w/2,ZONES.playerBase.y+ZONES.playerBase.h/2,COLORS.cyan,55); beep('buy'); saveGame();
+}
+function spawnMarket(forceKey=null){
+  const item=makeBrainrot({forceKey,boost:state.activeEvent?.type==='gold'?.9:0});
+  item.x=ZONES.market.x+80+Math.floor(Math.random()*4)*115+rand(-15,15); item.y=ZONES.market.y-60-rand(0,180);
+  state.market.push(item);
+  if(item.tier>=6 || item.mutation!=='Normal'){ toast(`${item.rarity} ${item.mutation!=='Normal'?item.mutation:''} çıktı: ${item.name}`); particles(item.x,item.y,item.color,item.tier>=7?80:45); beep('win'); }
+  return item;
+}
+function refreshBlackMarket(){
+  state.blackOffers=[]; for(let i=0;i<4;i++){ const item=makeBrainrot({minTier:4+i%2,boost:.8}); item.price=Math.round(item.price*.74/5)*5; item.x=ZONES.black.x+80+(i%2)*210; item.y=ZONES.black.y+115+Math.floor(i/2)*110; state.blackOffers.push(item); }
+  state.blackTimer=75;
+}
+function openCrate(kind){
+  const c=CRATES[kind]||CRATES.basic; if(state.player.cash<c.cash || state.player.gems<c.gems){showMessage(`${c.name} için ${c.cash?'$'+shortNum(c.cash):''}${c.gems?' '+c.gems+'💎':''} lazım.`);beep('bad');return;}
+  state.player.cash-=c.cash; state.player.gems-=c.gems; const item=makeBrainrot({minTier:c.minTier,boost:c.boost}); item.name = c.name.replace(' Crate','')+' '+item.name; addToInventory(item); state.stats.crates++; addProgress('crate',1); particles(state.player.x,state.player.y-40,item.color,70); toast(`${c.name} açıldı: ${item.rarity} ${item.name} envantere geldi.`); beep(item.tier>=5?'win':'buy'); saveGame(); if(!panelEl.classList.contains('hidden')) openPanel('crates');
+}
+function fuseBest(){
+  const pool=[...state.activeSlots.map(p=>({...p,scope:'active'})),...state.inventory.map(p=>({...p,scope:'inventory'}))].filter(p=>!p.locked);
+  const groups={}; for(const p of pool){ groups[p.rarityKey] ||= []; groups[p.rarityKey].push(p); }
+  let key=null; for(const r of [...RARITIES].reverse()){ if(groups[r.key]?.length>=3){key=r.key;break;} }
+  if(!key){showMessage('Fusion için aynı rarity’den kilitsiz 3 pet lazım.');beep('bad');return;}
+  const items=groups[key].sort((a,b)=>a.income-b.income).slice(0,3);
+  for(const it of items){ removeFromArray(it.scope==='active'?state.activeSlots:state.inventory,it.id); }
+  const baseR=rarityFromKey(key); const nextR=RARITIES[Math.min(RARITIES.length-1, baseR.tier)]; const income=items.reduce((s,p)=>s+p.income,0)*1.55; const price=items.reduce((s,p)=>s+(p.price||p.income*18),0)*1.8;
+  const pet={...makeBrainrot({forceKey:nextR.key}),name:'Fused '+choice(NAME_A)+' '+choice(NAME_B)+' '+nextR.name,rarity:nextR.name,rarityKey:nextR.key,tier:nextR.tier,mutation:'Fused',color:nextR.color,income:+income.toFixed(1),price:Math.round(price/5)*5,locked:false};
+  addToInventory(pet,true); state.stats.fused++; addProgress('fuse',1); addXp(160+pet.tier*40); particles(state.player.x,state.player.y,COLORS.green,90); toast(`Fusion başarılı: ${pet.name} envantere geldi.`); beep('win'); saveGame(); if(!panelEl.classList.contains('hidden')) openPanel('inventory');
+}
+
+function interact(){
+  if(state.player.stunTimer>0) return;
+  const p=state.player;
+  if(p.carrying){
+    if(pointInRect(p,ZONES.playerBase)){
+      const pet=p.carrying; p.carrying=null; if(!addActiveSlot(pet)){ addToInventory(pet); showMessage('Aktif slot dolu; pet envantere atıldı.'); } else showMessage(`${pet.name} base’e koyuldu. +${shortNum(pet.income)}/sn`);
+      beep('buy'); saveGame(); return;
+    } else { showMessage('Taşıdığın peti kendi base’e götür.'); return; }
   }
-  function openMenu() { menuEl.classList.remove('hidden'); state.paused = true; }
-  async function goFullscreen() {
-    try { await document.documentElement.requestFullscreen?.(); } catch (_) {}
-    resize();
-  }
-  function initAudio() {
-    if (!audioContext && !state.muted) {
-      try { audioContext = new (window.AudioContext || window.webkitAudioContext)(); } catch (_) {}
+  const own=nearestOwnPet(70); if(own){ showMessage('Pet satmak için V, kilitlemek için F. Envanterden de yönetebilirsin.'); return; }
+  const market = nearestMarketItem(70); if(market){ buyMarketItem(market); return; }
+  const black = nearestBlackItem(80); if(black){ buyBlackItem(black); return; }
+  const rival = nearestRivalPet(72); if(rival){ stealRivalPet(rival); return; }
+  if(pointInRect(p,ZONES.quest)){ openPanel('quests'); return; }
+  if(pointInRect(p,ZONES.crate)){ openPanel('crates'); return; }
+  if(pointInRect(p,ZONES.upgrade)){ openPanel('upgrades'); return; }
+  if(pointInRect(p,ZONES.fusion)){ fuseBest(); return; }
+  if(pointInRect(p,ZONES.boss)){ startBossRaid(); return; }
+  showMessage('Bir pet, market, görev panosu veya bölgeye yaklaş.');
+}
+function nearestMarketItem(maxD=80){ let best=null,bd=maxD; for(const item of state.market){ const d=Math.hypot(state.player.x-item.x,state.player.y-item.y); if(d<bd){best=item;bd=d;} } return best; }
+function nearestBlackItem(maxD=85){ let best=null,bd=maxD; for(const item of state.blackOffers){ const d=Math.hypot(state.player.x-item.x,state.player.y-item.y); if(d<bd){best=item;bd=d;} } return best; }
+function nearestRivalPet(maxD=80){
+  let best=null,bd=maxD;
+  for(const r of state.rivals){ const pos=rivalSlotPositions(r); for(const pet of r.slots){ const pp=pos[pet.slotIndex]||pos[0]; const d=Math.hypot(state.player.x-pp.x,state.player.y-pp.y); if(d<bd){best={rival:r,pet,pos:pp};bd=d;} } }
+  return best;
+}
+function buyMarketItem(item){ if(state.player.cash<item.price){showMessage(`Para yetmedi: $${shortNum(item.price)}`);beep('bad');return;} state.player.cash-=item.price; state.player.carrying=cleanBrainrot(item); removeFromArray(state.market,item.id); state.stats.bought++; addProgress('buy',1); showMessage('Satın aldın. Kendi base’e götür.'); particles(item.x,item.y,item.color,28); beep('buy'); saveGame(); }
+function buyBlackItem(item){ if(state.player.cash<item.price){showMessage(`Black Market için $${shortNum(item.price)} lazım.`);beep('bad');return;} state.player.cash-=item.price; state.player.carrying=cleanBrainrot(item); removeFromArray(state.blackOffers,item.id); state.stats.bought++; addProgress('buy',1); showMessage('Black Market peti alındı. Base’e götür.'); particles(item.x,item.y,item.color,40); beep('win'); saveGame(); }
+function stealRivalPet(hit){ state.player.carrying=cleanBrainrot(hit.pet); removeFromArray(hit.rival.slots,hit.pet.id); state.stats.stolen++; addProgress('steal',1); showMessage(`${hit.rival.name} üssünden çaldın! Kendi base’e kaç.`); particles(hit.pos.x,hit.pos.y,hit.pet.color,48); beep('win'); saveGame(); }
+function swing(){
+  const p=state.player; if(p.swingTimer>0 || p.stunTimer>0) return; p.swingTimer=.22; beep('ok');
+  let hit=false;
+  for(const th of state.thieves){ if(th.stunTimer<=0 && Math.hypot(p.x-th.x,p.y-th.y)<72){ captureThief(th,true); hit=true; break; } }
+  if(state.boss && Math.hypot(p.x-state.boss.x,p.y-state.boss.y)<88){ damageBoss(8+state.player.level*1.2+state.player.rebirths*8); hit=true; }
+  if(!hit) particles(p.x+38,p.y-10,COLORS.yellow,12);
+}
+function damageBoss(amount){ const b=state.boss; if(!b) return; b.hp-=amount; b.hitTimer=.18; floating(b.x,b.y-60,'-'+Math.round(amount),COLORS.yellow); particles(b.x,b.y,COLORS.red,18); if(b.hp<=0) defeatBoss(); }
+function startBossRaid(){
+  if(state.boss){showMessage('Boss zaten aktif!'); return;} const z=ZONES.boss; const maxHp=350+state.player.level*45+state.player.rebirths*260; state.boss={x:z.x+z.w/2,y:z.y+z.h/2,hp:maxHp,maxHp,phase:'arena',attackTimer:1.2,hitTimer:0,name:choice(['Mega Thief Boss','Void Croco Boss','Admin Brainrot Boss','Laser Bandit Boss'])}; toast(`${state.boss.name} doğdu! Space/VUR ile saldır.`); beep('bad'); state.bossTimer=160;
+}
+function defeatBoss(){
+  const b=state.boss; if(!b) return; const cash=Math.round(28000+state.player.level*4200+state.player.rebirths*40000); const gems=15+Math.floor(state.player.level/4)+state.player.rebirths*3; state.player.cash+=cash; state.player.gems+=gems; state.stats.bosses++; addProgress('boss',1); addXp(420+state.player.level*20); const drop=makeBrainrot({minTier:5,boost:1.8}); addToInventory(drop,true); particles(b.x,b.y,COLORS.yellow,140); toast(`Boss yenildi! +$${shortNum(cash)}, +${gems}💎 ve ${drop.rarity} pet envantere geldi.`); beep('win'); state.boss=null; saveGame();
+}
+function spawnThief(){
+  if(state.thieves.length>=5) return; const rival=choice(state.rivals); const types=[{n:'Noob Thief',speed:105,hp:1,icon:'🥷'},{n:'Speed Thief',speed:155,hp:1,icon:'💨'},{n:'Tank Thief',speed:85,hp:2,icon:'🛡️'},{n:'Sneaky Thief',speed:128,hp:1,icon:'👻'}]; const t=choice(types); state.thieves.push({id:uid(),name:t.n,icon:t.icon,x:rival.x+rival.w/2,y:rival.y+rival.h/2,r:rival.id,home:rival.id,speed:t.speed+state.player.level*1.2,hp:t.hp,maxHp:t.hp,stunTimer:0,state:'toBase',carrying:null,targetSlot:null,escapeX:rival.x+rival.w/2,escapeY:rival.y+rival.h/2}); state.thiefTimer=rand(13,25); }
+function updateThieves(dt){
+  for(const th of [...state.thieves]){
+    if(th.stunTimer>0){ th.stunTimer-=dt; continue; }
+    if(th.state==='toBase'){
+      const target = getStealTarget(); if(!target){ moveTo(th,ZONES.playerBase.x+ZONES.playerBase.w/2,ZONES.playerBase.y+ZONES.playerBase.h/2,dt,th.speed*.6); continue; }
+      th.targetSlot=target.pet.id; moveTo(th,target.pos.x,target.pos.y,dt,th.speed);
+      if(pointInRect(th,ZONES.playerBase) && state.player.shieldTimer>0){ captureThief(th,false); continue; }
+      for(const trap of state.traps){ if(trap.cool<=0 && Math.hypot(th.x-trap.x,th.y-trap.y)<trap.r){ trap.cool=5; captureThief(th,false); break; } }
+      if(!state.thieves.includes(th)) continue;
+      if(Math.hypot(th.x-target.pos.x,th.y-target.pos.y)<34){ const stolen=removeFromArray(state.activeSlots,target.pet.id); if(stolen){ th.carrying=stolen; th.state='escape'; state.stats.stolenFromUs++; toast(`Hırsız ${stolen.name} çaldı! Yakala!`); beep('bad'); saveGame(); } }
+    } else if(th.state==='escape'){
+      moveTo(th,th.escapeX,th.escapeY,dt,th.speed*1.08);
+      if(Math.hypot(th.x-th.escapeX,th.y-th.escapeY)<36){ const rival=state.rivals.find(r=>r.id===th.home); if(rival && th.carrying){ th.carrying.slotIndex=rival.slots.length; rival.slots.push(th.carrying); } removeFromArray(state.thieves,th.id); showMessage('Hırsız kaçtı. Pet rakip base’e gitti.'); saveGame(); }
     }
   }
-  function beep(kind='ok') {
-    if (state.muted) return;
-    initAudio();
-    if (!audioContext) return;
-    const freq = kind === 'bad' ? 150 : kind === 'buy' ? 420 : kind === 'steal' ? 260 : kind === 'win' ? 740 : 520;
-    const osc = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-    osc.frequency.value = freq;
-    osc.type = kind === 'bad' ? 'sawtooth' : 'triangle';
-    gain.gain.setValueAtTime(.001, audioContext.currentTime);
-    gain.gain.exponentialRampToValueAtTime(.08, audioContext.currentTime + .015);
-    gain.gain.exponentialRampToValueAtTime(.001, audioContext.currentTime + .14);
-    osc.connect(gain); gain.connect(audioContext.destination); osc.start(); osc.stop(audioContext.currentTime + .15);
+}
+function getStealTarget(){
+  if(!state.activeSlots.length) return null; const positions=slotPositions(ZONES.playerBase,getMaxSlots()); const pets=state.activeSlots.filter(p=>!p.locked).sort((a,b)=>b.income-a.income); const pet=pets[0]; if(!pet) return null; return {pet,pos:positions[pet.slotIndex]||positions[0]};
+}
+function captureThief(th,byPlayer){
+  const reward=th.carrying ? Math.round((th.carrying.price||th.carrying.income*20)*.12) : 700+state.player.level*120;
+  if(th.carrying){ addActiveSlot(th.carrying) || addToInventory(th.carrying); th.carrying=null; }
+  state.player.cash+=reward; state.stats.defended++; state.stats.thievesCaught++; addProgress('catch',1); addXp(60); particles(th.x,th.y,COLORS.cyan,58); floating(th.x,th.y-30,`YAKALANDI +$${shortNum(reward)}`,COLORS.cyan); removeFromArray(state.thieves,th.id); beep(byPlayer?'win':'buy'); saveGame();
+}
+function moveTo(obj,tx,ty,dt,speed){ const dx=tx-obj.x,dy=ty-obj.y,d=Math.hypot(dx,dy)||1; const step=Math.min(d,speed*dt); obj.x+=dx/d*step; obj.y+=dy/d*step; }
+function updateGuard(dt){
+  const lvl=state.player.guardLevel; if(lvl<=0) return; const guard=state.guard; const target=state.thieves.filter(t=>pointInRect(t,ZONES.playerBase) || Math.hypot(t.x-center(ZONES.playerBase).x,t.y-center(ZONES.playerBase).y)<420).sort((a,b)=>Math.hypot(a.x-guard.x,a.y-guard.y)-Math.hypot(b.x-guard.x,b.y-guard.y))[0];
+  if(target){ moveTo(guard,target.x,target.y,dt,110+lvl*18); if(Math.hypot(guard.x-target.x,guard.y-target.y)<32){ captureThief(target,false); } }
+  else { const home={x:ZONES.playerBase.x+95+Math.sin(state.t*.7)*80,y:ZONES.playerBase.y+100+Math.cos(state.t*.8)*70}; moveTo(guard,home.x,home.y,dt,80); }
+}
+function updateBoss(dt){
+  const b=state.boss; if(!b) return; b.hitTimer=Math.max(0,b.hitTimer-dt); b.attackTimer-=dt;
+  const p=state.player; moveTo(b,p.x,p.y,dt,55+state.player.level*.7);
+  if(Math.hypot(b.x-p.x,b.y-p.y)<56 && b.attackTimer<=0){ p.stunTimer=.65; b.attackTimer=1.1; floating(p.x,p.y-38,'SERSEM!',COLORS.red); beep('bad'); }
+  if(pointInRect(b,ZONES.playerBase) && b.attackTimer<=0){ const target=getStealTarget(); if(target){ const stolen=removeFromArray(state.activeSlots,target.pet.id); if(stolen){ addToInventory(stolen,true); showMessage('Boss base’e saldırdı ama pet sigorta envantere atıldı!'); } } b.attackTimer=2.2; }
+}
+function updateEvents(dt){
+  state.eventTimer-=dt;
+  if(state.activeEvent){ state.activeEvent.timer-=dt; if(state.activeEvent.timer<=0){ toast(`${state.activeEvent.name} bitti.`); state.activeEvent=null; state.eventTimer=rand(58,95); } }
+  else if(state.eventTimer<=0){
+    const ev=choice([{type:'gold',name:'Golden Rush',timer:50},{type:'black',name:'Black Market İndirimi',timer:60},{type:'wave',name:'Thief Wave',timer:1},{type:'secret',name:'Secret Spawn',timer:35}]);
+    if(ev.type==='wave'){ for(let i=0;i<3;i++) setTimeout(spawnThief,i*650); state.eventTimer=70; toast('THIEF WAVE! 3 hırsız geliyor.'); beep('bad'); }
+    else { state.activeEvent=ev; state.eventTimer=999; toast(`EVENT başladı: ${ev.name}`); if(ev.type==='secret') spawnMarket('secret'); }
   }
-  function toast(text) {
-    toastEl.textContent = text;
-    toastEl.classList.add('show');
-    clearTimeout(toastEl._timer);
-    toastEl._timer = setTimeout(() => toastEl.classList.remove('show'), 2200);
-  }
-  function showMessage(text, seconds=2.4) { state.message = text; state.messageTimer = seconds; toast(text); }
-  let keyboardToastShown = false;
-  function setInputMode(mode) {
-    if (mode === 'keyboard') {
-      document.body.classList.add('keyboardMode');
-      if (mobileControls) mobileControls.setAttribute('aria-hidden', 'true');
-      joy.active = false; joy.dx = 0; joy.dy = 0; joyStick.style.transform = 'translate(0,0)';
-      if (!keyboardToastShown) { toast('Klavye modu: joystick gizlendi. Ekrana dokununca geri gelir.'); keyboardToastShown = true; }
-    } else if (mode === 'touch') {
-      document.body.classList.remove('keyboardMode');
-      if (mobileControls) mobileControls.removeAttribute('aria-hidden');
-    }
-  }
-  function touchControlsVisible() {
-    const coarse = window.matchMedia?.('(pointer: coarse)').matches;
-    return !document.body.classList.contains('keyboardMode') && (coarse || view.cssW <= 900);
-  }
+}
+function update(dt){
+  state.t += dt; if(state.messageTimer>0) state.messageTimer-=dt;
+  if(state.paused && menuEl.classList.contains('hidden') && panelEl.classList.contains('hidden') && resetModalEl.classList.contains('hidden')){} // pause overlay only
+  if(!state.paused){
+    updatePlayer(dt); updateMarket(dt); updateEconomy(dt); updateThieves(dt); updateGuard(dt); updateBoss(dt); updateEvents(dt);
+    state.thiefTimer-=dt; if(state.thiefTimer<=0) spawnThief(); state.blackTimer-=dt; if(state.blackTimer<=0) refreshBlackMarket(); state.bossTimer-=dt; if(state.bossTimer<=0 && state.player.level>=3) startBossRaid();
+    for(const trap of state.traps) trap.cool=Math.max(0,trap.cool-dt); if(state.player.shieldTimer>0) state.player.shieldTimer-=dt; if(state.player.swingTimer>0) state.player.swingTimer-=dt; if(state.player.stunTimer>0) state.player.stunTimer-=dt;
+    updateParticles(dt); state.saveTimer-=dt; if(state.saveTimer<=0){ saveGame(); state.saveTimer=2; }
+  } else updateParticles(dt);
+  updateCamera(); updateActionLabel();
+}
+function updatePlayer(dt){
+  const p=state.player; if(p.stunTimer>0) return; let ax=0,ay=0;
+  if(keys.has('arrowup')||keys.has('w')) ay-=1; if(keys.has('arrowdown')||keys.has('s')) ay+=1; if(keys.has('arrowleft')||keys.has('a')) ax-=1; if(keys.has('arrowright')||keys.has('d')) ax+=1;
+  ax+=joy.dx; ay+=joy.dy; const len=Math.hypot(ax,ay)||1; if(len>1){ax/=len;ay/=len;}
+  const sprint=keys.has('shift'); const speed=(170+state.player.speedLevel*18+state.player.rebirths*7)*(sprint?1.35:1);
+  p.x=clamp(p.x+ax*speed*dt,30,WORLD.w-30); p.y=clamp(p.y+ay*speed*dt,30,WORLD.h-30);
+}
+function updateMarket(dt){
+  state.marketTimer-=dt; if(state.marketTimer<=0){ if(state.market.length<18) spawnMarket(); state.marketTimer=state.activeEvent?.type==='gold'?1.2:2.4; }
+  for(const item of [...state.market]){ item.y += item.vy*dt; if(item.y > ZONES.market.y+ZONES.market.h+70) removeFromArray(state.market,item.id); }
+}
+function updateEconomy(dt){
+  const inc=getIncome(); const gain=inc*dt; state.player.cash += gain; state.player.highCash=Math.max(state.player.highCash,state.player.cash); state.stats.totalEarned += gain; addProgress('earn',gain); if(inc>0) state.player.xp += dt*.5;
+}
+function updateParticles(dt){
+  for(const p of [...state.particles]){ p.x+=p.vx*dt; p.y+=p.vy*dt; p.vy+=180*dt; p.life-=dt; }
+  state.particles=state.particles.filter(p=>p.life>0);
+  for(const f of state.floatingTexts){ f.y-=38*dt; f.life-=dt; } state.floatingTexts=state.floatingTexts.filter(f=>f.life>0);
+}
+function updateCamera(){ view.camX=clamp(state.player.x-view.w/2,0,Math.max(0,WORLD.w-view.w)); view.camY=clamp(state.player.y-view.h/2,0,Math.max(0,WORLD.h-view.h)); }
+function updateActionLabel(){
+  let label='AL / ÇAL'; const p=state.player;
+  if(p.carrying) label='BASE’E KOY'; else if(nearestOwnPet(70)) label='V SAT / F KİLİT'; else if(pointInRect(p,ZONES.quest)) label='GÖREV'; else if(pointInRect(p,ZONES.crate)) label='KASA'; else if(pointInRect(p,ZONES.upgrade)) label='UPGRADE'; else if(pointInRect(p,ZONES.fusion)) label='FUSION'; else if(pointInRect(p,ZONES.boss)) label='BOSS';
+  if(actionButton) actionButton.textContent=label;
+}
 
-  function weightedRarity(forceRarity=null) {
-    if (forceRarity) return rarityByName.get(forceRarity) || rarityTable.find(r => r.key === forceRarity) || rarityTable[0];
-    const luck = 1 + state.player.luckLevel * .22 + state.player.rebirths * .08 + (state.activeEvent?.type === 'gold' ? .55 : 0);
-    const weights = rarityTable.map(r => r.chance * (r.tier <= 2 ? 1 : Math.pow(luck, r.tier * .32)));
-    const total = weights.reduce((a,b)=>a+b,0);
-    let roll = Math.random() * total;
-    for (let i=0;i<rarityTable.length;i++) { roll -= weights[i]; if (roll <= 0) return rarityTable[i]; }
-    return rarityTable[0];
+function draw(){
+  ctx.clearRect(0,0,view.w,view.h);
+  drawBackground();
+  ctx.save(); ctx.translate(-view.camX,-view.camY);
+  drawWorld(); drawZones(); drawMarket(); drawRivals(); drawPlayerBase(); drawEntities(); drawParticles(); ctx.restore();
+  drawHUD(); drawMiniMap(); drawPrompt(); if(state.paused && menuEl.classList.contains('hidden') && panelEl.classList.contains('hidden')) drawPause();
+}
+function drawBackground(){
+  const g=ctx.createLinearGradient(0,0,0,view.h); g.addColorStop(0,'#071022'); g.addColorStop(1,'#0b1020'); ctx.fillStyle=g; ctx.fillRect(0,0,view.w,view.h);
+  ctx.save(); ctx.globalAlpha=.18; ctx.strokeStyle='#2a3d6d'; ctx.lineWidth=1; const grid=80; const ox=-(view.camX%grid), oy=-(view.camY%grid); for(let x=ox;x<view.w;x+=grid){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,view.h);ctx.stroke();} for(let y=oy;y<view.h;y+=grid){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(view.w,y);ctx.stroke();} ctx.restore();
+}
+function drawWorld(){
+  roundedRect(40,40,WORLD.w-80,WORLD.h-80,42); ctx.fillStyle='rgba(255,255,255,.025)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.08)'; ctx.lineWidth=3; ctx.stroke();
+  ctx.fillStyle=COLORS.road; roundedRect(610,90,300,1540,60); ctx.fill(); roundedRect(870,690,1050,260,60); ctx.fill(); roundedRect(1860,520,260,1050,60); ctx.fill();
+  ctx.strokeStyle=COLORS.road2; ctx.lineWidth=6; ctx.setLineDash([28,30]); ctx.beginPath(); ctx.moveTo(760,140); ctx.lineTo(760,1580); ctx.moveTo(910,820); ctx.lineTo(1900,820); ctx.moveTo(1990,560); ctx.lineTo(1990,1540); ctx.stroke(); ctx.setLineDash([]);
+}
+function drawZones(){
+  for(const z of Object.values(ZONES)) drawZone(z);
+  for(const r of state.rivals) drawZone({x:r.x,y:r.y,w:r.w,h:r.h,name:r.name,color:r.color,edge:r.edge});
+  drawText('🛣️ MEGA CITY',WORLD.w/2,58,26,COLORS.muted,'center',1000);
+}
+function drawZone(z){
+  ctx.save(); ctx.shadowColor=z.edge; ctx.shadowBlur=pointInRect(state.player,z)?22:6; roundedRect(z.x,z.y,z.w,z.h,28); ctx.fillStyle=z.color; ctx.fill(); ctx.lineWidth=4; ctx.strokeStyle=z.edge; ctx.stroke(); ctx.shadowBlur=0; drawText(z.name,z.x+22,z.y+34,18,COLORS.text,'left',1000); ctx.restore();
+}
+function drawPlayerBase(){
+  const z=ZONES.playerBase; const positions=slotPositions(z,getMaxSlots());
+  for(let i=0;i<getMaxSlots();i++){ const pos=positions[i]; ctx.save(); ctx.globalAlpha=.32; roundedRect(pos.x-42,pos.y-34,84,68,15); ctx.fillStyle='#081224'; ctx.fill(); ctx.strokeStyle='rgba(126,240,193,.38)'; ctx.stroke(); ctx.restore(); }
+  for(const pet of state.activeSlots){ const pos=positions[pet.slotIndex]||positions[0]; drawBrainrot(pet,pos.x,pos.y,pet.tier>=6?1.05:.92); drawText(`${pet.locked?'🔒 ':''}+${shortNum(pet.income)}/sn`,pos.x,pos.y+48,12,COLORS.green,'center',1000); }
+  if(state.player.shieldTimer>0){ ctx.save(); ctx.globalAlpha=.55; ctx.strokeStyle=COLORS.cyan; ctx.lineWidth=9; roundedRect(z.x+8,z.y+8,z.w-16,z.h-16,28); ctx.stroke(); ctx.restore(); }
+  for(const trap of state.traps){ ctx.save(); ctx.globalAlpha=trap.cool>0?.25:.85; ctx.strokeStyle=COLORS.yellow; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(trap.x,trap.y,trap.r,0,Math.PI*2); ctx.stroke(); drawText('⚡',trap.x,trap.y+7,20,COLORS.yellow,'center',1000); ctx.restore(); }
+}
+function drawRivals(){
+  for(const r of state.rivals){ const positions=rivalSlotPositions(r); for(let i=0;i<Math.max(6,r.slots.length);i++){ const pos=positions[i]; ctx.save(); ctx.globalAlpha=.24; roundedRect(pos.x-39,pos.y-31,78,62,14); ctx.fillStyle='#120816'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.stroke(); ctx.restore(); }
+    for(const pet of r.slots){ const pos=positions[pet.slotIndex]||positions[0]; drawBrainrot(pet,pos.x,pos.y,.86); drawText(`+${shortNum(pet.income)}/sn`,pos.x,pos.y+43,11,r.edge,'center',900); }
   }
-  function weightedMutation() {
-    const luckBonus = state.player.luckLevel * .28 + state.player.rebirths * .08 + (state.activeEvent?.type === 'gold' ? .7 : 0);
-    const weights = mutations.map((m, i) => i === 0 ? m.chance : m.chance * (1 + luckBonus));
-    const total = weights.reduce((a,b)=>a+b,0);
-    let roll = Math.random() * total;
-    for (let i=0;i<mutations.length;i++) { roll -= weights[i]; if (roll <= 0) return mutations[i]; }
-    return mutations[0];
-  }
-  function cryptoSafeId() {
-    if (window.crypto?.getRandomValues) {
-      const a = new Uint32Array(2); window.crypto.getRandomValues(a);
-      return 'b' + a[0].toString(36) + a[1].toString(36);
-    }
-    return 'b' + Math.random().toString(36).slice(2) + Date.now().toString(36);
-  }
-  function makeBrainrot(forceRarity=null) {
-    const r = weightedRarity(forceRarity);
-    const m = weightedMutation();
-    const baseName = `${choice(nameA)} ${choice(nameB)} ${choice(nameC)}`;
-    const name = `${m.name ? m.name + ' ' : ''}${baseName}`;
-    let income = +(rand(r.income[0], r.income[1]) * m.mult).toFixed(1);
-    let price = Math.round((rand(r.price[0], r.price[1]) * (0.92 + m.mult * .36)) / 5) * 5;
-    const color = m.glow || r.color;
-    if (state.activeEvent?.type === 'black') { income *= 1.25; price = Math.round(price * .82 / 5) * 5; }
-    return {
-      id:cryptoSafeId(), name, rarity:r.name, rarityKey:r.key, tier:r.tier, mutation:m.tag, icon:choice(icons), color,
-      price, income:+income.toFixed(1), mood:rand(0,Math.PI*2), x:conveyor.x+rand(30,conveyor.w-30), y:conveyor.y-34,
-      vy:rand(27,43) * (state.activeEvent?.type === 'gold' ? .75 : 1), wobble:rand(.7,1.9), scale:rand(.92,1.15)
-    };
-  }
-  function cleanBrainrot(item={}, idx=0) {
-    const rarity = resolveRarity(item);
-    const slot = Number(item.slotIndex);
-    return {
-      id:item.id || cryptoSafeId(), name:String(item.name || 'Bilinmeyen Brainrot').slice(0,52), rarity:rarity.name,
-      rarityKey:rarity.key, tier:Number(item.tier) || rarity.tier, mutation:item.mutation || 'Normal', icon:item.icon || '🧠',
-      color:item.color || rarity.color, price:Number(item.price) || Math.max(20, Math.round((Number(item.income)||1)*12/5)*5), income:Number(item.income) || 1,
-      mood:Number(item.mood) || rand(0,Math.PI*2), scale:Number(item.scale) || 1, slotIndex:Number.isFinite(slot) ? slot : idx
-    };
-  }
-  function initEnemySlots() {
-    const starter = [makeBrainrot('Nadir'), makeBrainrot('Epik'), makeBrainrot('Epik'), makeBrainrot('Efsane'), makeBrainrot('Mitik')];
-    starter[0].name='Bot Kedi Mini'; starter[0].income=18; starter[0].price=180;
-    starter[1].name='Turbo Tost Max'; starter[1].income=64; starter[1].price=690;
-    starter[2].name='Pesto Rakun Deluxe'; starter[2].income=92; starter[2].price=860;
-    starter[3].name='Giga Martı Ultra'; starter[3].income=280; starter[3].price=2200;
-    starter[4].name='Cursed Ejder Prime'; starter[4].income=1250; starter[4].price=6500; starter[4].mutation='Cursed';
-    state.enemy.slots = starter.map((item, idx) => ({...cleanBrainrot(item, idx), slotIndex:idx}));
-  }
+}
+function drawMarket(){
+  const z=ZONES.market; ctx.save(); roundedRect(z.x+34,z.y+72,z.w-68,z.h-125,32); ctx.fillStyle='rgba(7,16,31,.45)'; ctx.fill(); ctx.strokeStyle='rgba(255,230,128,.24)'; ctx.stroke(); ctx.clip(); ctx.globalAlpha=.18; for(let y=z.y+90+(state.t*40%80);y<z.y+z.h;y+=80){ctx.fillStyle=COLORS.yellow; ctx.fillRect(z.x+60,y,z.w-120,8);} ctx.restore();
+  for(const item of state.market){ drawBrainrot(item,item.x,item.y,.9); drawPriceTag(item,item.x,item.y+50); }
+  for(const item of state.blackOffers){ drawBrainrot(item,item.x,item.y,1); drawPriceTag(item,item.x,item.y+52,true); }
+}
+function drawEntities(){
+  if(state.player.guardLevel>0) drawBot(state.guard,'GUARD',COLORS.cyan,'🛡️');
+  for(const th of state.thieves) drawBot(th,th.name,th.carrying?COLORS.red:'#ff9a5c',th.icon,th.carrying);
+  if(state.boss) drawBoss(state.boss);
+  drawPlayer();
+}
+function drawBoss(b){
+  ctx.save(); ctx.translate(b.x,b.y); ctx.scale(b.hitTimer>0?1.08:1, b.hitTimer>0?1.08:1); ctx.shadowColor=COLORS.red; ctx.shadowBlur=25; ctx.fillStyle='#a51e44'; ctx.beginPath(); ctx.arc(0,0,42,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; drawText('👹',0,11,42,'#fff','center',1000); ctx.restore();
+  const w=160,ratio=clamp(b.hp/b.maxHp,0,1); roundedRect(b.x-w/2,b.y-78,w,16,8); ctx.fillStyle='rgba(0,0,0,.65)'; ctx.fill(); roundedRect(b.x-w/2,b.y-78,w*ratio,16,8); ctx.fillStyle=COLORS.red; ctx.fill(); drawText(b.name,b.x,b.y-88,14,COLORS.text,'center',1000);
+}
+function drawPlayer(){
+  const p=state.player; ctx.save(); ctx.translate(p.x,p.y); if(p.stunTimer>0) ctx.rotate(Math.sin(state.t*40)*.12); ctx.fillStyle=p.stunTimer>0?'#8e9ab3':COLORS.green; ctx.shadowColor=COLORS.green; ctx.shadowBlur=16; ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; ctx.fillStyle=COLORS.dark; ctx.beginPath(); ctx.arc(-7,-5,2.5,0,Math.PI*2); ctx.arc(7,-5,2.5,0,Math.PI*2); ctx.fill(); ctx.strokeStyle=COLORS.dark; ctx.lineWidth=2.4; ctx.beginPath(); ctx.arc(0,4,7,.2,Math.PI-.2); ctx.stroke(); if(p.swingTimer>0){ ctx.save(); ctx.rotate(-.7+(.22-p.swingTimer)*10); ctx.strokeStyle=COLORS.yellow; ctx.lineWidth=8; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(10,-7); ctx.lineTo(60,-25); ctx.stroke(); ctx.restore(); } ctx.restore(); drawText(p.stunTimer>0?'SERSEM':'SEN',p.x,p.y-31,12,COLORS.text,'center',1000); if(p.carrying){ drawBrainrot(p.carrying,p.x,p.y-48,.86); drawText('BASE’E GÖTÜR',p.x,p.y+44,12,COLORS.yellow,'center',1000); }
+}
+function drawBot(bot,label,color,icon,carrying=false){
+  ctx.save(); ctx.translate(bot.x,bot.y); ctx.fillStyle=color; ctx.shadowColor=color; ctx.shadowBlur=13; ctx.beginPath(); ctx.arc(0,0,18,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; drawText(icon,0,7,18,'#fff','center',1000); ctx.restore(); drawText(label,bot.x,bot.y-29,11,COLORS.text,'center',900); if(bot.carrying) drawBrainrot(bot.carrying,bot.x,bot.y-42,.72);
+}
+function drawBrainrot(item,x,y,scale=1){
+  ctx.save(); const wob=Math.sin(state.t*4+item.mood)*3; ctx.translate(x,y+wob); ctx.scale(scale,scale); ctx.shadowColor=item.color; ctx.shadowBlur=18+item.tier*2; ctx.fillStyle=item.color; ctx.beginPath(); ctx.ellipse(0,0,26,21,Math.sin(state.t+item.mood)*.12,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; ctx.fillStyle='rgba(255,255,255,.35)'; ctx.beginPath(); ctx.ellipse(-8,-8,8,4,-.5,0,Math.PI*2); ctx.fill(); ctx.fillStyle=COLORS.dark; ctx.beginPath(); ctx.arc(-8,-1,2.5,0,Math.PI*2); ctx.arc(10,-1,2.5,0,Math.PI*2); ctx.fill(); ctx.strokeStyle=COLORS.dark; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(1,6,7,.15,Math.PI-.15); ctx.stroke(); drawText(item.icon,0,-31,19,'#fff','center',900); ctx.restore();
+}
+function drawPriceTag(item,x,y,black=false){ const text=`$${shortNum(item.price)} • +${shortNum(item.income)}/sn`; ctx.save(); ctx.font='900 12px system-ui'; const w=ctx.measureText(text).width+18; roundedRect(x-w/2,y-13,w,25,10); ctx.fillStyle=black?'rgba(190,149,255,.88)':'rgba(8,14,30,.82)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.18)'; ctx.stroke(); drawText(text,x,y+4,12,black?COLORS.dark:COLORS.text,'center',1000); ctx.restore(); }
+function drawParticles(){ for(const p of state.particles){ ctx.save(); ctx.globalAlpha=clamp(p.life/p.max,0,1); ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill(); ctx.restore(); } for(const f of state.floatingTexts){ ctx.save(); ctx.globalAlpha=clamp(f.life/f.max,0,1); drawText(f.text,f.x,f.y,16,f.color,'center',1000); ctx.restore(); } }
+function drawHUD(){
+  ctx.save(); const income=getIncome(); roundedRect(14,14,Math.min(700,view.w-28),70,20); ctx.fillStyle='rgba(8,14,30,.78)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.13)'; ctx.stroke();
+  drawText(`$${shortNum(state.player.cash)}`,32,42,22,COLORS.green,'left',1000); drawText(`+${shortNum(income)}/sn`,32,66,13,COLORS.muted,'left',900); drawText(`💎 ${shortNum(state.player.gems)}`,190,42,18,COLORS.cyan,'left',1000); drawText(`Level ${state.player.level}`,300,42,18,COLORS.yellow,'left',1000); drawText(`Rebirth ${state.player.rebirths}`,410,42,18,COLORS.purple,'left',1000);
+  const need=xpNeed(), ratio=clamp(state.player.xp/need,0,1); roundedRect(300,55,250,12,7); ctx.fillStyle='rgba(255,255,255,.10)'; ctx.fill(); roundedRect(300,55,250*ratio,12,7); ctx.fillStyle=COLORS.yellow; ctx.fill();
+  const shield=state.player.shieldTimer>0?`Kilit ${Math.ceil(state.player.shieldTimer)}sn`:'Kilit açık'; drawText(shield,570,42,15,state.player.shieldTimer>0?COLORS.cyan:COLORS.red,'left',1000);
+  if(state.activeEvent){ const text=`EVENT: ${state.activeEvent.name} ${Math.ceil(state.activeEvent.timer)}sn`; ctx.font='1000 15px system-ui'; const w=ctx.measureText(text).width+24; roundedRect(view.w/2-w/2,94,w,34,14); ctx.fillStyle='rgba(255,230,128,.18)'; ctx.fill(); ctx.strokeStyle='rgba(255,230,128,.4)'; ctx.stroke(); drawText(text,view.w/2,116,15,COLORS.yellow,'center',1000); }
+  ctx.restore();
+}
+function drawMiniMap(){
+  if(view.w<650) return; const w=190,h=125,x=view.w-w-16,y=82; ctx.save(); roundedRect(x,y,w,h,16); ctx.fillStyle='rgba(8,14,30,.75)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.13)'; ctx.stroke(); const sx=w/WORLD.w, sy=h/WORLD.h; function dot(px,py,c,r=4){ctx.fillStyle=c;ctx.beginPath();ctx.arc(x+px*sx,y+py*sy,r,0,Math.PI*2);ctx.fill();} for(const z of Object.values(ZONES)){ctx.fillStyle='rgba(255,255,255,.08)';ctx.fillRect(x+z.x*sx,y+z.y*sy,z.w*sx,z.h*sy);} for(const r of state.rivals) dot(r.x+r.w/2,r.y+r.h/2,r.edge,3); for(const th of state.thieves) dot(th.x,th.y,COLORS.red,3); if(state.boss) dot(state.boss.x,state.boss.y,COLORS.red,5); dot(state.player.x,state.player.y,COLORS.green,5); drawText('Mini Map',x+12,y+18,12,COLORS.muted,'left',900); ctx.restore();
+}
+function drawPrompt(){
+  let hint='E: al/çal/koy • Space: vur • I: envanter • Q: görev'; const p=state.player;
+  if(p.carrying) hint='Kendi base’e gir ve E / AL ile peti koy.'; else if(nearestMarketItem(70)) hint='Market peti: E / AL ile satın al.'; else if(nearestBlackItem(80)) hint='Black Market: nadir peti E ile al.'; else if(nearestRivalPet(72)) hint='Rakip peti: E / AL ile çal ve base’e kaç.'; else if(nearestOwnPet(70)) hint='Kendi petin: V sat, F kilitle, I envanter.'; else if(pointInRect(p,ZONES.quest)) hint='Quest Board: E veya Q ile görevleri aç.'; else if(pointInRect(p,ZONES.crate)) hint='Crate Shop: E veya K ile kasa aç.'; else if(pointInRect(p,ZONES.upgrade)) hint='Upgrade Plaza: E veya U ile güçlen.'; else if(pointInRect(p,ZONES.fusion)) hint='Fusion Lab: E ile 3 aynı rarity peti birleştir.'; else if(pointInRect(p,ZONES.boss)) hint='Boss Arena: E veya R ile boss raid başlat.';
+  ctx.save(); ctx.font='1000 15px system-ui'; const w=Math.min(view.w-26,ctx.measureText(hint).width+30); roundedRect(view.w/2-w/2,view.h-74,w,42,18); ctx.fillStyle='rgba(8,14,30,.80)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.13)'; ctx.stroke(); drawText(hint,view.w/2,view.h-48,15,COLORS.text,'center',1000); ctx.restore();
+  if(state.messageTimer>0 && state.message){ ctx.save(); ctx.font='1000 16px system-ui'; const mw=Math.min(view.w-40,ctx.measureText(state.message).width+34); roundedRect(view.w/2-mw/2,view.h-124,mw,38,16); ctx.fillStyle='rgba(126,240,193,.90)'; ctx.fill(); drawText(state.message,view.w/2,view.h-100,16,COLORS.dark,'center',1000); ctx.restore(); }
+}
+function drawPause(){ ctx.save(); roundedRect(view.w/2-190,view.h/2-60,380,120,26); ctx.fillStyle='rgba(8,14,30,.88)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.18)'; ctx.stroke(); drawText('DURAKLATILDI',view.w/2,view.h/2-12,28,COLORS.text,'center',1000); drawText('P veya MENÜ ile devam',view.w/2,view.h/2+22,14,COLORS.muted,'center',900); ctx.restore(); }
+function roundedRect(x,y,w,h,r){ const rr=Math.min(r,w/2,h/2); ctx.beginPath(); ctx.moveTo(x+rr,y); ctx.arcTo(x+w,y,x+w,y+h,rr); ctx.arcTo(x+w,y+h,x,y+h,rr); ctx.arcTo(x,y+h,x,y,rr); ctx.arcTo(x,y,x+w,y,rr); ctx.closePath(); }
+function drawText(text,x,y,size,color,align='left',weight=800){ ctx.font=`${weight} ${size}px system-ui,-apple-system,Segoe UI,sans-serif`; ctx.fillStyle=color; ctx.textAlign=align; ctx.textBaseline='alphabetic'; ctx.fillText(text,x,y); }
 
-  function getMaxPlayerSlots() { return clamp(5 + state.player.slotBonus + state.player.rebirths, 5, 14); }
-  function getMaxEnemySlots() { return 10; }
-  function incomeMultiplier() { return 1 + state.player.rebirths * .28; }
-  function getPlayerIncome() { return state.player.slots.reduce((s,b)=>s+b.income,0) * incomeMultiplier(); }
-  function getEnemyIncome() { return state.enemy.slots.reduce((s,b)=>s+b.income,0); }
-  function slotPositions(base, count) {
-    // Slotlar yükseltme sonrası iç içe girmesin diye kolon ve satır aralığı dinamik.
-    const cols = count > 10 ? 3 : 2;
-    const rows = Math.ceil(count / cols);
-    const padX = cols === 3 ? 46 : 68;
-    const xSpan = Math.max(1, base.w - padX * 2);
-    const yStart = base.y + 86;
-    const yEnd = base.y + base.h - 82;
-    const yGap = rows <= 1 ? 0 : (yEnd - yStart) / (rows - 1);
-    const out = [];
-    for (let i=0;i<count;i++) {
-      const col = i % cols;
-      const row = Math.floor(i / cols);
-      const x = cols === 1 ? base.x + base.w / 2 : base.x + padX + xSpan * (col / (cols - 1));
-      const y = yStart + yGap * row;
-      out.push({ x, y });
-    }
-    return out;
-  }
-  function slotVisual(max) {
-    if (max > 10) return { cardW:62, cardH:52, scale:.82, incomeSize:10, incomeY:35 };
-    if (max > 8) return { cardW:70, cardH:56, scale:.90, incomeSize:11, incomeY:38 };
-    return { cardW:78, cardH:60, scale:1, incomeSize:12, incomeY:42 };
-  }
-  function nextFreeSlot(slots, maxSlots) {
-    const used = new Set(slots.map(s => s.slotIndex));
-    for (let i=0;i<maxSlots;i++) if (!used.has(i)) return i;
-    return -1;
-  }
-  function assignSlot(item, slots, maxSlots) {
-    const idx = nextFreeSlot(slots, maxSlots);
-    if (idx < 0) return false;
-    slots.push({ ...cleanBrainrot(item, idx), slotIndex:idx });
-    return true;
-  }
-  function discover(item) {
-    const key = item.rarity + '|' + item.name;
-    if (!state.collection.seen[key]) {
-      state.collection.seen[key] = true;
-      state.collection.total += 1;
-      state.collection.rarities[item.rarity] = (state.collection.rarities[item.rarity] || 0) + 1;
-      if (!state.collection.best || item.income > state.collection.best.income) state.collection.best = cleanBrainrot(item);
-    }
-  }
-  function spawnMarket(forceRarity=null) {
-    const item = makeBrainrot(forceRarity);
-    placeMarketItem(item);
-    state.market.push(item);
-    if (item.tier >= 6 || item.mutation !== 'Normal') {
-      addParticles(item.x, Math.max(70,item.y+16), item.color, item.tier >= 7 ? 80 : 42);
-      showMessage(`${item.rarity}${item.mutation !== 'Normal' ? ' ' + item.mutation : ''} çıktı: ${item.name}!`, 3);
-      beep(item.tier >= 6 ? 'win' : 'buy');
-    }
-    return item;
-  }
-  function placeMarketItem(item) {
-    // Spawnları üst üste bindirmemek için bantta boşluk ara.
-    let y = conveyor.y - 34;
-    for (let tries=0; tries<14; tries++) {
-      const crowded = state.market.some(m => Math.hypot((m.x || item.x) - item.x, (m.y || y) - y) < 82);
-      if (!crowded) break;
-      y -= 72;
-    }
-    item.y = Math.max(-360, y);
-  }
+function openPanel(kind){
+  state.paused=true; panelEl.classList.remove('hidden');
+  if(kind==='inventory') renderInventory(); else if(kind==='quests') renderQuests(); else if(kind==='collection') renderCollection(); else if(kind==='crates') renderCrates(); else if(kind==='upgrades') renderUpgrades(); else renderMap();
+}
+function closePanel(){ panelEl.classList.add('hidden'); state.paused=false; saveGame(); }
+function renderInventory(){
+  panelTitle.textContent='🎒 Envanter & Base Petleri'; panelSub.textContent=`Aktif ${state.activeSlots.length}/${getMaxSlots()} • Envanter ${state.inventory.length} • Gelir +${shortNum(getIncome())}/sn`;
+  const active = state.activeSlots.slice().sort((a,b)=>b.income-a.income).map(p=>petCard(p,'active')).join('') || '<p class="smallNote">Base’de aktif pet yok.</p>';
+  const inv = state.inventory.slice().sort((a,b)=>b.tier-a.tier||b.income-a.income).map(p=>petCard(p,'inventory')).join('') || '<p class="smallNote">Envanter boş. Kasa aç, marketten al veya boss kes.</p>';
+  panelBody.innerHTML=`<div class="row"><span class="pill">$${shortNum(state.player.cash)}</span><span class="pill">💎 ${shortNum(state.player.gems)}</span><span class="pill">Level ${state.player.level}</span><span class="pill">Rebirth ${state.player.rebirths}</span></div><h3>Aktif Base Petleri</h3><div class="grid">${active}</div><h3 style="margin-top:18px">Envanter</h3><div class="grid">${inv}</div>`;
+}
+function petCard(p,scope){ const val=Math.round((p.price||p.income*18)*.62); return `<div class="card"><h3 style="color:${p.color}">${htmlEscape(p.icon)} ${p.locked?'🔒 ':''}${htmlEscape(p.name)}</h3><p>${htmlEscape(p.rarity)} • ${htmlEscape(p.mutation)} • +${shortNum(p.income)}/sn • Değer $${shortNum(p.price)}</p><div class="row"><button class="small good" data-cmd="lock" data-scope="${scope}" data-id="${p.id}">${p.locked?'Kilidi Aç':'Kilitle'}</button>${scope==='inventory'?`<button class="small good" data-cmd="activate" data-id="${p.id}">Base’e Koy</button>`:`<button class="small" data-cmd="stash" data-id="${p.id}">Envantere Al</button>`}<button class="small bad" data-cmd="sell" data-scope="${scope}" data-id="${p.id}">Sat $${shortNum(val)}</button></div></div>`; }
+function renderQuests(){
+  panelTitle.textContent='📋 Görevler'; panelSub.textContent='Görevleri tamamla, ödülü al, daha hızlı büyü.';
+  panelBody.innerHTML=`<div class="grid">${state.quests.map(q=>{const r=clamp(q.progress/q.goal,0,1);return `<div class="card"><h3>${q.claimed?'✅':'🎯'} ${htmlEscape(q.title)}</h3><p>${htmlEscape(q.desc)}</p><div class="bar"><span style="width:${r*100}%"></span></div><p>${shortNum(q.progress)} / ${shortNum(q.goal)} • Ödül: $${shortNum(q.reward.cash)} ${q.reward.gems?'+ '+q.reward.gems+'💎':''} +${q.reward.xp}XP</p><button class="small gold" data-cmd="claim" data-id="${q.id}" ${q.progress>=q.goal&&!q.claimed?'':'disabled'}>${q.claimed?'Alındı':'Ödülü Al'}</button></div>`}).join('')}</div>`;
+}
+function renderCollection(){
+  panelTitle.textContent='📘 Koleksiyon Kitabı'; panelSub.textContent=`${state.collection.total} keşif • En iyi pet: ${state.collection.best?state.collection.best.name:'Yok'}`;
+  const rar = RARITIES.map(r=>`<div class="card"><h3 style="color:${r.color}">${r.name}</h3><p>Bulunan: ${state.collection.rarities[r.name]||0}</p><p>Tier ${r.tier}</p></div>`).join('');
+  const best = state.collection.best ? petCard(state.collection.best,'best').replace(/<div class="row">.*<\/div>/,'') : '<p class="smallNote">Henüz kayıt yok.</p>';
+  panelBody.innerHTML=`<h3>En iyi keşif</h3><div class="grid">${best}</div><h3 style="margin-top:18px">Rarity sayıları</h3><div class="grid">${rar}</div>`;
+}
+function renderCrates(){
+  panelTitle.textContent='📦 Crate Shop'; panelSub.textContent='Kasa aç, çıkan pet envantere gelir. Sonra envanterden base’e koy.';
+  panelBody.innerHTML=`<div class="grid">${Object.entries(CRATES).map(([k,c])=>`<div class="card"><h3>${htmlEscape(c.name)}</h3><p>Minimum tier ${c.minTier}, şans boost +${Math.round(c.boost*100)}%</p><p>Fiyat: ${c.cash?'$'+shortNum(c.cash):''} ${c.gems?c.gems+'💎':''}</p><button class="small gold" data-cmd="crate" data-kind="${k}">Aç</button></div>`).join('')}</div>`;
+}
+function renderUpgrades(){
+  panelTitle.textContent='⚙️ Upgrade Plaza'; panelSub.textContent='Base, karakter ve savunma sistemini büyüt.';
+  panelBody.innerHTML=`<div class="grid">${Object.entries(UPGRADE_DEFS).map(([k,d])=>{const lvl=state.player[upgradeProp(k)]||0;const cost=Math.round(d.base*Math.pow(d.scale,lvl));return `<div class="card"><h3>${htmlEscape(d.name)} Lv.${lvl}/${d.max}</h3><p>${htmlEscape(d.desc)}</p><p>Fiyat: $${shortNum(cost)}</p><button class="small good" data-cmd="upgrade" data-key="${k}" ${lvl>=d.max?'disabled':''}>Yükselt</button></div>`}).join('')}<div class="card"><h3>♻️ Güvenli Rebirth</h3><p>Petleri silmez. Para harcar, gelir çarpanı ve gem verir.</p><p>Gereken: $${shortNum(250000*Math.pow(state.player.rebirths+1,2))} ve +${shortNum(3500*Math.pow(state.player.rebirths+1,1.45))}/sn</p><button class="small gold" data-cmd="rebirth">Rebirth Al</button></div></div>`;
+}
+function renderMap(){ panelTitle.textContent='🗺️ Mega City Haritası'; panelSub.textContent='Bölgeler ve kısayollar'; panelBody.innerHTML='<div class="grid"><div class="card"><h3>Senin Base</h3><p>Petleri buraya koy. Gelir üretirler. Hırsızlar buraya girer.</p></div><div class="card"><h3>Market / Black Market</h3><p>Brainrot satın al. Black Market daha pahalı ama güçlü.</p></div><div class="card"><h3>Rival Base</h3><p>Rakip petlerini çal, kendi base’e getir.</p></div><div class="card"><h3>Boss Arena</h3><p>R ile boss başlat. Kesersen kasa gibi özel drop verir.</p></div></div>'; }
 
-  function serializeSave() {
-    return {
-      version:SAVE_VERSION,
-      savedAt:Date.now(),
-      cash:Math.round(state.player.cash), highCash:Math.round(state.player.highCash), rebirths:state.player.rebirths,
-      speedLevel:state.player.speedLevel, slotBonus:state.player.slotBonus, luckLevel:state.player.luckLevel, trapCount:state.player.trapCount,
-      playerSlots:state.player.slots.map(cleanBrainrot), collection:state.collection, stats:state.stats, muted:state.muted
-    };
-  }
-  function saveGame() {
-    try { localStorage.setItem(SAVE_KEY, JSON.stringify(serializeSave())); } catch (_) {}
-  }
-  function saveProgressScore(data) {
-    const slots = Array.isArray(data.playerSlots) ? data.playerSlots : Array.isArray(data.slots) ? data.slots : Array.isArray(data.player?.slots) ? data.player.slots : [];
-    const slotIncome = slots.reduce((sum, item) => sum + (Number(item?.income) || 0), 0);
-    const collectionCount = data.collection?.total || (data.collection && typeof data.collection === 'object' ? Object.keys(data.collection).length : 0) || 0;
-    const upgrades = data.upgrades || {};
-    const upgradeScore = (Number(data.speedLevel ?? upgrades.speed) || 0) * 20000 + (Number(data.slotBonus ?? upgrades.slots) || 0) * 26000 + (Number(data.luckLevel ?? upgrades.luck) || 0) * 34000;
-    return (Number(data.highCash || data.cash) || 0) + slotIncome * 1000 + slots.length * 10000 + collectionCount * 2000 + upgradeScore + (Number(data.rebirths) || 0) * 250000;
-  }
-  function saveCandidates() {
-    const seen = new Set(), out = [];
-    for (const key of LEGACY_SAVE_KEYS) {
-      if (seen.has(key)) continue; seen.add(key);
-      try {
-        const raw = localStorage.getItem(key); if (!raw) continue;
-        const data = JSON.parse(raw); if (!data || typeof data !== 'object') continue;
-        out.push({ key, data, time:Number(data.savedAt || data.updatedAt || 0) || 0, score:saveProgressScore(data) });
-      } catch (_) {}
-    }
-    out.sort((a,b) => (b.score - a.score) || (b.time - a.time));
-    return out;
-  }
-  function normalizeCollection(raw) {
-    const base = { total:0, rarities:{}, best:null, seen:{} };
-    if (!raw || typeof raw !== 'object') return base;
-    if (raw.seen || raw.rarities || raw.total || raw.best) {
-      return {
-        total:Number(raw.total) || 0,
-        rarities:{ ...(raw.rarities || {}) },
-        best:raw.best ? cleanBrainrot(raw.best) : null,
-        seen:{ ...(raw.seen || {}) }
-      };
-    }
-    // Eski deluxe sürüm koleksiyonu obje halinde tutuyordu; onu da kitaba çeviriyoruz.
-    for (const value of Object.values(raw)) {
-      if (!value || typeof value !== 'object') continue;
-      const item = cleanBrainrot(value);
-      const key = item.rarity + '|' + item.name;
-      if (!base.seen[key]) {
-        base.seen[key] = true; base.total += 1;
-        base.rarities[item.rarity] = (base.rarities[item.rarity] || 0) + 1;
-        if (!base.best || item.income > base.best.income) base.best = item;
-      }
-    }
-    return base;
-  }
-  function restoreSave(saved) {
-    const num = (v, fb) => { const n = Number(v); return Number.isFinite(n) ? n : fb; };
-    const upgrades = saved.upgrades || {};
-    state.player.cash = num(saved.cash ?? saved.player?.cash, 150);
-    state.player.highCash = num(saved.highCash ?? saved.player?.highCash, state.player.cash);
-    state.player.rebirths = num(saved.rebirths ?? saved.player?.rebirths, 0);
-    state.player.speedLevel = num(saved.speedLevel ?? upgrades.speed ?? saved.player?.speedLevel, 0);
-    state.player.slotBonus = num(saved.slotBonus ?? upgrades.slots ?? saved.player?.slotBonus, 0);
-    state.player.luckLevel = num(saved.luckLevel ?? upgrades.luck ?? saved.player?.luckLevel, 0);
-    state.player.trapCount = num(saved.trapCount ?? saved.player?.trapCount, 1);
-    state.muted = Boolean(saved.muted);
-    state.stats = { ...state.stats, ...(saved.stats || {}) };
-    if (!Number.isFinite(state.stats.sold)) state.stats.sold = 0;
-    state.collection = normalizeCollection(saved.collection);
-    const rawSlots = Array.isArray(saved.playerSlots) ? saved.playerSlots : Array.isArray(saved.slots) ? saved.slots : Array.isArray(saved.player?.slots) ? saved.player.slots : [];
-    state.player.slots = rawSlots.filter(Boolean).slice(0, getMaxPlayerSlots()).map((item, idx) => cleanBrainrot(item, idx));
-    // Koleksiyon eski kayıtta eksikse, mevcut petlerden yeniden oluştur.
-    for (const item of state.player.slots) discover(item);
-    return true;
-  }
-  function loadSave() {
-    try {
-      const candidates = saveCandidates();
-      if (!candidates.length) return false;
-      for (const found of candidates) {
-        try {
-          if (restoreSave(found.data)) {
-            document.getElementById('btnMute').textContent = state.muted ? 'SESSİZ' : 'SES';
-            saveGame(); // Eski anahtardan geldiyse sabit yeni anahtara taşır.
-            showMessage(found.key === SAVE_KEY ? 'En dolu kayıt yüklendi.' : 'Eski kayıt bulundu, en dolu kayıt yeni sürüme taşındı.', 2.6);
-            return true;
-          }
-        } catch (e) { console.warn('Save candidate failed', found.key, e); }
-      }
-      return false;
-    } catch (e) { console.warn(e); return false; }
-  }
-  function encodeSaveText(data) {
-    const json = JSON.stringify(data);
-    const bytes = new TextEncoder().encode(json);
-    let bin = '';
-    for (const b of bytes) bin += String.fromCharCode(b);
-    return 'BRAINROT_SAVE_V' + SAVE_VERSION + ':' + btoa(bin);
-  }
-  function decodeSaveText(text) {
-    let raw = String(text || '').trim();
-    if (!raw) throw new Error('empty save');
-    if (raw.startsWith('{')) return JSON.parse(raw);
-    raw = raw.replace(/^BRAINROT_SAVE_V\d+:/, '').trim();
-    const bin = atob(raw);
-    const bytes = new Uint8Array([...bin].map(ch => ch.charCodeAt(0)));
-    return JSON.parse(new TextDecoder().decode(bytes));
-  }
-  async function exportSave() {
-    const code = encodeSaveText(serializeSave());
-    try {
-      await navigator.clipboard?.writeText(code);
-      showMessage('Kayıt kodu kopyalandı. Notlara yapıştırıp saklayabilirsin.', 3);
-    } catch (_) {
-      prompt('Kayıt kodunu kopyala ve sakla:', code);
-      showMessage('Kayıt kodu hazırlandı.', 2.2);
-    }
-    saveGame();
-  }
-  function importSave() {
-    const text = prompt('Kayıt kodunu buraya yapıştır:');
-    if (!text) return;
-    try {
-      const data = decodeSaveText(text);
-      restoreSave(data);
-      saveGame();
-      showMessage('Kayıt yüklendi ve sabit kayda taşındı.', 2.6);
-      beep('win');
-    } catch (e) {
-      console.warn(e);
-      showMessage('Kayıt kodu okunamadı.', 2.1);
-      beep('bad');
-    }
-  }
+panelEl.addEventListener('click', e=>{
+  const close=e.target.closest('#panelClose'); if(close){closePanel(); return;}
+  const btn=e.target.closest('[data-cmd]'); if(!btn) return; const cmd=btn.dataset.cmd;
+  if(cmd==='sell') sellPet(btn.dataset.scope,btn.dataset.id); else if(cmd==='lock') togglePetLock(btn.dataset.scope,btn.dataset.id); else if(cmd==='activate') activatePet(btn.dataset.id); else if(cmd==='stash') stashActivePet(btn.dataset.id); else if(cmd==='claim') claimQuest(btn.dataset.id); else if(cmd==='crate') openCrate(btn.dataset.kind); else if(cmd==='upgrade') buyUpgrade(btn.dataset.key); else if(cmd==='rebirth') rebirth();
+});
 
-  function normalizeResetPhrase(text) {
-    return String(text || '').trim().toUpperCase().replace(/İ/g, 'I').replace(/ı/g, 'I');
-  }
-  function openResetModal() {
-    if (!resetModalEl) return;
-    resetModalEl.classList.remove('hidden');
-    resetPhraseEl.value = '';
-    setTimeout(() => resetPhraseEl.focus?.(), 80);
-  }
-  function closeResetModal() {
-    resetModalEl?.classList.add('hidden');
-    if (resetPhraseEl) resetPhraseEl.value = '';
-  }
-  function backupBeforeReset() {
-    try {
-      const snapshot = serializeSave();
-      snapshot.backupReason = 'before-reset';
-      snapshot.backupAt = Date.now();
-      localStorage.setItem(RESET_BACKUP_KEY, JSON.stringify(snapshot));
-      return true;
-    } catch (e) { console.warn('Reset backup failed', e); return false; }
-  }
-  function restoreResetBackup() {
-    try {
-      const raw = localStorage.getItem(RESET_BACKUP_KEY);
-      if (!raw) { showMessage('Geri alınacak reset yedeği yok.', 2); beep('bad'); return; }
-      const data = JSON.parse(raw);
-      restoreSave(data);
-      saveGame();
-      closeResetModal();
-      showMessage('Son reset yedeği geri yüklendi.', 2.6);
-      beep('win');
-    } catch (e) {
-      console.warn(e);
-      showMessage('Reset yedeği okunamadı.', 2.1);
-      beep('bad');
-    }
-  }
-  function confirmResetFromModal() {
-    if (normalizeResetPhrase(resetPhraseEl?.value) !== 'SIFIRLA') {
-      showMessage('Sıfırlamak için kutuya SIFIRLA yazmalısın.', 2.3);
-      beep('bad');
-      return;
-    }
-    resetSave();
-    closeResetModal();
-  }
+function resize(){ view.dpr=Math.max(1,Math.min(2.5,window.devicePixelRatio||1)); view.w=Math.floor(window.innerWidth); view.h=Math.floor(window.innerHeight); canvas.width=Math.floor(view.w*view.dpr); canvas.height=Math.floor(view.h*view.dpr); ctx.setTransform(view.dpr,0,0,view.dpr,0,0); updateCamera(); }
+window.addEventListener('resize',resize,{passive:true});
+function setInputMode(mode){ if(mode==='keyboard'){ document.body.classList.add('keyboardMode'); mobileControls?.setAttribute('aria-hidden','true'); joy.active=false; joy.dx=joy.dy=0; joyStick.style.transform='translate(0,0)'; if(!keyboardToastShown){toast('Klavye modu: joystick gizlendi. Ekrana dokununca geri gelir.');keyboardToastShown=true;} } else { document.body.classList.remove('keyboardMode'); mobileControls?.removeAttribute('aria-hidden'); } }
+window.addEventListener('keydown', e=>{
+  setInputMode('keyboard'); const k=e.key.toLowerCase(); keys.add(k); if(['arrowup','arrowdown','arrowleft','arrowright',' ','space'].includes(k)) e.preventDefault(); if(e.repeat) return;
+  if(k==='e') interact(); else if(k===' ') swing(); else if(k==='l') lockBase(); else if(k==='i') openPanel('inventory'); else if(k==='q') openPanel('quests'); else if(k==='c') openPanel('collection'); else if(k==='k') openPanel('crates'); else if(k==='u') openPanel('upgrades'); else if(k==='f') toggleNearestLock(); else if(k==='v'||k==='x') sellNearestPet(); else if(k==='r') startBossRaid(); else if(k==='b') rebirth(); else if(k==='p'){ state.paused=!state.paused; } else if(k==='n'){ showMessage('N ile reset kaldırıldı. Save güvende.'); beep('bad'); }
+});
+window.addEventListener('keyup', e=>keys.delete(e.key.toLowerCase()));
+window.addEventListener('pointerdown', e=>{ if(e.pointerType==='touch') setInputMode('touch'); }, {passive:true});
+joyWrap.addEventListener('pointerdown', e=>{ joy.active=true; joy.id=e.pointerId; joyWrap.setPointerCapture(e.pointerId); const r=joyWrap.getBoundingClientRect(); joy.cx=r.left+r.width/2; joy.cy=r.top+r.height/2; updateJoy(e); });
+joyWrap.addEventListener('pointermove', e=>{ if(joy.active && e.pointerId===joy.id) updateJoy(e); });
+joyWrap.addEventListener('pointerup', resetJoy); joyWrap.addEventListener('pointercancel', resetJoy);
+function updateJoy(e){ const max=44; const dx=e.clientX-joy.cx,dy=e.clientY-joy.cy,d=Math.hypot(dx,dy)||1,mag=Math.min(max,d); joy.dx=(dx/d)*(mag/max); joy.dy=(dy/d)*(mag/max); joyStick.style.transform=`translate(${joy.dx*max}px,${joy.dy*max}px)`; }
+function resetJoy(e){ if(e && e.pointerId!==joy.id) return; joy.active=false; joy.id=null; joy.dx=joy.dy=0; joyStick.style.transform='translate(0,0)'; }
+document.querySelectorAll('[data-action]').forEach(btn=>btn.addEventListener('click',()=>{ const a=btn.dataset.action; if(a==='act') interact(); else if(a==='swing') swing(); else if(a==='lock') lockBase(); else if(a==='inventory') openPanel('inventory'); else if(a==='quest') openPanel('quests'); else if(a==='crate') openPanel('crates'); else if(a==='upgrade') openPanel('upgrades'); else if(a==='book') openPanel('collection'); }));
 
-  function resetSave() {
-    backupBeforeReset();
-    try { for (const key of LEGACY_SAVE_KEYS) localStorage.removeItem(key); } catch (_) {}
-    state = defaultState();
-    initEnemySlots();
-    spawnMarket('Sıradan'); spawnMarket('Nadir'); spawnMarket('Epik');
-    showMessage('Kayıt sıfırlandı. Son reseti menüden geri alabilirsin.', 2.6);
-    state.paused = menuEl.classList.contains('hidden') ? false : true;
-    saveGame();
-  }
+document.getElementById('btnStart').onclick=()=>{menuEl.classList.add('hidden');state.started=true;state.paused=false;beep('ok');};
+document.getElementById('btnMenu').onclick=()=>{menuEl.classList.toggle('hidden');state.paused=!menuEl.classList.contains('hidden');};
+document.getElementById('btnInventory').onclick=()=>openPanel('inventory');
+document.getElementById('btnQuests').onclick=()=>openPanel('quests');
+async function fullScreen(){ try{ await document.documentElement.requestFullscreen?.(); }catch(_){} }
+document.getElementById('btnFull').onclick=fullScreen; document.getElementById('btnFull2').onclick=fullScreen;
+document.getElementById('btnMute').onclick=()=>{state.muted=!state.muted;document.getElementById('btnMute').textContent=state.muted?'SESSİZ':'SES';saveGame();};
+document.getElementById('btnExport').onclick=exportSave; document.getElementById('btnImport').onclick=importSave; document.getElementById('btnReset').onclick=openResetModal; document.getElementById('btnUndoReset').onclick=restoreResetBackup;
+document.getElementById('btnCancelReset').onclick=closeResetModal; document.getElementById('btnConfirmReset').onclick=confirmReset; document.getElementById('btnRestoreReset').onclick=restoreResetBackup;
+resetPhraseEl.addEventListener('keydown', e=>{ if(e.key==='Enter') confirmReset(); if(e.key==='Escape') closeResetModal(); });
 
-  function pointInRect(p, r) { return p.x > r.x && p.x < r.x + r.w && p.y > r.y && p.y < r.y + r.h; }
-  function circleRectCollision(c, r) {
-    const nx = clamp(c.x, r.x, r.x + r.w), ny = clamp(c.y, r.y, r.y + r.h);
-    return Math.hypot(c.x - nx, c.y - ny) < c.r;
-  }
-  function pushOutOfRect(circle, rect, side='left') {
-    if (!circleRectCollision(circle, rect)) return;
-    if (side === 'left') circle.x = rect.x - circle.r - 2;
-    if (side === 'right') circle.x = rect.x + rect.w + circle.r + 2;
-    circle.y = clamp(circle.y, rect.y - circle.r - 2, rect.y + rect.h + circle.r + 2);
-  }
-  function nearestMarketItem() {
-    let best = null, bestD = Infinity;
-    for (const item of state.market) {
-      const d = Math.hypot(state.player.x - item.x, state.player.y - item.y);
-      if (d < bestD) { bestD = d; best = item; }
-    }
-    return best && bestD < 60 ? best : null;
-  }
-  function nearestSlotItem(owner) {
-    const isPlayer = owner === 'player';
-    const base = isPlayer ? bases.player : bases.enemy;
-    const slots = isPlayer ? state.player.slots : state.enemy.slots;
-    const positions = slotPositions(base, isPlayer ? getMaxPlayerSlots() : getMaxEnemySlots());
-    let best = null, bestD = Infinity;
-    for (const item of slots) {
-      const pos = positions[item.slotIndex]; if (!pos) continue;
-      const d = Math.hypot(state.player.x - pos.x, state.player.y - pos.y);
-      if (d < bestD) { bestD = d; best = item; }
-    }
-    return best && bestD < 62 ? best : null;
-  }
+function loop(now){ const dt=clamp((now-lastFrame)/1000,0,.05); lastFrame=now; update(dt); draw(); requestAnimationFrame(loop); }
 
-  function doAction() {
-    if (state.paused || state.player.stunTimer > 0) return;
-    if (state.player.carrying) { depositCarried(true); return; }
-    const ownItem = nearestSlotItem('player');
-    if (ownItem && pointInRect(state.player, bases.player)) return sellPlayerItem(ownItem);
-    const marketItem = nearestMarketItem();
-    if (marketItem) return buyMarketItem(marketItem);
-    if (pointInRect(state.player, bases.enemy)) return stealFromEnemy();
-    if (pointInRect(state.player, bases.player)) showMessage('Üsdesin. Gelir otomatik geliyor; hırsızı kollamayı unutma.', 1.8);
-    else showMessage('Brainrotun yanına yaklaş veya bot üssüne gir.', 1.8);
-  }
-  function buyMarketItem(item) {
-    if (state.player.slots.length >= getMaxPlayerSlots()) { showMessage('Üs dolu. SLOT yükselt ya da rebirth yap.', 2); beep('bad'); return; }
-    if (state.player.cash < item.price) { showMessage(`Para yetmiyor. Gerekli: $${item.price.toLocaleString('tr-TR')}`, 1.7); beep('bad'); return; }
-    state.player.cash -= item.price;
-    assignSlot(item, state.player.slots, getMaxPlayerSlots());
-    discover(item);
-    state.market = state.market.filter(m => m.id !== item.id);
-    state.stats.bought += 1;
-    addParticles(item.x, item.y, item.color, 24 + item.tier * 3);
-    addFloatingText(item.x, item.y - 28, `+${item.name}`, item.color);
-    showMessage(`${item.name} alındı: +$${item.income.toFixed(1)}/sn`, 2.4);
-    beep(item.tier >= 5 ? 'win' : 'buy');
-  }
-  function sellValue(item) {
-    const base = Number(item.price) || Math.max(20, Number(item.income || 1) * 12);
-    return Math.max(5, Math.round(base * 0.55 / 5) * 5);
-  }
-  function sellPlayerItem(item) {
-    const value = sellValue(item);
-    state.player.slots = state.player.slots.filter(s => s.id !== item.id);
-    state.player.cash += value;
-    state.stats.sold = (state.stats.sold || 0) + 1;
-    addParticles(state.player.x, state.player.y, COLORS.cash, 28);
-    addFloatingText(state.player.x, state.player.y - 30, `SATILDI +$${shortNum(value)}`, COLORS.cash);
-    showMessage(`${item.name} satıldı: +$${shortNum(value)}`, 2.1);
-    beep('buy');
-    saveGame();
-  }
-  function stealFromEnemy() {
-    if (state.enemy.lockTimer > 0) { showMessage(`Bot üssü kilitli: ${Math.ceil(state.enemy.lockTimer)} sn`, 1.5); beep('bad'); return; }
-    if (state.player.slots.length >= getMaxPlayerSlots()) { showMessage('Kendi üssünde boş slot yok.', 1.7); beep('bad'); return; }
-    const item = nearestSlotItem('enemy');
-    if (!item) { showMessage('Çalmak için brainrotun dibine yaklaş.', 1.7); return; }
-    state.enemy.slots = state.enemy.slots.filter(s => s.id !== item.id);
-    state.player.carrying = cleanBrainrot(item);
-    state.stats.stolen += 1;
-    addParticles(state.player.x, state.player.y, item.color, 30);
-    showMessage(`${item.name} çalındı! Kendi üssüne kaç!`, 2.6);
-    beep('steal');
-  }
-  function depositCarried(forceMessage=false) {
-    const p = state.player;
-    if (!p.carrying) return;
-    if (!pointInRect(p, bases.player)) { if (forceMessage) showMessage('Çaldığın brainrotu kendi üssüne götür!', 1.6); return; }
-    const item = p.carrying;
-    if (assignSlot(item, p.slots, getMaxPlayerSlots())) {
-      discover(item);
-      p.carrying = null;
-      addParticles(p.x, p.y, item.color, 36);
-      addFloatingText(p.x, p.y - 30, `+$${item.income}/sn`, item.color);
-      showMessage(`${item.name} üssüne eklendi!`, 2.2);
-      beep('ok');
-    } else showMessage('Boş slot yok; SLOT yükselt.', 1.8);
-  }
-  function returnCarriedToEnemy() {
-    if (!state.player.carrying) return;
-    const item = state.player.carrying;
-    assignSlot(item, state.enemy.slots, getMaxEnemySlots());
-    state.player.carrying = null;
-    state.player.stunTimer = 1.15;
-    state.player.x = bases.enemy.x - 34;
-    addParticles(state.player.x, state.player.y, COLORS.red, 26);
-    showMessage('Yakalandın! Çaldığın brainrot geri döndü.', 2.2);
-    beep('bad');
-  }
-  function activateLock() {
-    const p = state.player;
-    if (p.lockCooldown > 0) { showMessage(`Kilit beklemede: ${Math.ceil(p.lockCooldown)} sn`, 1.4); beep('bad'); return; }
-    p.lockTimer = 23 + p.rebirths * 4;
-    p.lockCooldown = 55;
-    showMessage('Üs kilitlendi. Hırsız giremez!', 1.9);
-    addParticles(bases.player.x + bases.player.w / 2, bases.player.y + 20, COLORS.playerEdge, 32);
-    beep('buy');
-  }
-  function swingBat() {
-    const p = state.player;
-    if (state.paused || p.batCooldown > 0 || p.stunTimer > 0) return;
-    p.batCooldown = .82; p.swingTimer = .18;
-    let hit = false;
-    if (dist(p, state.thief) < 66) {
-      state.thief.stunTimer = state.thief.kind === 'Tank Thief' ? 2.3 : 3.4;
-      hit = true; state.stats.defended += 1;
-      if (state.thief.carrying) recoverFromThief(); else showMessage('Hırsız sersemledi!', 1.4);
-      addParticles(state.thief.x, state.thief.y, COLORS.cyan, 24);
-    }
-    if (dist(p, state.guard) < 60) {
-      state.guard.stunTimer = 1.55;
-      hit = true;
-      showMessage('Bot gardiyan sersemledi. Kaç!', 1.4);
-      addParticles(state.guard.x, state.guard.y, COLORS.purple, 18);
-    }
-    beep(hit ? 'ok' : 'steal');
-  }
-  function recoverFromThief() {
-    const item = state.thief.carrying;
-    state.thief.carrying = null;
-    assignSlot(item, state.player.slots, getMaxPlayerSlots());
-    addFloatingText(state.thief.x, state.thief.y - 26, 'GERİ ALINDI!', COLORS.cyan);
-    showMessage(`${item.name} geri alındı!`, 1.8);
-  }
-  function buyTrap() {
-    const cost = 90 + state.player.trapCount * 45 + state.player.rebirths * 35;
-    if (state.player.trapCount >= 5) { showMessage('En fazla 5 hazır tuzak taşıyabilirsin.', 1.5); return; }
-    if (state.player.cash < cost) { showMessage(`Tuzak için $${cost} gerekli.`, 1.4); beep('bad'); return; }
-    state.player.cash -= cost; state.player.trapCount += 1;
-    showMessage('Tuzak alındı. Hırsız girişte patlar.', 1.7); beep('buy');
-  }
-  function buySpeed() {
-    const p = state.player, cost = 170 * (p.speedLevel + 1) * (p.speedLevel + 1);
-    if (p.speedLevel >= 6) { showMessage('Hız maksimumda.', 1.4); return; }
-    if (p.cash < cost) { showMessage(`Hız için $${cost} gerekli.`, 1.4); beep('bad'); return; }
-    p.cash -= cost; p.speedLevel += 1;
-    showMessage(`Hız seviyesi ${p.speedLevel} oldu.`, 1.7); beep('buy');
-  }
-  function buySlot() {
-    const p = state.player, max = getMaxPlayerSlots();
-    if (max >= 14) { showMessage('Slot kapasitesi maksimumda.', 1.4); return; }
-    const cost = 420 + p.slotBonus * 320 + p.rebirths * 220;
-    if (p.cash < cost) { showMessage(`Slot için $${cost} gerekli.`, 1.4); beep('bad'); return; }
-    p.cash -= cost; p.slotBonus += 1;
-    showMessage(`Yeni slot açıldı: ${getMaxPlayerSlots()} kapasite.`, 1.7); beep('buy');
-  }
-  function buyLuck() {
-    const p = state.player;
-    if (p.luckLevel >= 8) { showMessage('Şans maksimumda.', 1.4); return; }
-    const cost = Math.round((260 * Math.pow(1.9, p.luckLevel) + p.rebirths * 500) / 10) * 10;
-    if (p.cash < cost) { showMessage(`Şans için $${cost.toLocaleString('tr-TR')} gerekli.`, 1.4); beep('bad'); return; }
-    p.cash -= cost; p.luckLevel += 1;
-    showMessage(`Şans seviyesi ${p.luckLevel}. Rare spawn arttı!`, 1.9); beep('win');
-  }
-  function rebirth() {
-    const p = state.player, cost = 6500 * (p.rebirths + 1) * (p.rebirths + 1);
-    if (p.cash < cost || getPlayerIncome() < 550 * (p.rebirths + 1)) {
-      showMessage(`Rebirth için $${cost.toLocaleString('tr-TR')} ve yüksek gelir lazım.`, 2); beep('bad'); return;
-    }
-    p.rebirths += 1; p.cash = 250 + p.rebirths * 150; p.speedLevel = Math.min(2, p.speedLevel); p.slotBonus = 0; p.trapCount = 1; p.carrying = null; p.slots = [];
-    state.stats.rebirthed += 1;
-    addParticles(WORLD.w/2, WORLD.h/2, COLORS.yellow, 110);
-    showMessage(`REBIRTH! Gelir çarpanı x${incomeMultiplier().toFixed(2)} oldu.`, 3); beep('win');
-  }
-
-  function addParticles(x,y,color,count=18) {
-    for (let i=0;i<count;i++) {
-      state.particles.push({ x,y, vx:rand(-90,90), vy:rand(-135,45), size:rand(2,5), color, life:rand(.45,1.15), maxLife:1.15 });
-    }
-  }
-  function addFloatingText(x,y,text,color=COLORS.cash) { state.floatingTexts.push({x,y,text,color,life:1.15}); }
-
-  function handleInput(dt) {
-    if (justPressed.has('KeyP')) state.paused = !state.paused;
-    if (justPressed.has('KeyM')) toggleMute();
-    if (justPressed.has('KeyN')) { showMessage('N ile reset kaldırıldı. Save güvende.', 2); justPressed.delete('KeyN'); }
-    if (justPressed.has('KeyC')) state.showBook = !state.showBook;
-    if (state.paused) return;
-    if (justPressed.has('KeyE') || justPressed.has('Enter')) doAction();
-    if (justPressed.has('KeyL')) activateLock();
-    if (justPressed.has('Space')) swingBat();
-    if (justPressed.has('Digit1')) buyTrap();
-    if (justPressed.has('Digit2')) buySpeed();
-    if (justPressed.has('Digit3')) buySlot();
-    if (justPressed.has('Digit4')) buyLuck();
-    if (justPressed.has('KeyB')) rebirth();
-
-    const p = state.player;
-    if (p.stunTimer > 0) return;
-    let dx = joy.dx, dy = joy.dy;
-    if (keys.has('KeyW') || keys.has('ArrowUp')) dy -= 1;
-    if (keys.has('KeyS') || keys.has('ArrowDown')) dy += 1;
-    if (keys.has('KeyA') || keys.has('ArrowLeft')) dx -= 1;
-    if (keys.has('KeyD') || keys.has('ArrowRight')) dx += 1;
-    const mag = Math.hypot(dx, dy) || 1;
-    dx /= mag; dy /= mag;
-    let speed = 188 + p.speedLevel * 25;
-    if (p.carrying) speed *= .73;
-    const sprint = keys.has('ShiftLeft') || keys.has('ShiftRight');
-    if (sprint && p.stamina > 1 && (Math.abs(dx)+Math.abs(dy) > .01)) { speed *= 1.42; p.stamina = clamp(p.stamina - 34 * dt, 0, 100); }
-    else p.stamina = clamp(p.stamina + 22 * dt, 0, 100);
-    p.x = clamp(p.x + dx * speed * dt, p.r, WORLD.w - p.r);
-    p.y = clamp(p.y + dy * speed * dt, p.r, WORLD.h - p.r);
-    if (state.enemy.lockTimer > 0 && circleRectCollision(p, bases.enemy)) pushOutOfRect(p, bases.enemy, 'left');
-    depositCarried(false);
-  }
-
-  function update(dt) {
-    state.t += dt;
-    const p = state.player;
-    state.messageTimer = Math.max(0, state.messageTimer - dt);
-    p.lockTimer = Math.max(0, p.lockTimer - dt); p.lockCooldown = Math.max(0, p.lockCooldown - dt); p.batCooldown = Math.max(0, p.batCooldown - dt); p.swingTimer = Math.max(0, p.swingTimer - dt); p.stunTimer = Math.max(0, p.stunTimer - dt);
-    state.enemy.lockTimer = Math.max(0, state.enemy.lockTimer - dt); state.enemy.lockCooldown = Math.max(0, state.enemy.lockCooldown - dt);
-    const income = getPlayerIncome(); p.cash += income * dt; p.highCash = Math.max(p.highCash, p.cash); state.enemy.cash += getEnemyIncome() * dt; state.stats.bestIncome = Math.max(state.stats.bestIncome, income);
-
-    state.spawnTimer -= dt;
-    const spawnFast = state.activeEvent?.type === 'gold' ? .55 : 1;
-    if (state.spawnTimer <= 0) { spawnMarket(); state.spawnTimer = rand(2.05,3.75) * spawnFast; }
-    for (const item of state.market) { item.y += item.vy * dt; item.x += Math.sin(state.t * item.wobble + item.mood) * .18; }
-    state.market = state.market.filter(item => item.y < conveyor.y + conveyor.h + 52);
-    if (state.market.length > 10) state.market.splice(0, state.market.length - 10);
-
-    updateEvent(dt); updateEnemyLock(dt); updateThief(dt); updateGuard(dt); updateParticles(dt);
-    state.saveTimer -= dt; if (state.saveTimer <= 0) { saveGame(); state.saveTimer = 2.0; }
-  }
-  function updateEvent(dt) {
-    if (state.activeEvent) {
-      state.activeEvent.timer -= dt;
-      if (state.activeEvent.timer <= 0) { showMessage(`${state.activeEvent.name} bitti.`, 1.6); state.activeEvent = null; state.eventCooldown = rand(42,68); }
-      return;
-    }
-    state.eventCooldown -= dt;
-    if (state.eventCooldown <= 0) startRandomEvent();
-  }
-  function startRandomEvent() {
-    const pick = choice(['gold','black','wave']);
-    state.stats.events += 1;
-    if (pick === 'gold') {
-      state.activeEvent = { type:'gold', name:'Golden Rush', timer:24 };
-      showMessage('EVENT: Golden Rush! Rare ve mutasyon şansı arttı.', 3); spawnMarket('Efsane'); beep('win');
-    } else if (pick === 'black') {
-      state.activeEvent = { type:'black', name:'Black Market', timer:20 };
-      const item = spawnMarket(Math.random() < .18 ? 'Secret' : 'Mitik'); item.vy *= .55;
-      showMessage('EVENT: Black Market! Pahalı brainrot indirime girdi.', 3); beep('win');
-    } else {
-      state.activeEvent = { type:'wave', name:'Thief Wave', timer:26 };
-      chooseThiefKind(true);
-      showMessage('EVENT: Thief Wave! Bot hırsız hızlandı.', 3); beep('bad');
-    }
-  }
-  function updateEnemyLock(dt) {
-    const e = state.enemy, p = state.player;
-    const threat = pointInRect(p, { x:bases.enemy.x-120, y:bases.enemy.y-28, w:bases.enemy.w+150, h:bases.enemy.h+56 });
-    if (e.lockCooldown <= 0 && threat && !p.carrying) {
-      e.lockTimer = 17 + Math.min(24, state.t / 30); e.lockCooldown = 48;
-      showMessage('Bot üssünü kilitledi. Doğru zamanı bekle!', 2); addParticles(bases.enemy.x+bases.enemy.w/2, bases.enemy.y+18, COLORS.enemyEdge, 28);
-    }
-  }
-  function moveToward(ent,x,y,speed,dt) {
-    const dx=x-ent.x, dy=y-ent.y, mag=Math.hypot(dx,dy);
-    if (mag < 1) return true;
-    const step = Math.min(mag, speed*dt); ent.x += dx/mag*step; ent.y += dy/mag*step;
-    return mag <= speed*dt + 2;
-  }
-  function chooseThiefKind(forceRunner=false) {
-    const kinds = forceRunner ? ['Runner Thief','Sneaky Thief'] : ['Noob Thief','Runner Thief','Tank Thief','Sneaky Thief'];
-    const kind = choice(kinds); state.thief.kind = kind;
-    state.thief.r = kind === 'Tank Thief' ? 19 : 15;
-    state.thief.speed = kind === 'Runner Thief' ? 138 : kind === 'Sneaky Thief' ? 112 : kind === 'Tank Thief' ? 82 : 96;
-  }
-  function updateThief(dt) {
-    const thief = state.thief;
-    thief.stunTimer = Math.max(0, thief.stunTimer - dt);
-    if (thief.stunTimer > 0) return;
-    const home = { x:bases.enemy.x + bases.enemy.w / 2, y:bases.enemy.y + bases.enemy.h / 2 };
-    const waveMult = state.activeEvent?.type === 'wave' ? 1.36 : 1;
-
-    if (thief.carrying) {
-      const arrived = moveToward(thief, home.x, home.y, thief.speed * .88 * waveMult, dt);
-      if (arrived || pointInRect(thief, bases.enemy)) {
-        const item = thief.carrying; thief.carrying = null;
-        const ok = assignSlot(item, state.enemy.slots, getMaxEnemySlots());
-        if (!ok) assignSlot(item, state.player.slots, getMaxPlayerSlots());
-        state.stats.lost += ok ? 1 : 0;
-        showMessage(ok ? `Bot ${item.name} çaldı!` : 'Bot üssü dolu; item geri döndü.', 2.4);
-        beep(ok ? 'bad' : 'ok'); saveGame();
-      }
-      return;
-    }
-
-    if (state.player.lockTimer > 0 || state.player.slots.length === 0) {
-      if (state.player.lockTimer > 0 && circleRectCollision(thief, bases.player)) pushOutOfRect(thief, bases.player, 'right');
-      thief.thinkTimer -= dt;
-      if (thief.thinkTimer <= 0) {
-        chooseThiefKind(false);
-        thief.patrolX = rand(690,1040); thief.patrolY = rand(130,570); thief.thinkTimer = rand(2.2,4.4);
-      }
-      moveToward(thief, thief.patrolX, thief.patrolY, thief.speed * .52, dt);
-      return;
-    }
-
-    const target = state.player.slots.slice().sort((a,b)=>b.income-a.income)[0];
-    const positions = slotPositions(bases.player, getMaxPlayerSlots());
-    const targetPos = positions[target.slotIndex] || { x:bases.player.x + bases.player.w/2, y:bases.player.y + bases.player.h/2 };
-    const speed = (thief.speed + Math.min(58, state.t * .30)) * waveMult;
-
-    // Eski bug: hırsız kapı noktasında kalıyordu. Artık doğrudan slot hedefine yürür.
-    moveToward(thief, targetPos.x, targetPos.y, speed, dt);
-    handleTrapCollision();
-    if (state.player.lockTimer > 0) { pushOutOfRect(thief, bases.player, 'right'); return; }
-
-    if (Math.hypot(thief.x-targetPos.x, thief.y-targetPos.y) < 24) {
-      state.player.slots = state.player.slots.filter(s => s.id !== target.id);
-      thief.carrying = cleanBrainrot(target);
-      showMessage(`${thief.kind} ${target.name} aldı! VUR ile yakala!`, 2.8);
-      addParticles(targetPos.x, targetPos.y, COLORS.red, 30); beep('bad'); saveGame();
-    }
-  }
-  function handleTrapCollision() {
-    if (state.player.trapCount <= 0) return;
-    const trap = { x:bases.player.x + bases.player.w + 24, y:bases.player.y + bases.player.h/2, r:36 };
-    if (Math.hypot(state.thief.x-trap.x, state.thief.y-trap.y) < trap.r + state.thief.r) {
-      state.player.trapCount -= 1; state.thief.stunTimer = state.thief.kind === 'Tank Thief' ? 3.5 : 4.8;
-      if (state.thief.carrying) recoverFromThief(); state.stats.defended += 1;
-      addParticles(trap.x, trap.y, COLORS.yellow, 52); showMessage('Tuzak patladı! Hırsız durduruldu.', 2); beep('ok');
-    }
-  }
-  function updateGuard(dt) {
-    const g = state.guard; g.stunTimer = Math.max(0,g.stunTimer-dt); if (g.stunTimer > 0) return;
-    const p = state.player; const chase = pointInRect(p, bases.enemy) || Boolean(p.carrying);
-    if (chase) { moveToward(g, p.x, p.y, g.speed, dt); if (dist(g,p) < g.r + p.r + 4) returnCarriedToEnemy(); }
-    else { g.patrolTimer -= dt; if (g.patrolTimer <= 0) { g.patrolX = rand(bases.enemy.x+48,bases.enemy.x+bases.enemy.w-48); g.patrolY = rand(bases.enemy.y+56,bases.enemy.y+bases.enemy.h-56); g.patrolTimer = rand(1.1,2.6); } moveToward(g,g.patrolX,g.patrolY,g.speed*.44,dt); }
-  }
-  function updateParticles(dt) {
-    for (const p of state.particles) { p.x += p.vx*dt; p.y += p.vy*dt; p.vy += 180*dt; p.life -= dt; }
-    state.particles = state.particles.filter(p => p.life > 0);
-    for (const f of state.floatingTexts) { f.y -= 32*dt; f.life -= dt; }
-    state.floatingTexts = state.floatingTexts.filter(f => f.life > 0);
-  }
-
-  function draw() {
-    ctx.setTransform(1,0,0,1,0,0);
-    const grad = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
-    grad.addColorStop(0,'#091225'); grad.addColorStop(1,'#040712');
-    ctx.fillStyle = grad; ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.setTransform(view.scale,0,0,view.scale,view.ox,view.oy);
-    drawWorldBackground(); drawBases(); drawConveyor(); drawSlots('player'); drawSlots('enemy'); drawMarket(); drawEntities(); drawParticles(); drawUI();
-    if (state.showBook) drawBook(); if (state.paused && menuEl.classList.contains('hidden')) drawPauseOverlay();
-  }
-  function drawWorldBackground() {
-    ctx.save();
-    const bg = ctx.createLinearGradient(0,0,WORLD.w,WORLD.h); bg.addColorStop(0,COLORS.bgA); bg.addColorStop(1,COLORS.bgB); ctx.fillStyle=bg; roundedRect(10,10,WORLD.w-20,WORLD.h-20,28); ctx.fill();
-    ctx.globalAlpha=.22; ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.lineWidth=1;
-    for (let x=24;x<WORLD.w;x+=44) { ctx.beginPath(); ctx.moveTo(x,20); ctx.lineTo(x,WORLD.h-20); ctx.stroke(); }
-    for (let y=24;y<WORLD.h;y+=44) { ctx.beginPath(); ctx.moveTo(20,y); ctx.lineTo(WORLD.w-20,y); ctx.stroke(); }
-    ctx.globalAlpha=1; ctx.restore();
-  }
-  function roundedRect(x,y,w,h,r) { ctx.beginPath(); ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r); ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h); ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r); ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath(); }
-  function drawBases() {
-    drawBase(bases.player, COLORS.playerBase, COLORS.playerEdge, state.player.lockTimer, state.player.lockCooldown);
-    drawBase(bases.enemy, COLORS.enemyBase, COLORS.enemyEdge, state.enemy.lockTimer, state.enemy.lockCooldown);
-    const trapX = bases.player.x + bases.player.w + 24, trapY = bases.player.y + bases.player.h/2;
-    if (state.player.trapCount > 0) { ctx.save(); ctx.globalAlpha=.9; ctx.strokeStyle=COLORS.yellow; ctx.lineWidth=3; ctx.beginPath(); ctx.arc(trapX,trapY,36,0,Math.PI*2); ctx.stroke(); drawText(`TUZAK x${state.player.trapCount}`, trapX, trapY+52, 11, COLORS.yellow, 'center', 900); ctx.restore(); }
-  }
-  function drawBase(base, fill, edge, lockTimer, cooldown) {
-    ctx.save(); ctx.shadowColor=edge; ctx.shadowBlur=lockTimer>0?24:8; roundedRect(base.x,base.y,base.w,base.h,24); ctx.fillStyle=fill; ctx.fill(); ctx.lineWidth=4; ctx.strokeStyle=edge; ctx.stroke(); ctx.shadowBlur=0;
-    drawText(base.name, base.x+base.w/2, base.y+30, 20, COLORS.text, 'center', 1000);
-    if (lockTimer > 0) drawText(`🔒 KİLİTLİ ${Math.ceil(lockTimer)}sn`, base.x+base.w/2, base.y+base.h-24, 16, '#c7fbff', 'center', 1000);
-    else if (cooldown > 0) drawText(`kilit bekleme ${Math.ceil(cooldown)}sn`, base.x+base.w/2, base.y+base.h-24, 12, COLORS.muted, 'center', 800);
-    else drawText('kilit hazır', base.x+base.w/2, base.y+base.h-24, 12, COLORS.cash, 'center', 900);
-    ctx.restore();
-  }
-  function drawConveyor() {
-    ctx.save(); roundedRect(conveyor.x,conveyor.y,conveyor.w,conveyor.h,24); ctx.fillStyle=COLORS.lane; ctx.fill(); ctx.lineWidth=3; ctx.strokeStyle='rgba(255,255,255,.20)'; ctx.stroke(); roundedRect(conveyor.x+16,conveyor.y+16,conveyor.w-32,conveyor.h-32,16); ctx.clip();
-    for (let y=conveyor.y-80+(state.t*54)%80; y<conveyor.y+conveyor.h; y+=80) { ctx.globalAlpha=.42; ctx.fillStyle=COLORS.lane2; ctx.fillRect(conveyor.x+20,y,conveyor.w-40,18); ctx.globalAlpha=1; drawText('↓',conveyor.x+conveyor.w/2,y+17,18,'rgba(255,255,255,.55)','center',900); }
-    ctx.restore(); drawText('SATIN ALMA BANDI', conveyor.x+conveyor.w/2, conveyor.y-20, 16, COLORS.text, 'center', 1000);
-  }
-  function drawSlots(owner) {
-    const isPlayer=owner==='player', base=isPlayer?bases.player:bases.enemy, slots=isPlayer?state.player.slots:state.enemy.slots, max=isPlayer?getMaxPlayerSlots():getMaxEnemySlots(), positions=slotPositions(base,max), visual=slotVisual(max);
-    for (let i=0;i<max;i++) { const pos=positions[i]; ctx.save(); ctx.globalAlpha=.34; roundedRect(pos.x-visual.cardW/2,pos.y-visual.cardH/2,visual.cardW,visual.cardH,14); ctx.fillStyle='#081224'; ctx.fill(); ctx.strokeStyle=isPlayer?'rgba(126,240,193,.40)':'rgba(255,125,154,.40)'; ctx.stroke(); ctx.restore(); }
-    for (const item of slots) { const pos=positions[item.slotIndex]; if (!pos) continue; drawBrainrot(item,pos.x,pos.y,visual.scale,true); drawText(`$${shortNum(item.income)}/sn`, pos.x, pos.y+visual.incomeY, visual.incomeSize, COLORS.cash, 'center', 900); }
-  }
-  function drawMarket() { const nearest=nearestMarketItem(); for (const item of state.market) { const pulse=nearest&&nearest.id===item.id?1+Math.sin(state.t*10)*.06:1; drawBrainrot(item,item.x,item.y,item.scale*pulse,false); drawPriceTag(item,item.x,item.y+44,nearest&&nearest.id===item.id); } }
-  function drawPriceTag(item,x,y,highlight) { const text=`$${shortNum(item.price)} • +${shortNum(item.income)}/sn`; ctx.save(); ctx.font='900 12px system-ui,sans-serif'; const w=ctx.measureText(text).width+18; roundedRect(x-w/2,y-13,w,24,9); ctx.fillStyle=highlight?'rgba(126,240,193,.94)':'rgba(7,16,31,.82)'; ctx.fill(); ctx.strokeStyle=highlight?'rgba(255,255,255,.55)':'rgba(255,255,255,.12)'; ctx.stroke(); drawText(text,x,y+4,12,highlight?'#07101f':COLORS.text,'center',1000); ctx.restore(); }
-  function drawBrainrot(item,x,y,scale=1,compact=false) {
-    ctx.save(); const wob=Math.sin(state.t*4+item.mood)*3; ctx.translate(x,y+wob); ctx.scale(scale,scale); ctx.shadowColor=item.color; ctx.shadowBlur=compact?9:18; ctx.fillStyle=item.color; ctx.beginPath(); ctx.ellipse(0,0,24,20,Math.sin(state.t+item.mood)*.12,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; ctx.fillStyle='rgba(255,255,255,.34)'; ctx.beginPath(); ctx.ellipse(-7,-7,7,4,-.5,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#07101f'; ctx.beginPath(); ctx.arc(-7,-1,2.4,0,Math.PI*2); ctx.arc(9,-1,2.4,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='#07101f'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(1,5,7,.15,Math.PI-.15); ctx.stroke(); drawText(item.icon,0,-29,compact?16:19,'#fff','center',900); ctx.restore();
-    if (!compact) { drawText(item.rarity, x, y-38, 11, item.color, 'center', 1000); if (item.mutation && item.mutation !== 'Normal') drawText(item.mutation, x, y-52, 11, COLORS.yellow, 'center', 1000); }
-  }
-  function drawEntities() { drawPlayer(); drawBot(state.thief, state.thief.kind, COLORS.red, state.thief.carrying ? state.thief.carrying.icon : '🥷'); drawBot(state.guard,'GARDİYAN',COLORS.purple,'🛡️'); }
-  function drawPlayer() {
-    const p=state.player; ctx.save(); ctx.translate(p.x,p.y); if (p.stunTimer>0) ctx.rotate(Math.sin(state.t*36)*.12); ctx.fillStyle=p.stunTimer>0?'#9ea7bb':'#7ef0c1'; ctx.shadowColor='#7ef0c1'; ctx.shadowBlur=12; ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; ctx.fillStyle='#07101f'; ctx.beginPath(); ctx.arc(-6,-4,2.3,0,Math.PI*2); ctx.arc(6,-4,2.3,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='#07101f'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(0,4,6,.2,Math.PI-.2); ctx.stroke(); if (p.swingTimer>0) { ctx.save(); ctx.rotate(-.7+(.18-p.swingTimer)*10); ctx.strokeStyle=COLORS.yellow; ctx.lineWidth=7; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(8,-6); ctx.lineTo(50,-19); ctx.stroke(); ctx.restore(); } ctx.restore(); drawText(p.stunTimer>0?'SERSEM':'SEN', p.x, p.y-29, 12, COLORS.text, 'center', 1000); if (p.carrying) { drawBrainrot(p.carrying,p.x,p.y-43,.86,false); drawText('ÜSSÜNE GÖTÜR!',p.x,p.y+41,12,COLORS.yellow,'center',1000); }
-  }
-  function drawBot(bot,label,color,icon) { ctx.save(); ctx.translate(bot.x,bot.y); if (bot.stunTimer>0) ctx.rotate(Math.sin(state.t*40)*.18); ctx.fillStyle=bot.stunTimer>0?'#828a9e':color; ctx.shadowColor=color; ctx.shadowBlur=10; ctx.beginPath(); ctx.arc(0,0,bot.r,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; drawText(icon,0,6,18,'#fff','center',900); ctx.restore(); drawText(bot.stunTimer>0?'SERSEM':label,bot.x,bot.y-28,11,COLORS.text,'center',1000); if (bot.carrying) drawBrainrot(bot.carrying,bot.x,bot.y-42,.82,false); }
-  function drawParticles() { for (const p of state.particles) { ctx.save(); ctx.globalAlpha=clamp(p.life/p.maxLife,0,1); ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill(); ctx.restore(); } for (const f of state.floatingTexts) { ctx.save(); ctx.globalAlpha=clamp(f.life,0,1); drawText(f.text,f.x,f.y,16,f.color,'center',1000); ctx.restore(); } }
-  function currentActionHint() {
-    const p = state.player;
-    if (p.carrying) return pointInRect(p, bases.player) ? `E / buton: ÜSSE KOY` : 'Çaldığın peti kendi üssüne götür';
-    const own = nearestSlotItem('player');
-    if (own && pointInRect(p, bases.player)) return `E / buton: SAT $${shortNum(sellValue(own))}`;
-    const market = nearestMarketItem();
-    if (market) return `E / buton: AL $${shortNum(market.price)}`;
-    const enemy = nearestSlotItem('enemy');
-    if (enemy && pointInRect(p, bases.enemy)) return `E / buton: ÇAL +$${shortNum(enemy.income)}/sn`;
-    return '';
-  }
-  function updateActionButtonLabel() {
-    if (!actionButton) return;
-    const hint = currentActionHint();
-    if (hint.includes('SAT')) actionButton.textContent = 'SAT';
-    else if (hint.includes('KOY')) actionButton.textContent = 'KOY';
-    else if (hint.includes('ÇAL')) actionButton.textContent = 'ÇAL';
-    else if (hint.includes('AL')) actionButton.textContent = 'AL';
-    else actionButton.textContent = 'AL / ÇAL / SAT';
-  }
-  function drawActionHint() {
-    const hint = currentActionHint(); updateActionButtonLabel();
-    if (!hint) return;
-    ctx.save(); ctx.font='1000 15px system-ui,sans-serif'; const w=Math.min(430,ctx.measureText(hint).width+30);
-    roundedRect(WORLD.w/2-w/2,WORLD.h-118,w,34,14); ctx.fillStyle='rgba(126,240,193,.86)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.38)'; ctx.stroke();
-    drawText(hint,WORLD.w/2,WORLD.h-96,14,'#07101f','center',1000); ctx.restore();
-  }
-  function drawUI() { drawTopBar(); if (!touchControlsVisible()) { drawShopBar(); drawMiniStats(); } drawActionHint(); drawMessage(); }
-  function drawTopBar() {
-    const p=state.player, income=getPlayerIncome(); ctx.save(); roundedRect(20,18,WORLD.w-40,50,18); ctx.fillStyle='rgba(7,16,31,.78)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.stroke();
-    const items=[[`$${shortNum(p.cash)}`,COLORS.cash],[`+$${shortNum(income)}/sn`,COLORS.yellow],[`Slot ${p.slots.length}/${getMaxPlayerSlots()}`,COLORS.text],[`Luck ${p.luckLevel}`,COLORS.cyan],[`Rebirth ${p.rebirths}`,COLORS.purple],[`Kitap ${state.collection.total}`,COLORS.orange]];
-    let x=42; for (const [txt,color] of items) { drawText(txt,x,50,16,color,'left',1000); x += ctx.measureText(txt).width + 34; } ctx.restore();
-  }
-  function drawShopBar() {
-    const p=state.player, trapCost=90+p.trapCount*45+p.rebirths*35, speedCost=170*(p.speedLevel+1)*(p.speedLevel+1), slotCost=getMaxPlayerSlots()>=14?'MAX':`$${shortNum(420+p.slotBonus*320+p.rebirths*220)}`, luckCost=p.luckLevel>=8?'MAX':`$${shortNum(Math.round((260*Math.pow(1.9,p.luckLevel)+p.rebirths*500)/10)*10)}`;
-    const cards=[['1',`Tuzak $${shortNum(trapCost)}`,`hazır x${p.trapCount}`],['2',p.speedLevel>=6?'Hız MAX':`Hız $${shortNum(speedCost)}`,`seviye ${p.speedLevel}`],['3',`Slot ${slotCost}`,`${getMaxPlayerSlots()} kapasite`],['4',`Şans ${luckCost}`,`seviye ${p.luckLevel}`],['B',`Rebirth $${shortNum(6500*(p.rebirths+1)*(p.rebirths+1))}`,`x${incomeMultiplier().toFixed(2)}`],['L',p.lockTimer>0?`Kilit ${Math.ceil(p.lockTimer)}sn`:p.lockCooldown>0?`Bekle ${Math.ceil(p.lockCooldown)}sn`:'Üs kilitle','savunma']];
-    let x=22,y=WORLD.h-60; for (const c of cards) { drawControlCard(x,y,171,43,c[0],c[1],c[2]); x += 180; }
-  }
-  function drawControlCard(x,y,w,h,key,title,sub) { ctx.save(); roundedRect(x,y,w,h,14); ctx.fillStyle='rgba(7,16,31,.72)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.stroke(); roundedRect(x+7,y+7,31,29,9); ctx.fillStyle='rgba(255,255,255,.13)'; ctx.fill(); drawText(key,x+22,y+28,14,COLORS.text,'center',1000); drawText(title,x+47,y+19,12,COLORS.text,'left',1000); drawText(sub,x+47,y+35,10,COLORS.muted,'left',800); ctx.restore(); }
-  function drawMessage() { if (state.messageTimer<=0 || !state.message) return; ctx.save(); ctx.font='1000 17px system-ui,sans-serif'; const text=state.message; const w=Math.min(WORLD.w-90,ctx.measureText(text).width+34); roundedRect(WORLD.w/2-w/2,77,w,38,16); ctx.fillStyle='rgba(7,16,31,.80)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.13)'; ctx.stroke(); drawText(text,WORLD.w/2,101,16,COLORS.text,'center',1000); ctx.restore(); }
-  function drawMiniStats() {
-    ctx.save(); const x=344,y=116,w=142,h=150; roundedRect(x,y,w,h,18); ctx.fillStyle='rgba(7,16,31,.55)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.10)'; ctx.stroke(); drawText('V1.3.3',x+14,y+28,15,COLORS.cash,'left',1000); drawText(`Alınan ${state.stats.bought}`,x+14,y+52,12,COLORS.text,'left',800); drawText(`Çalınan ${state.stats.stolen}`,x+14,y+72,12,COLORS.red,'left',800); drawText(`Satılan ${state.stats.sold||0}`,x+14,y+92,12,COLORS.cash,'left',800); drawText(`Savunma ${state.stats.defended}`,x+14,y+112,12,COLORS.cyan,'left',800); drawText(`En iyi +${shortNum(state.stats.bestIncome)}/sn`,x+14,y+132,12,COLORS.yellow,'left',800); ctx.restore();
-    if (state.activeEvent) { ctx.save(); const text=`EVENT: ${state.activeEvent.name} • ${Math.ceil(state.activeEvent.timer)}sn`; ctx.font='1000 16px system-ui,sans-serif'; const tw=ctx.measureText(text).width+28; roundedRect(WORLD.w/2-tw/2,124,tw,34,14); ctx.fillStyle='rgba(255,230,128,.20)'; ctx.fill(); ctx.strokeStyle='rgba(255,230,128,.55)'; ctx.stroke(); drawText(text,WORLD.w/2,146,15,COLORS.yellow,'center',1000); ctx.restore(); }
-  }
-  function drawBook() {
-    ctx.save(); roundedRect(250,92,600,466,26); ctx.fillStyle='rgba(7,16,31,.92)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.18)'; ctx.lineWidth=2; ctx.stroke(); drawText('📘 Koleksiyon Kitabı',300,135,26,COLORS.text,'left',1000); drawText('C veya KİTAP butonu ile kapat',300,160,12,COLORS.muted,'left',800);
-    let y=204; drawText(`Keşfedilen: ${state.collection.total}`,300,y,18,COLORS.cash,'left',1000); y += 34;
-    for (const r of rarityTable) { const n=state.collection.rarities[r.name] || 0; drawText(`${r.name}: ${n}`,300,y,15,r.color,'left',900); y += 24; }
-    const best=state.collection.best; if (best) { drawText('En iyi item',570,204,17,COLORS.yellow,'left',1000); drawBrainrot(best,650,270,1.45,false); drawText(best.name,650,338,15,COLORS.text,'center',1000); drawText(`${best.rarity} • +$${shortNum(best.income)}/sn`,650,360,13,best.color,'center',900); }
-    drawText('İpucu: ŞANS yükseltmesi Secret/Godly/Glitched ihtimalini artırır.',300,520,13,COLORS.muted,'left',800); ctx.restore();
-  }
-  function drawPauseOverlay() { ctx.save(); roundedRect(350,250,400,126,26); ctx.fillStyle='rgba(7,16,31,.88)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.18)'; ctx.stroke(); drawText('DURAKLATILDI',WORLD.w/2,298,26,COLORS.text,'center',1000); drawText('P ile devam et veya MENÜ kullan',WORLD.w/2,328,14,COLORS.muted,'center',800); ctx.restore(); }
-  function drawText(text,x,y,size=14,color=COLORS.text,align='left',weight=800) { ctx.fillStyle=color; ctx.font=`${weight} ${size}px Inter, system-ui, -apple-system, sans-serif`; ctx.textAlign=align; ctx.textBaseline='alphabetic'; ctx.fillText(String(text),x,y); }
-  function shortNum(v) { v = Number(v) || 0; if (Math.abs(v) >= 1e9) return (v/1e9).toFixed(1)+'B'; if (Math.abs(v) >= 1e6) return (v/1e6).toFixed(1)+'M'; if (Math.abs(v) >= 1e3) return (v/1e3).toFixed(1)+'K'; return Math.floor(v).toLocaleString('tr-TR'); }
-
-  function tick(now) {
-    const dt = Math.min(.05, (now-last)/1000 || 0); last = now;
-    handleInput(dt); if (!state.paused) update(dt); draw(); justPressed.clear(); requestAnimationFrame(tick);
-  }
-
-  window.addEventListener('keydown', e => { setInputMode('keyboard'); keys.add(e.code); justPressed.add(e.code); if (['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault(); });
-  window.addEventListener('keyup', e => keys.delete(e.code));
-  window.addEventListener('pointerdown', e => { initAudio(); if (e.pointerType === 'touch' || e.pointerType === 'pen') setInputMode('touch'); }, { passive:true });
-
-  function updateJoyFromPointer(e) {
-    const r = joyWrap.getBoundingClientRect(); const cx = r.left + r.width/2, cy = r.top + r.height/2;
-    const dx = e.clientX - cx, dy = e.clientY - cy; const max = r.width * .31; const mag = Math.hypot(dx,dy); const k = mag > max ? max/mag : 1;
-    const sx = dx*k, sy = dy*k; joy.dx = clamp(dx/max, -1, 1); joy.dy = clamp(dy/max, -1, 1); if (Math.hypot(joy.dx,joy.dy) < .18) { joy.dx=0; joy.dy=0; }
-    joyStick.style.transform = `translate(${sx}px, ${sy}px)`;
-  }
-  joyWrap.addEventListener('pointerdown', e => { e.preventDefault(); joy.active = true; joyWrap.setPointerCapture(e.pointerId); updateJoyFromPointer(e); }, { passive:false });
-  joyWrap.addEventListener('pointermove', e => { if (!joy.active) return; e.preventDefault(); updateJoyFromPointer(e); }, { passive:false });
-  function resetJoy(e) { joy.active=false; joy.dx=0; joy.dy=0; joyStick.style.transform='translate(0,0)'; try { joyWrap.releasePointerCapture(e.pointerId); } catch (_) {} }
-  joyWrap.addEventListener('pointerup', resetJoy); joyWrap.addEventListener('pointercancel', resetJoy);
-
-  function toggleMute() { state.muted = !state.muted; document.getElementById('btnMute').textContent = state.muted ? 'SESSİZ' : 'SES'; showMessage(state.muted ? 'Ses kapalı.' : 'Ses açık.', 1.1); saveGame(); }
-  function handleButtonAction(action) {
-    initAudio();
-    const map = { act:doAction, swing:swingBat, lock:activateLock, trap:buyTrap, speed:buySpeed, slot:buySlot, luck:buyLuck, book:()=>{state.showBook=!state.showBook;} };
-    map[action]?.();
-  }
-  document.querySelectorAll('[data-action]').forEach(btn => btn.addEventListener('pointerdown', e => { e.preventDefault(); handleButtonAction(btn.dataset.action); }, { passive:false }));
-  document.getElementById('btnStart').addEventListener('click', startGame);
-  document.getElementById('btnFull').addEventListener('click', goFullscreen);
-  document.getElementById('btnFull2').addEventListener('click', goFullscreen);
-  document.getElementById('btnMenu').addEventListener('click', openMenu);
-  document.getElementById('btnMute').addEventListener('click', toggleMute);
-  document.getElementById('btnExport').addEventListener('click', exportSave);
-  document.getElementById('btnImport').addEventListener('click', importSave);
-  document.getElementById('btnUndoReset').addEventListener('click', restoreResetBackup);
-  document.getElementById('btnReset').addEventListener('click', openResetModal);
-  document.getElementById('btnCancelReset').addEventListener('click', closeResetModal);
-  document.getElementById('btnConfirmReset').addEventListener('click', confirmResetFromModal);
-  document.getElementById('btnRestoreReset').addEventListener('click', restoreResetBackup);
-  resetPhraseEl?.addEventListener('keydown', e => { if (e.key === 'Enter') confirmResetFromModal(); if (e.key === 'Escape') closeResetModal(); });
-
-  function boot() {
-    const loaded = loadSave(); initEnemySlots();
-    if (!loaded) { spawnMarket('Sıradan'); spawnMarket('Nadir'); spawnMarket('Epik'); }
-    else { spawnMarket('Nadir'); spawnMarket(); }
-    document.getElementById('btnMute').textContent = state.muted ? 'SESSİZ' : 'SES';
-    requestAnimationFrame(tick);
-  }
-  boot();
+resize();
+const loaded=loadSave(); ensureTransientWorld(); if(!loaded) showMessage('V2 Mega City hazır. Kayıt sistemi sabit.',3); saveGame(); requestAnimationFrame(loop);
 })();
 </script>
 </body>
