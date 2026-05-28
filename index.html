@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Brainrot Heist V1.2</title>
+<title>Brainrot Heist V1.3.3</title>
 <style>
   :root{
     --bg:#07101f;
@@ -29,7 +29,7 @@
   .topbar button:active,.menu button:active,.mButton:active{transform:scale(.96)}
   .menu{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:22px;background:linear-gradient(180deg,rgba(2,5,12,.74),rgba(2,5,12,.92));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
   .menu.hidden{display:none}
-  .menuCard{width:min(760px,100%);border:1px solid rgba(255,255,255,.14);border-radius:28px;padding:24px;background:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.055));box-shadow:0 30px 110px rgba(0,0,0,.5)}
+  .menuCard{width:min(760px,100%);max-height:calc(100dvh - 34px);overflow:auto;border:1px solid rgba(255,255,255,.14);border-radius:28px;padding:24px;background:linear-gradient(180deg,rgba(255,255,255,.11),rgba(255,255,255,.055));box-shadow:0 30px 110px rgba(0,0,0,.5);scrollbar-width:thin}
   .eyebrow{margin:0 0 8px;color:var(--accent);font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:1000}
   h1{margin:0;font-size:clamp(34px,8vw,74px);line-height:.9;letter-spacing:-.06em}
   .lead{margin:14px 0 0;color:var(--muted);font-size:16px;line-height:1.45;max-width:620px}
@@ -49,13 +49,28 @@
   .mButton.big{height:76px;background:rgba(126,240,193,.18);color:#effff9}
   .mButton.warn{background:rgba(255,230,128,.16)}
   .mButton.danger{background:rgba(255,102,136,.16)}
+  .keyboardMode .mobileControls,.keyboardMode #rotateHint{display:none!important}
+  .keyboardMode canvas{cursor:crosshair}
   @media (pointer:coarse), (max-width:900px){.mobileControls{display:block}.topbar button{height:38px;padding:0 10px;font-size:12px}.patch{grid-template-columns:1fr}.menuCard{padding:19px}}
   @media (orientation:portrait) and (pointer:coarse){#rotateHint{display:block}.mButtons{grid-template-columns:76px 76px}.mButton{height:58px;font-size:12px}#joyWrap{width:132px;height:132px}}
+
+
+  .dangerText{color:#ff6688}
+  .resetModal{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(2,5,12,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+  .resetModal.hidden{display:none}
+  .resetCard{width:min(560px,100%);border:1px solid rgba(255,102,136,.38);border-radius:26px;padding:22px;background:linear-gradient(180deg,rgba(70,15,30,.92),rgba(7,16,31,.94));box-shadow:0 35px 120px rgba(0,0,0,.62)}
+  .resetCard h2{margin:0;font-size:clamp(27px,6vw,44px);line-height:.95;letter-spacing:-.04em}
+  .resetLead{font-size:15px;margin-top:12px}
+  .resetInput{width:100%;height:52px;margin-top:10px;border-radius:16px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.10);color:#fff;font-size:22px;font-weight:1000;text-align:center;letter-spacing:.12em;outline:none;text-transform:uppercase}
+  .resetInput:focus{border-color:#ffe680;box-shadow:0 0 0 4px rgba(255,230,128,.12)}
+  .dangerBtn{background:rgba(255,102,136,.26)!important;color:#fff!important;border-color:rgba(255,102,136,.5)!important}
+  @media (max-width:760px){.topbar{left:calc(env(safe-area-inset-left) + 8px);right:calc(env(safe-area-inset-right) + 8px);justify-content:flex-end;gap:6px}.topbar button{height:34px;padding:0 8px;font-size:11px}.mButtons{right:calc(env(safe-area-inset-right) + 10px);bottom:calc(env(safe-area-inset-bottom) + 14px);grid-template-columns:70px 70px;gap:8px}.mButton{height:50px;font-size:11px;border-radius:14px}.mButton.big{height:58px}#joyWrap{left:calc(env(safe-area-inset-left) + 12px);bottom:calc(env(safe-area-inset-bottom) + 16px);width:116px;height:116px}#joyStick{width:52px;height:52px;margin:-26px 0 0 -26px}#rotateHint{bottom:calc(env(safe-area-inset-bottom) + 174px);font-size:12px;padding:8px 10px}}
+  @media (max-height:500px){#rotateHint{display:none!important}.mButtons{grid-template-columns:68px 68px;gap:7px}.mButton{height:42px;font-size:10px}.mButton.big{height:50px}#joyWrap{width:106px;height:106px}.menu{align-items:flex-start}.menuCard{margin-top:8px}}
 </style>
 </head>
 <body>
 <div id="app">
-  <canvas id="game" aria-label="Brainrot Heist V1.2 oyun alanı"></canvas>
+  <canvas id="game" aria-label="Brainrot Heist V1.3.3 oyun alanı"></canvas>
   <div id="toast" class="toast" aria-live="polite"></div>
 
   <div class="topbar">
@@ -69,7 +84,7 @@
   <div class="mobileControls" aria-label="Mobil kontroller">
     <div id="joyWrap"><div id="joyStick"></div></div>
     <div class="mButtons">
-      <button class="mButton big" data-action="act" type="button">AL / ÇAL</button>
+      <button class="mButton big" data-action="act" type="button">AL / ÇAL / SAT</button>
       <button class="mButton big danger" data-action="swing" type="button">VUR</button>
       <button class="mButton warn" data-action="lock" type="button">KİLİT</button>
       <button class="mButton" data-action="trap" type="button">TUZAK</button>
@@ -82,21 +97,39 @@
 
   <section id="menu" class="menu">
     <div class="menuCard">
-      <p class="eyebrow">V1.2 Mobile + Rarity Patch</p>
+      <p class="eyebrow">V1.3.3 Reset Guard</p>
       <h1>Brainrot Heist</h1>
-      <p class="lead">Telefon uyumlu joystick, tam ekran, yeni rarityler, mutasyonlar, koleksiyon kitabı, şans yükseltmesi ve event sistemi eklendi.</p>
+      <p class="lead">Yanlış reset koruması eklendi, hırsız AI düzeltildi, pet satma var, kayıt update'lerde korunuyor ve klavye algılanınca mobil kontroller gizleniyor.</p>
       <div class="patch">
-        <div><b>Mobil patch</b>Joystick, büyük aksiyon butonları, safe-area uyumu, tam ekran ve yatay mod uyarısı.</div>
-        <div><b>Rarity patch</b>Sıradan, Nadir, Epik, Efsane, Mitik, Secret, Godly ve Glitched spawn sistemi.</div>
-        <div><b>Progress</b>Şans yükseltmesi, koleksiyon kitabı, best income, otomatik kayıt ve rebirth çarpanı.</div>
-        <div><b>Eventler</b>Golden Rush, Black Market ve Thief Wave gibi rastgele olaylar.</div>
+        <div><b>Kontrol patch</b>iPad klavye algılanınca joystick ve mobil butonlar otomatik gizlenir; ekrana dokununca geri gelir.</div>
+        <div><b>Hırsız fix</b>Bot artık kapıda takılmaz; kilit açıkken üsse girip en değerli peti çalmaya çalışır.</div>
+        <div><b>Pet satma</b>Kendi üssündeki pete yaklaşınca E veya AL/ÇAL/SAT butonu peti satar.</div>
+        <div><b>Reset koruması</b>Reset artık klavye kısayolunda yok; önce uyarı ekranı açılır ve SIFIRLA yazmadan çalışmaz.</div>
       </div>
       <div class="menuBtns">
         <button id="btnStart" class="primary" type="button">OYUNA BAŞLA</button>
         <button id="btnFull2" type="button">TAM EKRAN AÇ</button>
+        <button id="btnExport" type="button">KAYDI KOPYALA</button>
+        <button id="btnImport" type="button">KAYIT YÜKLE</button>
+        <button id="btnUndoReset" type="button">SON RESETİ GERİ AL</button>
         <button id="btnReset" type="button">KAYDI SIFIRLA</button>
       </div>
-      <p class="smallNote">Klavye: WASD/Oklar hareket, Shift koş, E al/çal, Space vur, L kilit, 1 tuzak, 2 hız, 3 slot, 4 şans, C kitap, B rebirth, P pause.</p>
+      <p class="smallNote">Klavye: WASD/Oklar hareket, Shift koş, E al/çal/sat, Space vur, L kilit, 1 tuzak, 2 hız, 3 slot, 4 şans, C kitap, B rebirth, P pause. N/klavye ile reset yok. Sıfırlama için menüde SIFIRLA yazman gerekir. KAYDI KOPYALA ile update öncesi yedek alabilirsin.</p>
+    </div>
+  </section>
+
+  <section id="resetModal" class="resetModal hidden" aria-modal="true" role="dialog">
+    <div class="resetCard">
+      <p class="eyebrow dangerText">TEHLİKELİ İŞLEM</p>
+      <h2>Kaydı sıfırlamak üzeresin</h2>
+      <p class="lead resetLead">Bu işlem yeni oyun başlatır. Önce otomatik geri alma yedeği alınacak ama yine de yanlış basmayı engellemek için onay istiyorum.</p>
+      <p class="smallNote">Devam etmek için aşağıdaki kutuya <b>SIFIRLA</b> yaz. Vazgeçersen save’e dokunulmaz.</p>
+      <input id="resetPhrase" class="resetInput" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="SIFIRLA yaz" />
+      <div class="menuBtns">
+        <button id="btnCancelReset" type="button">VAZGEÇ</button>
+        <button id="btnConfirmReset" class="dangerBtn" type="button">EVET, SIFIRLA</button>
+        <button id="btnRestoreReset" type="button">SON RESETİ GERİ AL</button>
+      </div>
     </div>
   </section>
 </div>
@@ -110,8 +143,23 @@
   const menuEl = document.getElementById('menu');
   const joyWrap = document.getElementById('joyWrap');
   const joyStick = document.getElementById('joyStick');
+  const actionButton = document.querySelector('[data-action="act"]');
+  const mobileControls = document.querySelector('.mobileControls');
+  const resetModalEl = document.getElementById('resetModal');
+  const resetPhraseEl = document.getElementById('resetPhrase');
   const WORLD = { w: 1100, h: 660 };
-  const SAVE_KEY = 'brainrot-heist-v12-save';
+  const SAVE_KEY = 'brainrot-heist-save';
+  const SAVE_VERSION = 5;
+  const RESET_BACKUP_KEY = 'brainrot-heist-reset-backup';
+  const LEGACY_SAVE_KEYS = [
+    SAVE_KEY,
+    'brainrot-heist-v12-save',
+    'brainrot-heist-standalone-v12',
+    'brainrot-heist-standalone-v2',
+    'brainrot-heist-standalone-v1',
+    'brainrot-heist-deluxe-v12',
+    'brainrot-heist-v13-save'
+  ];
   const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
   const rand = (min, max) => min + Math.random() * (max - min);
   const choice = arr => arr[Math.floor(Math.random() * arr.length)];
@@ -135,6 +183,22 @@
     { key:'glitched', name:'Glitched', chance:.08, tier:8, price:[125000,240000], income:[42000,90000], color:'#ff4dff' },
   ];
   const rarityByName = new Map(rarityTable.map(r => [r.name, r]));
+  const rarityAliases = {
+    'common':'common','sıradan':'common','siradan':'common',
+    'rare':'rare','nadir':'rare',
+    'epic':'epic','epik':'epic',
+    'legendary':'legendary','legend':'legendary','efsane':'legendary',
+    'mythic':'mythic','mitik':'mythic',
+    'secret':'secret',
+    'godly':'godly',
+    'glitched':'glitched','glitch':'glitched'
+  };
+  function resolveRarity(item={}) {
+    const rawKey = String(item.rarityKey || '').toLowerCase().trim();
+    const rawName = String(item.rarity || '').toLowerCase().trim();
+    const key = rarityAliases[rawKey] || rarityAliases[rawName] || rawKey;
+    return rarityTable.find(r => r.key === key) || rarityByName.get(item.rarity) || rarityTable[0];
+  }
   const mutations = [
     { name:'', chance:88, mult:1, tag:'Normal' },
     { name:'Altın', chance:6, mult:2, tag:'Gold', glow:'#ffe680' },
@@ -176,14 +240,14 @@
     saveTimer:2,
     player:{
       x:172,y:352,r:17,cash:150,highCash:150,rebirths:0,speedLevel:0,slotBonus:0,luckLevel:0,
-      lockTimer:14,lockCooldown:34,batCooldown:0,swingTimer:0,stunTimer:0,stamina:100,trapCount:1,
+      lockTimer:8,lockCooldown:26,batCooldown:0,swingTimer:0,stunTimer:0,stamina:100,trapCount:0,
       carrying:null,slots:[],incomeBank:0
     },
     enemy:{cash:600,lockTimer:18,lockCooldown:20,slots:[]},
     thief:{x:930,y:350,r:15,speed:95,stunTimer:0,carrying:null,thinkTimer:0,patrolX:930,patrolY:350,kind:'Noob Thief'},
     guard:{x:930,y:235,r:16,speed:114,stunTimer:0,patrolX:930,patrolY:235,patrolTimer:0},
     collection:{total:0,rarities:{},best:null,seen:{}},
-    stats:{bought:0,stolen:0,defended:0,lost:0,rebirthed:0,bestIncome:0,events:0}
+    stats:{bought:0,stolen:0,sold:0,defended:0,lost:0,rebirthed:0,bestIncome:0,events:0}
   });
   let state = defaultState();
 
@@ -211,7 +275,7 @@
   function startGame() {
     menuEl.classList.add('hidden');
     state.paused = false;
-    toast('V1.2 başladı: yeni rarity ve mobil kontroller aktif!');
+    toast('V1.3.3 başladı: reset koruması, hırsız fixi ve kayıt yedeği aktif!');
     beep('ok');
   }
   function openMenu() { menuEl.classList.remove('hidden'); state.paused = true; }
@@ -245,6 +309,22 @@
     toastEl._timer = setTimeout(() => toastEl.classList.remove('show'), 2200);
   }
   function showMessage(text, seconds=2.4) { state.message = text; state.messageTimer = seconds; toast(text); }
+  let keyboardToastShown = false;
+  function setInputMode(mode) {
+    if (mode === 'keyboard') {
+      document.body.classList.add('keyboardMode');
+      if (mobileControls) mobileControls.setAttribute('aria-hidden', 'true');
+      joy.active = false; joy.dx = 0; joy.dy = 0; joyStick.style.transform = 'translate(0,0)';
+      if (!keyboardToastShown) { toast('Klavye modu: joystick gizlendi. Ekrana dokununca geri gelir.'); keyboardToastShown = true; }
+    } else if (mode === 'touch') {
+      document.body.classList.remove('keyboardMode');
+      if (mobileControls) mobileControls.removeAttribute('aria-hidden');
+    }
+  }
+  function touchControlsVisible() {
+    const coarse = window.matchMedia?.('(pointer: coarse)').matches;
+    return !document.body.classList.contains('keyboardMode') && (coarse || view.cssW <= 900);
+  }
 
   function weightedRarity(forceRarity=null) {
     if (forceRarity) return rarityByName.get(forceRarity) || rarityTable.find(r => r.key === forceRarity) || rarityTable[0];
@@ -285,13 +365,14 @@
       vy:rand(27,43) * (state.activeEvent?.type === 'gold' ? .75 : 1), wobble:rand(.7,1.9), scale:rand(.92,1.15)
     };
   }
-  function cleanBrainrot(item, idx=0) {
-    const rarity = rarityByName.get(item.rarity) || rarityTable.find(r => r.key === item.rarityKey) || rarityTable[0];
+  function cleanBrainrot(item={}, idx=0) {
+    const rarity = resolveRarity(item);
+    const slot = Number(item.slotIndex);
     return {
-      id:item.id || cryptoSafeId(), name:String(item.name || 'Bilinmeyen Brainrot').slice(0,52), rarity:item.rarity || rarity.name,
-      rarityKey:item.rarityKey || rarity.key, tier:Number(item.tier) || rarity.tier, mutation:item.mutation || 'Normal', icon:item.icon || '🧠',
-      color:item.color || rarity.color, price:Number(item.price) || 20, income:Number(item.income) || 1,
-      mood:Number(item.mood) || rand(0,Math.PI*2), scale:Number(item.scale) || 1, slotIndex:Number.isFinite(item.slotIndex) ? item.slotIndex : idx
+      id:item.id || cryptoSafeId(), name:String(item.name || 'Bilinmeyen Brainrot').slice(0,52), rarity:rarity.name,
+      rarityKey:rarity.key, tier:Number(item.tier) || rarity.tier, mutation:item.mutation || 'Normal', icon:item.icon || '🧠',
+      color:item.color || rarity.color, price:Number(item.price) || Math.max(20, Math.round((Number(item.income)||1)*12/5)*5), income:Number(item.income) || 1,
+      mood:Number(item.mood) || rand(0,Math.PI*2), scale:Number(item.scale) || 1, slotIndex:Number.isFinite(slot) ? slot : idx
     };
   }
   function initEnemySlots() {
@@ -310,17 +391,28 @@
   function getPlayerIncome() { return state.player.slots.reduce((s,b)=>s+b.income,0) * incomeMultiplier(); }
   function getEnemyIncome() { return state.enemy.slots.reduce((s,b)=>s+b.income,0); }
   function slotPositions(base, count) {
+    // Slotlar yükseltme sonrası iç içe girmesin diye kolon ve satır aralığı dinamik.
     const cols = count > 10 ? 3 : 2;
     const rows = Math.ceil(count / cols);
-    const gapX = base.w / (cols + 1);
-    const gapY = (base.h - 132) / Math.max(1, rows - .25);
+    const padX = cols === 3 ? 46 : 68;
+    const xSpan = Math.max(1, base.w - padX * 2);
+    const yStart = base.y + 86;
+    const yEnd = base.y + base.h - 82;
+    const yGap = rows <= 1 ? 0 : (yEnd - yStart) / (rows - 1);
     const out = [];
     for (let i=0;i<count;i++) {
       const col = i % cols;
       const row = Math.floor(i / cols);
-      out.push({ x:base.x + gapX * (col + 1), y:base.y + 86 + gapY * row });
+      const x = cols === 1 ? base.x + base.w / 2 : base.x + padX + xSpan * (col / (cols - 1));
+      const y = yStart + yGap * row;
+      out.push({ x, y });
     }
     return out;
+  }
+  function slotVisual(max) {
+    if (max > 10) return { cardW:62, cardH:52, scale:.82, incomeSize:10, incomeY:35 };
+    if (max > 8) return { cardW:70, cardH:56, scale:.90, incomeSize:11, incomeY:38 };
+    return { cardW:78, cardH:60, scale:1, incomeSize:12, incomeY:42 };
   }
   function nextFreeSlot(slots, maxSlots) {
     const used = new Set(slots.map(s => s.slotIndex));
@@ -344,6 +436,7 @@
   }
   function spawnMarket(forceRarity=null) {
     const item = makeBrainrot(forceRarity);
+    placeMarketItem(item);
     state.market.push(item);
     if (item.tier >= 6 || item.mutation !== 'Normal') {
       addParticles(item.x, Math.max(70,item.y+16), item.color, item.tier >= 7 ? 80 : 42);
@@ -352,41 +445,211 @@
     }
     return item;
   }
+  function placeMarketItem(item) {
+    // Spawnları üst üste bindirmemek için bantta boşluk ara.
+    let y = conveyor.y - 34;
+    for (let tries=0; tries<14; tries++) {
+      const crowded = state.market.some(m => Math.hypot((m.x || item.x) - item.x, (m.y || y) - y) < 82);
+      if (!crowded) break;
+      y -= 72;
+    }
+    item.y = Math.max(-360, y);
+  }
 
-  function saveGame() {
-    const payload = {
-      version:2, cash:state.player.cash, highCash:state.player.highCash, rebirths:state.player.rebirths,
+  function serializeSave() {
+    return {
+      version:SAVE_VERSION,
+      savedAt:Date.now(),
+      cash:Math.round(state.player.cash), highCash:Math.round(state.player.highCash), rebirths:state.player.rebirths,
       speedLevel:state.player.speedLevel, slotBonus:state.player.slotBonus, luckLevel:state.player.luckLevel, trapCount:state.player.trapCount,
       playerSlots:state.player.slots.map(cleanBrainrot), collection:state.collection, stats:state.stats, muted:state.muted
     };
-    try { localStorage.setItem(SAVE_KEY, JSON.stringify(payload)); } catch (_) {}
+  }
+  function saveGame() {
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(serializeSave())); } catch (_) {}
+  }
+  function saveProgressScore(data) {
+    const slots = Array.isArray(data.playerSlots) ? data.playerSlots : Array.isArray(data.slots) ? data.slots : Array.isArray(data.player?.slots) ? data.player.slots : [];
+    const slotIncome = slots.reduce((sum, item) => sum + (Number(item?.income) || 0), 0);
+    const collectionCount = data.collection?.total || (data.collection && typeof data.collection === 'object' ? Object.keys(data.collection).length : 0) || 0;
+    const upgrades = data.upgrades || {};
+    const upgradeScore = (Number(data.speedLevel ?? upgrades.speed) || 0) * 20000 + (Number(data.slotBonus ?? upgrades.slots) || 0) * 26000 + (Number(data.luckLevel ?? upgrades.luck) || 0) * 34000;
+    return (Number(data.highCash || data.cash) || 0) + slotIncome * 1000 + slots.length * 10000 + collectionCount * 2000 + upgradeScore + (Number(data.rebirths) || 0) * 250000;
+  }
+  function saveCandidates() {
+    const seen = new Set(), out = [];
+    for (const key of LEGACY_SAVE_KEYS) {
+      if (seen.has(key)) continue; seen.add(key);
+      try {
+        const raw = localStorage.getItem(key); if (!raw) continue;
+        const data = JSON.parse(raw); if (!data || typeof data !== 'object') continue;
+        out.push({ key, data, time:Number(data.savedAt || data.updatedAt || 0) || 0, score:saveProgressScore(data) });
+      } catch (_) {}
+    }
+    out.sort((a,b) => (b.score - a.score) || (b.time - a.time));
+    return out;
+  }
+  function normalizeCollection(raw) {
+    const base = { total:0, rarities:{}, best:null, seen:{} };
+    if (!raw || typeof raw !== 'object') return base;
+    if (raw.seen || raw.rarities || raw.total || raw.best) {
+      return {
+        total:Number(raw.total) || 0,
+        rarities:{ ...(raw.rarities || {}) },
+        best:raw.best ? cleanBrainrot(raw.best) : null,
+        seen:{ ...(raw.seen || {}) }
+      };
+    }
+    // Eski deluxe sürüm koleksiyonu obje halinde tutuyordu; onu da kitaba çeviriyoruz.
+    for (const value of Object.values(raw)) {
+      if (!value || typeof value !== 'object') continue;
+      const item = cleanBrainrot(value);
+      const key = item.rarity + '|' + item.name;
+      if (!base.seen[key]) {
+        base.seen[key] = true; base.total += 1;
+        base.rarities[item.rarity] = (base.rarities[item.rarity] || 0) + 1;
+        if (!base.best || item.income > base.best.income) base.best = item;
+      }
+    }
+    return base;
+  }
+  function restoreSave(saved) {
+    const num = (v, fb) => { const n = Number(v); return Number.isFinite(n) ? n : fb; };
+    const upgrades = saved.upgrades || {};
+    state.player.cash = num(saved.cash ?? saved.player?.cash, 150);
+    state.player.highCash = num(saved.highCash ?? saved.player?.highCash, state.player.cash);
+    state.player.rebirths = num(saved.rebirths ?? saved.player?.rebirths, 0);
+    state.player.speedLevel = num(saved.speedLevel ?? upgrades.speed ?? saved.player?.speedLevel, 0);
+    state.player.slotBonus = num(saved.slotBonus ?? upgrades.slots ?? saved.player?.slotBonus, 0);
+    state.player.luckLevel = num(saved.luckLevel ?? upgrades.luck ?? saved.player?.luckLevel, 0);
+    state.player.trapCount = num(saved.trapCount ?? saved.player?.trapCount, 1);
+    state.muted = Boolean(saved.muted);
+    state.stats = { ...state.stats, ...(saved.stats || {}) };
+    if (!Number.isFinite(state.stats.sold)) state.stats.sold = 0;
+    state.collection = normalizeCollection(saved.collection);
+    const rawSlots = Array.isArray(saved.playerSlots) ? saved.playerSlots : Array.isArray(saved.slots) ? saved.slots : Array.isArray(saved.player?.slots) ? saved.player.slots : [];
+    state.player.slots = rawSlots.filter(Boolean).slice(0, getMaxPlayerSlots()).map((item, idx) => cleanBrainrot(item, idx));
+    // Koleksiyon eski kayıtta eksikse, mevcut petlerden yeniden oluştur.
+    for (const item of state.player.slots) discover(item);
+    return true;
   }
   function loadSave() {
     try {
-      const raw = localStorage.getItem(SAVE_KEY); if (!raw) return false;
-      const saved = JSON.parse(raw); if (!saved || saved.version !== 2) return false;
-      state.player.cash = Number(saved.cash) || 150;
-      state.player.highCash = Number(saved.highCash) || state.player.cash;
-      state.player.rebirths = Number(saved.rebirths) || 0;
-      state.player.speedLevel = Number(saved.speedLevel) || 0;
-      state.player.slotBonus = Number(saved.slotBonus) || 0;
-      state.player.luckLevel = Number(saved.luckLevel) || 0;
-      state.player.trapCount = Number(saved.trapCount) || 0;
-      state.player.slots = Array.isArray(saved.playerSlots) ? saved.playerSlots.slice(0, getMaxPlayerSlots()).map(cleanBrainrot) : [];
-      state.collection = saved.collection || state.collection;
-      state.stats = { ...state.stats, ...(saved.stats || {}) };
-      state.muted = Boolean(saved.muted);
-      document.getElementById('btnMute').textContent = state.muted ? 'SESSİZ' : 'SES';
-      return true;
+      const candidates = saveCandidates();
+      if (!candidates.length) return false;
+      for (const found of candidates) {
+        try {
+          if (restoreSave(found.data)) {
+            document.getElementById('btnMute').textContent = state.muted ? 'SESSİZ' : 'SES';
+            saveGame(); // Eski anahtardan geldiyse sabit yeni anahtara taşır.
+            showMessage(found.key === SAVE_KEY ? 'En dolu kayıt yüklendi.' : 'Eski kayıt bulundu, en dolu kayıt yeni sürüme taşındı.', 2.6);
+            return true;
+          }
+        } catch (e) { console.warn('Save candidate failed', found.key, e); }
+      }
+      return false;
     } catch (e) { console.warn(e); return false; }
   }
+  function encodeSaveText(data) {
+    const json = JSON.stringify(data);
+    const bytes = new TextEncoder().encode(json);
+    let bin = '';
+    for (const b of bytes) bin += String.fromCharCode(b);
+    return 'BRAINROT_SAVE_V' + SAVE_VERSION + ':' + btoa(bin);
+  }
+  function decodeSaveText(text) {
+    let raw = String(text || '').trim();
+    if (!raw) throw new Error('empty save');
+    if (raw.startsWith('{')) return JSON.parse(raw);
+    raw = raw.replace(/^BRAINROT_SAVE_V\d+:/, '').trim();
+    const bin = atob(raw);
+    const bytes = new Uint8Array([...bin].map(ch => ch.charCodeAt(0)));
+    return JSON.parse(new TextDecoder().decode(bytes));
+  }
+  async function exportSave() {
+    const code = encodeSaveText(serializeSave());
+    try {
+      await navigator.clipboard?.writeText(code);
+      showMessage('Kayıt kodu kopyalandı. Notlara yapıştırıp saklayabilirsin.', 3);
+    } catch (_) {
+      prompt('Kayıt kodunu kopyala ve sakla:', code);
+      showMessage('Kayıt kodu hazırlandı.', 2.2);
+    }
+    saveGame();
+  }
+  function importSave() {
+    const text = prompt('Kayıt kodunu buraya yapıştır:');
+    if (!text) return;
+    try {
+      const data = decodeSaveText(text);
+      restoreSave(data);
+      saveGame();
+      showMessage('Kayıt yüklendi ve sabit kayda taşındı.', 2.6);
+      beep('win');
+    } catch (e) {
+      console.warn(e);
+      showMessage('Kayıt kodu okunamadı.', 2.1);
+      beep('bad');
+    }
+  }
+
+  function normalizeResetPhrase(text) {
+    return String(text || '').trim().toUpperCase().replace(/İ/g, 'I').replace(/ı/g, 'I');
+  }
+  function openResetModal() {
+    if (!resetModalEl) return;
+    resetModalEl.classList.remove('hidden');
+    resetPhraseEl.value = '';
+    setTimeout(() => resetPhraseEl.focus?.(), 80);
+  }
+  function closeResetModal() {
+    resetModalEl?.classList.add('hidden');
+    if (resetPhraseEl) resetPhraseEl.value = '';
+  }
+  function backupBeforeReset() {
+    try {
+      const snapshot = serializeSave();
+      snapshot.backupReason = 'before-reset';
+      snapshot.backupAt = Date.now();
+      localStorage.setItem(RESET_BACKUP_KEY, JSON.stringify(snapshot));
+      return true;
+    } catch (e) { console.warn('Reset backup failed', e); return false; }
+  }
+  function restoreResetBackup() {
+    try {
+      const raw = localStorage.getItem(RESET_BACKUP_KEY);
+      if (!raw) { showMessage('Geri alınacak reset yedeği yok.', 2); beep('bad'); return; }
+      const data = JSON.parse(raw);
+      restoreSave(data);
+      saveGame();
+      closeResetModal();
+      showMessage('Son reset yedeği geri yüklendi.', 2.6);
+      beep('win');
+    } catch (e) {
+      console.warn(e);
+      showMessage('Reset yedeği okunamadı.', 2.1);
+      beep('bad');
+    }
+  }
+  function confirmResetFromModal() {
+    if (normalizeResetPhrase(resetPhraseEl?.value) !== 'SIFIRLA') {
+      showMessage('Sıfırlamak için kutuya SIFIRLA yazmalısın.', 2.3);
+      beep('bad');
+      return;
+    }
+    resetSave();
+    closeResetModal();
+  }
+
   function resetSave() {
-    try { localStorage.removeItem(SAVE_KEY); } catch (_) {}
+    backupBeforeReset();
+    try { for (const key of LEGACY_SAVE_KEYS) localStorage.removeItem(key); } catch (_) {}
     state = defaultState();
     initEnemySlots();
     spawnMarket('Sıradan'); spawnMarket('Nadir'); spawnMarket('Epik');
-    showMessage('Kayıt sıfırlandı. Yeni oyun başladı!', 2.2);
+    showMessage('Kayıt sıfırlandı. Son reseti menüden geri alabilirsin.', 2.6);
     state.paused = menuEl.classList.contains('hidden') ? false : true;
+    saveGame();
   }
 
   function pointInRect(p, r) { return p.x > r.x && p.x < r.x + r.w && p.y > r.y && p.y < r.y + r.h; }
@@ -425,6 +688,8 @@
   function doAction() {
     if (state.paused || state.player.stunTimer > 0) return;
     if (state.player.carrying) { depositCarried(true); return; }
+    const ownItem = nearestSlotItem('player');
+    if (ownItem && pointInRect(state.player, bases.player)) return sellPlayerItem(ownItem);
     const marketItem = nearestMarketItem();
     if (marketItem) return buyMarketItem(marketItem);
     if (pointInRect(state.player, bases.enemy)) return stealFromEnemy();
@@ -443,6 +708,21 @@
     addFloatingText(item.x, item.y - 28, `+${item.name}`, item.color);
     showMessage(`${item.name} alındı: +$${item.income.toFixed(1)}/sn`, 2.4);
     beep(item.tier >= 5 ? 'win' : 'buy');
+  }
+  function sellValue(item) {
+    const base = Number(item.price) || Math.max(20, Number(item.income || 1) * 12);
+    return Math.max(5, Math.round(base * 0.55 / 5) * 5);
+  }
+  function sellPlayerItem(item) {
+    const value = sellValue(item);
+    state.player.slots = state.player.slots.filter(s => s.id !== item.id);
+    state.player.cash += value;
+    state.stats.sold = (state.stats.sold || 0) + 1;
+    addParticles(state.player.x, state.player.y, COLORS.cash, 28);
+    addFloatingText(state.player.x, state.player.y - 30, `SATILDI +$${shortNum(value)}`, COLORS.cash);
+    showMessage(`${item.name} satıldı: +$${shortNum(value)}`, 2.1);
+    beep('buy');
+    saveGame();
   }
   function stealFromEnemy() {
     if (state.enemy.lockTimer > 0) { showMessage(`Bot üssü kilitli: ${Math.ceil(state.enemy.lockTimer)} sn`, 1.5); beep('bad'); return; }
@@ -567,7 +847,7 @@
   function handleInput(dt) {
     if (justPressed.has('KeyP')) state.paused = !state.paused;
     if (justPressed.has('KeyM')) toggleMute();
-    if (justPressed.has('KeyN')) resetSave();
+    if (justPressed.has('KeyN')) { showMessage('N ile reset kaldırıldı. Save güvende.', 2); justPressed.delete('KeyN'); }
     if (justPressed.has('KeyC')) state.showBook = !state.showBook;
     if (state.paused) return;
     if (justPressed.has('KeyE') || justPressed.has('Enter')) doAction();
@@ -609,10 +889,10 @@
 
     state.spawnTimer -= dt;
     const spawnFast = state.activeEvent?.type === 'gold' ? .55 : 1;
-    if (state.spawnTimer <= 0) { spawnMarket(); state.spawnTimer = rand(1.55,3.05) * spawnFast; }
+    if (state.spawnTimer <= 0) { spawnMarket(); state.spawnTimer = rand(2.05,3.75) * spawnFast; }
     for (const item of state.market) { item.y += item.vy * dt; item.x += Math.sin(state.t * item.wobble + item.mood) * .18; }
     state.market = state.market.filter(item => item.y < conveyor.y + conveyor.h + 52);
-    if (state.market.length > 14) state.market.splice(0, state.market.length - 14);
+    if (state.market.length > 10) state.market.splice(0, state.market.length - 10);
 
     updateEvent(dt); updateEnemyLock(dt); updateThief(dt); updateGuard(dt); updateParticles(dt);
     state.saveTimer -= dt; if (state.saveTimer <= 0) { saveGame(); state.saveTimer = 2.0; }
@@ -664,39 +944,51 @@
   }
   function updateThief(dt) {
     const thief = state.thief;
-    thief.stunTimer = Math.max(0, thief.stunTimer - dt); if (thief.stunTimer > 0) return;
-    const entrance = { x:bases.player.x + bases.player.w + 30, y:bases.player.y + bases.player.h / 2 };
+    thief.stunTimer = Math.max(0, thief.stunTimer - dt);
+    if (thief.stunTimer > 0) return;
     const home = { x:bases.enemy.x + bases.enemy.w / 2, y:bases.enemy.y + bases.enemy.h / 2 };
     const waveMult = state.activeEvent?.type === 'wave' ? 1.36 : 1;
+
     if (thief.carrying) {
-      const arrived = moveToward(thief, home.x, home.y, thief.speed * .84 * waveMult, dt);
+      const arrived = moveToward(thief, home.x, home.y, thief.speed * .88 * waveMult, dt);
       if (arrived || pointInRect(thief, bases.enemy)) {
         const item = thief.carrying; thief.carrying = null;
-        const ok = assignSlot(item, state.enemy.slots, getMaxEnemySlots()); if (!ok) assignSlot(item, state.player.slots, getMaxPlayerSlots());
-        state.stats.lost += ok ? 1 : 0; showMessage(ok ? `Bot ${item.name} çaldı!` : 'Bot üssü dolu; item geri döndü.', 2.4); beep(ok ? 'bad' : 'ok');
+        const ok = assignSlot(item, state.enemy.slots, getMaxEnemySlots());
+        if (!ok) assignSlot(item, state.player.slots, getMaxPlayerSlots());
+        state.stats.lost += ok ? 1 : 0;
+        showMessage(ok ? `Bot ${item.name} çaldı!` : 'Bot üssü dolu; item geri döndü.', 2.4);
+        beep(ok ? 'bad' : 'ok'); saveGame();
       }
       return;
     }
+
     if (state.player.lockTimer > 0 || state.player.slots.length === 0) {
+      if (state.player.lockTimer > 0 && circleRectCollision(thief, bases.player)) pushOutOfRect(thief, bases.player, 'right');
       thief.thinkTimer -= dt;
-      if (thief.thinkTimer <= 0) { chooseThiefKind(false); thief.patrolX = rand(690,1040); thief.patrolY = rand(130,570); thief.thinkTimer = rand(2.2,4.4); }
-      moveToward(thief, thief.patrolX, thief.patrolY, thief.speed * .52, dt); return;
-    }
-    const target = state.player.slots.slice().sort((a,b)=>b.income-a.income)[0];
-    const positions = slotPositions(bases.player, getMaxPlayerSlots()); const targetPos = positions[target.slotIndex] || entrance;
-    const speed = (thief.speed + Math.min(58, state.t * .30)) * waveMult;
-    if (!pointInRect(thief, bases.player)) moveToward(thief, entrance.x, entrance.y, speed, dt);
-    else {
-      moveToward(thief, targetPos.x, targetPos.y, speed * .92, dt);
-      if (Math.hypot(thief.x-targetPos.x, thief.y-targetPos.y) < 22 && state.player.lockTimer <= 0) {
-        state.player.slots = state.player.slots.filter(s => s.id !== target.id);
-        thief.carrying = cleanBrainrot(target);
-        showMessage(`${thief.kind} ${target.name} aldı! VUR ile yakala!`, 2.8);
-        addParticles(targetPos.x, targetPos.y, COLORS.red, 30); beep('bad');
+      if (thief.thinkTimer <= 0) {
+        chooseThiefKind(false);
+        thief.patrolX = rand(690,1040); thief.patrolY = rand(130,570); thief.thinkTimer = rand(2.2,4.4);
       }
+      moveToward(thief, thief.patrolX, thief.patrolY, thief.speed * .52, dt);
+      return;
     }
-    if (state.player.lockTimer > 0 && circleRectCollision(thief, bases.player)) pushOutOfRect(thief, bases.player, 'right');
+
+    const target = state.player.slots.slice().sort((a,b)=>b.income-a.income)[0];
+    const positions = slotPositions(bases.player, getMaxPlayerSlots());
+    const targetPos = positions[target.slotIndex] || { x:bases.player.x + bases.player.w/2, y:bases.player.y + bases.player.h/2 };
+    const speed = (thief.speed + Math.min(58, state.t * .30)) * waveMult;
+
+    // Eski bug: hırsız kapı noktasında kalıyordu. Artık doğrudan slot hedefine yürür.
+    moveToward(thief, targetPos.x, targetPos.y, speed, dt);
     handleTrapCollision();
+    if (state.player.lockTimer > 0) { pushOutOfRect(thief, bases.player, 'right'); return; }
+
+    if (Math.hypot(thief.x-targetPos.x, thief.y-targetPos.y) < 24) {
+      state.player.slots = state.player.slots.filter(s => s.id !== target.id);
+      thief.carrying = cleanBrainrot(target);
+      showMessage(`${thief.kind} ${target.name} aldı! VUR ile yakala!`, 2.8);
+      addParticles(targetPos.x, targetPos.y, COLORS.red, 30); beep('bad'); saveGame();
+    }
   }
   function handleTrapCollision() {
     if (state.player.trapCount <= 0) return;
@@ -758,9 +1050,9 @@
     ctx.restore(); drawText('SATIN ALMA BANDI', conveyor.x+conveyor.w/2, conveyor.y-20, 16, COLORS.text, 'center', 1000);
   }
   function drawSlots(owner) {
-    const isPlayer=owner==='player', base=isPlayer?bases.player:bases.enemy, slots=isPlayer?state.player.slots:state.enemy.slots, max=isPlayer?getMaxPlayerSlots():getMaxEnemySlots(), positions=slotPositions(base,max);
-    for (let i=0;i<max;i++) { const pos=positions[i]; ctx.save(); ctx.globalAlpha=.34; roundedRect(pos.x-39,pos.y-29,78,60,14); ctx.fillStyle='#081224'; ctx.fill(); ctx.strokeStyle=isPlayer?'rgba(126,240,193,.40)':'rgba(255,125,154,.40)'; ctx.stroke(); ctx.restore(); }
-    for (const item of slots) { const pos=positions[item.slotIndex]; if (!pos) continue; drawBrainrot(item,pos.x,pos.y,1,true); drawText(`$${shortNum(item.income)}/sn`, pos.x, pos.y+42, 12, COLORS.cash, 'center', 900); }
+    const isPlayer=owner==='player', base=isPlayer?bases.player:bases.enemy, slots=isPlayer?state.player.slots:state.enemy.slots, max=isPlayer?getMaxPlayerSlots():getMaxEnemySlots(), positions=slotPositions(base,max), visual=slotVisual(max);
+    for (let i=0;i<max;i++) { const pos=positions[i]; ctx.save(); ctx.globalAlpha=.34; roundedRect(pos.x-visual.cardW/2,pos.y-visual.cardH/2,visual.cardW,visual.cardH,14); ctx.fillStyle='#081224'; ctx.fill(); ctx.strokeStyle=isPlayer?'rgba(126,240,193,.40)':'rgba(255,125,154,.40)'; ctx.stroke(); ctx.restore(); }
+    for (const item of slots) { const pos=positions[item.slotIndex]; if (!pos) continue; drawBrainrot(item,pos.x,pos.y,visual.scale,true); drawText(`$${shortNum(item.income)}/sn`, pos.x, pos.y+visual.incomeY, visual.incomeSize, COLORS.cash, 'center', 900); }
   }
   function drawMarket() { const nearest=nearestMarketItem(); for (const item of state.market) { const pulse=nearest&&nearest.id===item.id?1+Math.sin(state.t*10)*.06:1; drawBrainrot(item,item.x,item.y,item.scale*pulse,false); drawPriceTag(item,item.x,item.y+44,nearest&&nearest.id===item.id); } }
   function drawPriceTag(item,x,y,highlight) { const text=`$${shortNum(item.price)} • +${shortNum(item.income)}/sn`; ctx.save(); ctx.font='900 12px system-ui,sans-serif'; const w=ctx.measureText(text).width+18; roundedRect(x-w/2,y-13,w,24,9); ctx.fillStyle=highlight?'rgba(126,240,193,.94)':'rgba(7,16,31,.82)'; ctx.fill(); ctx.strokeStyle=highlight?'rgba(255,255,255,.55)':'rgba(255,255,255,.12)'; ctx.stroke(); drawText(text,x,y+4,12,highlight?'#07101f':COLORS.text,'center',1000); ctx.restore(); }
@@ -774,7 +1066,34 @@
   }
   function drawBot(bot,label,color,icon) { ctx.save(); ctx.translate(bot.x,bot.y); if (bot.stunTimer>0) ctx.rotate(Math.sin(state.t*40)*.18); ctx.fillStyle=bot.stunTimer>0?'#828a9e':color; ctx.shadowColor=color; ctx.shadowBlur=10; ctx.beginPath(); ctx.arc(0,0,bot.r,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; drawText(icon,0,6,18,'#fff','center',900); ctx.restore(); drawText(bot.stunTimer>0?'SERSEM':label,bot.x,bot.y-28,11,COLORS.text,'center',1000); if (bot.carrying) drawBrainrot(bot.carrying,bot.x,bot.y-42,.82,false); }
   function drawParticles() { for (const p of state.particles) { ctx.save(); ctx.globalAlpha=clamp(p.life/p.maxLife,0,1); ctx.fillStyle=p.color; ctx.beginPath(); ctx.arc(p.x,p.y,p.size,0,Math.PI*2); ctx.fill(); ctx.restore(); } for (const f of state.floatingTexts) { ctx.save(); ctx.globalAlpha=clamp(f.life,0,1); drawText(f.text,f.x,f.y,16,f.color,'center',1000); ctx.restore(); } }
-  function drawUI() { drawTopBar(); drawShopBar(); drawMessage(); drawMiniStats(); }
+  function currentActionHint() {
+    const p = state.player;
+    if (p.carrying) return pointInRect(p, bases.player) ? `E / buton: ÜSSE KOY` : 'Çaldığın peti kendi üssüne götür';
+    const own = nearestSlotItem('player');
+    if (own && pointInRect(p, bases.player)) return `E / buton: SAT $${shortNum(sellValue(own))}`;
+    const market = nearestMarketItem();
+    if (market) return `E / buton: AL $${shortNum(market.price)}`;
+    const enemy = nearestSlotItem('enemy');
+    if (enemy && pointInRect(p, bases.enemy)) return `E / buton: ÇAL +$${shortNum(enemy.income)}/sn`;
+    return '';
+  }
+  function updateActionButtonLabel() {
+    if (!actionButton) return;
+    const hint = currentActionHint();
+    if (hint.includes('SAT')) actionButton.textContent = 'SAT';
+    else if (hint.includes('KOY')) actionButton.textContent = 'KOY';
+    else if (hint.includes('ÇAL')) actionButton.textContent = 'ÇAL';
+    else if (hint.includes('AL')) actionButton.textContent = 'AL';
+    else actionButton.textContent = 'AL / ÇAL / SAT';
+  }
+  function drawActionHint() {
+    const hint = currentActionHint(); updateActionButtonLabel();
+    if (!hint) return;
+    ctx.save(); ctx.font='1000 15px system-ui,sans-serif'; const w=Math.min(430,ctx.measureText(hint).width+30);
+    roundedRect(WORLD.w/2-w/2,WORLD.h-118,w,34,14); ctx.fillStyle='rgba(126,240,193,.86)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.38)'; ctx.stroke();
+    drawText(hint,WORLD.w/2,WORLD.h-96,14,'#07101f','center',1000); ctx.restore();
+  }
+  function drawUI() { drawTopBar(); if (!touchControlsVisible()) { drawShopBar(); drawMiniStats(); } drawActionHint(); drawMessage(); }
   function drawTopBar() {
     const p=state.player, income=getPlayerIncome(); ctx.save(); roundedRect(20,18,WORLD.w-40,50,18); ctx.fillStyle='rgba(7,16,31,.78)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.stroke();
     const items=[[`$${shortNum(p.cash)}`,COLORS.cash],[`+$${shortNum(income)}/sn`,COLORS.yellow],[`Slot ${p.slots.length}/${getMaxPlayerSlots()}`,COLORS.text],[`Luck ${p.luckLevel}`,COLORS.cyan],[`Rebirth ${p.rebirths}`,COLORS.purple],[`Kitap ${state.collection.total}`,COLORS.orange]];
@@ -788,7 +1107,7 @@
   function drawControlCard(x,y,w,h,key,title,sub) { ctx.save(); roundedRect(x,y,w,h,14); ctx.fillStyle='rgba(7,16,31,.72)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.stroke(); roundedRect(x+7,y+7,31,29,9); ctx.fillStyle='rgba(255,255,255,.13)'; ctx.fill(); drawText(key,x+22,y+28,14,COLORS.text,'center',1000); drawText(title,x+47,y+19,12,COLORS.text,'left',1000); drawText(sub,x+47,y+35,10,COLORS.muted,'left',800); ctx.restore(); }
   function drawMessage() { if (state.messageTimer<=0 || !state.message) return; ctx.save(); ctx.font='1000 17px system-ui,sans-serif'; const text=state.message; const w=Math.min(WORLD.w-90,ctx.measureText(text).width+34); roundedRect(WORLD.w/2-w/2,77,w,38,16); ctx.fillStyle='rgba(7,16,31,.80)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.13)'; ctx.stroke(); drawText(text,WORLD.w/2,101,16,COLORS.text,'center',1000); ctx.restore(); }
   function drawMiniStats() {
-    ctx.save(); const x=344,y=116,w=142,h=132; roundedRect(x,y,w,h,18); ctx.fillStyle='rgba(7,16,31,.55)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.10)'; ctx.stroke(); drawText('V1.2',x+14,y+28,15,COLORS.cash,'left',1000); drawText(`Alınan ${state.stats.bought}`,x+14,y+52,12,COLORS.text,'left',800); drawText(`Çalınan ${state.stats.stolen}`,x+14,y+72,12,COLORS.red,'left',800); drawText(`Savunma ${state.stats.defended}`,x+14,y+92,12,COLORS.cyan,'left',800); drawText(`En iyi +${shortNum(state.stats.bestIncome)}/sn`,x+14,y+112,12,COLORS.yellow,'left',800); ctx.restore();
+    ctx.save(); const x=344,y=116,w=142,h=150; roundedRect(x,y,w,h,18); ctx.fillStyle='rgba(7,16,31,.55)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.10)'; ctx.stroke(); drawText('V1.3.3',x+14,y+28,15,COLORS.cash,'left',1000); drawText(`Alınan ${state.stats.bought}`,x+14,y+52,12,COLORS.text,'left',800); drawText(`Çalınan ${state.stats.stolen}`,x+14,y+72,12,COLORS.red,'left',800); drawText(`Satılan ${state.stats.sold||0}`,x+14,y+92,12,COLORS.cash,'left',800); drawText(`Savunma ${state.stats.defended}`,x+14,y+112,12,COLORS.cyan,'left',800); drawText(`En iyi +${shortNum(state.stats.bestIncome)}/sn`,x+14,y+132,12,COLORS.yellow,'left',800); ctx.restore();
     if (state.activeEvent) { ctx.save(); const text=`EVENT: ${state.activeEvent.name} • ${Math.ceil(state.activeEvent.timer)}sn`; ctx.font='1000 16px system-ui,sans-serif'; const tw=ctx.measureText(text).width+28; roundedRect(WORLD.w/2-tw/2,124,tw,34,14); ctx.fillStyle='rgba(255,230,128,.20)'; ctx.fill(); ctx.strokeStyle='rgba(255,230,128,.55)'; ctx.stroke(); drawText(text,WORLD.w/2,146,15,COLORS.yellow,'center',1000); ctx.restore(); }
   }
   function drawBook() {
@@ -807,9 +1126,9 @@
     handleInput(dt); if (!state.paused) update(dt); draw(); justPressed.clear(); requestAnimationFrame(tick);
   }
 
-  window.addEventListener('keydown', e => { keys.add(e.code); justPressed.add(e.code); if (['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault(); });
+  window.addEventListener('keydown', e => { setInputMode('keyboard'); keys.add(e.code); justPressed.add(e.code); if (['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault(); });
   window.addEventListener('keyup', e => keys.delete(e.code));
-  window.addEventListener('pointerdown', initAudio, { passive:true });
+  window.addEventListener('pointerdown', e => { initAudio(); if (e.pointerType === 'touch' || e.pointerType === 'pen') setInputMode('touch'); }, { passive:true });
 
   function updateJoyFromPointer(e) {
     const r = joyWrap.getBoundingClientRect(); const cx = r.left + r.width/2, cy = r.top + r.height/2;
@@ -834,7 +1153,14 @@
   document.getElementById('btnFull2').addEventListener('click', goFullscreen);
   document.getElementById('btnMenu').addEventListener('click', openMenu);
   document.getElementById('btnMute').addEventListener('click', toggleMute);
-  document.getElementById('btnReset').addEventListener('click', resetSave);
+  document.getElementById('btnExport').addEventListener('click', exportSave);
+  document.getElementById('btnImport').addEventListener('click', importSave);
+  document.getElementById('btnUndoReset').addEventListener('click', restoreResetBackup);
+  document.getElementById('btnReset').addEventListener('click', openResetModal);
+  document.getElementById('btnCancelReset').addEventListener('click', closeResetModal);
+  document.getElementById('btnConfirmReset').addEventListener('click', confirmResetFromModal);
+  document.getElementById('btnRestoreReset').addEventListener('click', restoreResetBackup);
+  resetPhraseEl?.addEventListener('keydown', e => { if (e.key === 'Enter') confirmResetFromModal(); if (e.key === 'Escape') closeResetModal(); });
 
   function boot() {
     const loaded = loadSave(); initEnemySlots();
