@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, viewport-fit=cover, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Brainrot Heist V2.9.1 Stability & V3 Prep</title>
+<title>Brainrot Heist V3.0.2 Open City Empire</title>
 <style>
   :root{
     --bg:#060914;--panel:rgba(8,14,30,.86);--panel2:rgba(255,255,255,.08);--line:rgba(255,255,255,.14);
@@ -60,7 +60,7 @@
   @media (max-height:500px){#rotateHint{display:none!important}.mButtons{grid-template-columns:66px 66px;gap:7px}.mButton{height:40px;font-size:10px}.mButton.big{height:48px}#joyWrap{width:104px;height:104px}.menu{align-items:flex-start}.menuCard{margin-top:8px}}
 
 
-  /* ===================== V2.9 MOBILE COMFORT + ANTI-ZOOM ===================== */
+  /* ===================== V3.0.2 MOBILE COMFORT + ANTI-ZOOM ===================== */
   html,body,#app,canvas{overscroll-behavior:none;-webkit-overflow-scrolling:auto;-webkit-touch-callout:none;-webkit-text-size-adjust:100%}
   button,input,select,textarea{font-size:16px;touch-action:manipulation}
   canvas{touch-action:none!important;-ms-touch-action:none!important}
@@ -86,7 +86,7 @@
 </head>
 <body>
 <div id="app">
-  <canvas id="game" aria-label="Brainrot Heist V2.9.1 Stability & V3 Prep oyun alanı"></canvas>
+  <canvas id="game" aria-label="Brainrot Heist V3.0.2 Open City Empire oyun alanı"></canvas>
   <div id="toast" class="toast" aria-live="polite"></div>
   <div class="topbar">
     <button id="btnMenu" type="button">MENÜ</button>
@@ -121,14 +121,14 @@
   <div id="mobileAssistChip" class="mobileAssistChip">📍 Dokun: yürü • Çift dokunma zoom kapalı</div>
   <section id="menu" class="menu">
     <div class="menuCard">
-      <p class="eyebrow">V2.9.1 Stability & V3 Prep</p>
-      <h1>Brainrot Heist<br>V2.9.1 CITY WAR</h1>
-      <p class="lead">V2.9.1 temizlik update: V2.9 sezon/dungeon/territory sistemleri korunur; eski sürüm yazıları, mobil oynanış, save sağlık, rehber ve V3 hazırlığı eklendi.</p>
+      <p class="eyebrow">V3.0.2 Open City Empire</p>
+      <h1>Brainrot Heist<br>V3 OPEN CITY</h1>
+      <p class="lead">V3.0 dev update: Open City Empire, 5 dev district, interior mağazalar, housing, faction, dungeon 2.0, araç 2.0, empire progression ve bank raid bug fix geldi.</p>
       <div class="patch">
         <div><b>Bug Fix</b>Araçta pet taşıma çizimi, eski sürüm yazıları, mobile UI ve panel karmaşası toparlandı.</div>
         <div><b>Save Health</b>Save audit, numeric guard, export/import hatırlatıcı ve bozuk değer temizliği güçlendi.</div>
         <div><b>Rehber</b>Core, rep, sezon, territory, dungeon ve mobil oynanış için tek panelden yol haritası geldi.</div>
-        <div><b>V3 Hazırlığı</b>Open City Empire için interior, housing, faction, araç 2.0 ve dungeon 2.0 teaser olarak durur.</div>
+        <div><b>V3 Başladı</b>Open City Empire artık teaser değil: housing, faction, dungeon 2.0, vehicle 2.0 ve empire sistemi aktif.</div>
       </div>
       <div class="difficultyBox" aria-label="Oyun modu seçimi">
         <button id="btnEasyMode" class="modeBtn" type="button"><b>😄 EASY MOD</b><span>Az önceki gibi daha rahat: ucuz upgrade, daha az polis, botlar var ama oyuncuya baskı düşük. Enis modu.</span></button>
@@ -170,7 +170,7 @@
 (() => {
 'use strict';
 
-/* V2.9: iPhone/Safari çift dokunma ve pinch zoom koruması */
+/* V3.0.2: iPhone/Safari çift dokunma ve pinch zoom koruması */
 function installAntiZoomGuards(){
   const viewport = document.querySelector('meta[name="viewport"]');
   const viewportContent = 'width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, viewport-fit=cover, user-scalable=no';
@@ -1250,7 +1250,7 @@ function drawZones(){
   for(const z of Object.values(ZONES)) drawZone(z);
   drawBuildings();
   for(const r of state.rivals) drawZone({x:r.x,y:r.y,w:r.w,h:r.h,name:r.name,color:r.color,edge:r.edge});
-  drawText('🏙️ V2.9 VEHICLE & SHOP LIFE • 3 DEV BÖLGE • 8 BASE • COUNTER MAĞAZALAR • GARAGE BETA',WORLD.w/2,58,27,COLORS.muted,'center',1000);
+  drawText('🏙️ V3.0.2 VEHICLE & SHOP LIFE • 3 DEV BÖLGE • 8 BASE • COUNTER MAĞAZALAR • GARAGE BETA',WORLD.w/2,58,27,COLORS.muted,'center',1000);
 }
 function drawBuildings(){
   for(const b of BUILDINGS){ const z=ZONES[b.zone]; if(!z) continue; ctx.save();
@@ -1391,16 +1391,16 @@ function renderHeists(){
   panelBody.innerHTML=`${activeHtml}<div class="grid">${HEIST_CONTRACTS.map(h=>{const done=(state.heist.completed||[]).filter(x=>x.id===h.id).length;return `<div class="card"><h3>${done?'✅ ':''}${htmlEscape(h.title)}</h3><p>${htmlEscape(h.desc)}</p><p>Level ${h.level}+ • Süre ${h.time}sn • Ödül $${shortNum(h.reward.cash)} ${h.reward.gems}💎 +${h.reward.xp}XP</p><button class="small gold" data-cmd="heist" data-id="${h.id}" ${state.heist.active||state.player.level<h.level?'disabled':''}>Kontrat Başlat</button></div>`}).join('')}</div>`;
 }
 
-function renderMap(){ panelTitle.textContent='🗺️ V2.9 Vehicle & Shop Life Haritası'; panelSub.textContent='3 dev bölge, bina-counter sistemi ve metro kısayolları.'; panelBody.innerHTML=`<div class="grid">${DISTRICTS.map(d=>`<div class="card"><h3 style="color:${d.edge}">${htmlEscape(d.name)}</h3><p>${htmlEscape(d.desc)}</p><p>Koordinat: ${Math.round(d.x)}, ${Math.round(d.y)} • Boyut: ${Math.round(d.w)}x${Math.round(d.h)}</p><button class="small gold" data-cmd="travel" data-zone="${d.id}">Metro ile Git</button></div>`).join('')}<div class="card"><h3>🏬 Counter Mantığı</h3><p>Mağaza/merkezler artık bina gibi çiziliyor. Işıklı counter’a girince E ile panel açılır. Market petleri hâlâ raflardan alınır.</p></div><div class="card"><h3>🏎️ Büyük Map Notu</h3><p>Hız ayarı U → Upgrade panelinde. Garaj BETA büyük map için araç altyapısıdır. G ile araç aç/kapat.</p></div></div>`; }
+function renderMap(){ panelTitle.textContent='🗺️ V3.0.2 Vehicle & Shop Life Haritası'; panelSub.textContent='3 dev bölge, bina-counter sistemi ve metro kısayolları.'; panelBody.innerHTML=`<div class="grid">${DISTRICTS.map(d=>`<div class="card"><h3 style="color:${d.edge}">${htmlEscape(d.name)}</h3><p>${htmlEscape(d.desc)}</p><p>Koordinat: ${Math.round(d.x)}, ${Math.round(d.y)} • Boyut: ${Math.round(d.w)}x${Math.round(d.h)}</p><button class="small gold" data-cmd="travel" data-zone="${d.id}">Metro ile Git</button></div>`).join('')}<div class="card"><h3>🏬 Counter Mantığı</h3><p>Mağaza/merkezler artık bina gibi çiziliyor. Işıklı counter’a girince E ile panel açılır. Market petleri hâlâ raflardan alınır.</p></div><div class="card"><h3>🏎️ Büyük Map Notu</h3><p>Hız ayarı U → Upgrade panelinde. Garaj BETA büyük map için araç altyapısıdır. G ile araç aç/kapat.</p></div></div>`; }
 function renderMarketInfo(){ panelTitle.textContent='🛒 Mega Market Mall'; panelSub.textContent='Raflardaki petlere yaklaşarak E ile satın al. Counter sadece rehber ve refresh içindir.'; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Raf sistemi</h3><p>Petler market binasının içinde akar. Yaklaş ve E ile al. Peti base’e götürmeden gelir üretmez.</p><button class="small gold" data-cmd="marketRefresh">Market Yenile $${shortNum(12000*modeCfg().upgradeCostMult)}</button></div><div class="card"><h3>Zone bilgisi</h3><p>Downtown market güvenli ama üst rarity için rank/core gerekir. Black Market daha tehlikeli ama daha güçlüdür.</p></div></div>`; }
 function renderGarage(){ panelTitle.textContent='🏎️ Garage BETA'; panelSub.textContent=`Hız ${Math.round(speedPreferenceMult()*100)}% • Araç ${state.settings.vehicleOwned?(state.settings.vehicleActive?'aktif':'pasif'):'kilitli'}`; panelBody.innerHTML=`<div class="grid">${renderSpeedCard()}${renderGarageCard()}<div class="card"><h3>Sonraki Araç Sistemi</h3><p>Bu update’te altyapı kuruldu: dev map, garaj counterı ve araç hız modu var. Sonraki update’te gerçek araba modelleri, yakıt, drift ve garaj mağazası eklenebilir.</p></div></div>`; }
 function renderBlackInfo(){ panelTitle.textContent='🕶️ Black Market Club'; panelSub.textContent='Black Market ürünleri pahalı, güçlü ve wanted riski taşır.'; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Nasıl alınır?</h3><p>Black Market binasındaki petlere yaklaş ve E ile satın al. Aldıktan sonra base’e taşı.</p></div><div class="card"><h3>Risk</h3><p>Her black market alışverişi wanted artırır. Police HQ’dan temizleyebilirsin.</p></div></div>`; }
-function renderForgeInfo(){ panelTitle.textContent='🔥 Core Forge'; panelSub.textContent='Endgame para yakma ve core dönüştürme sistemi için hazırlık.'; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Yakında</h3><p>Core Forge bu update’te bina olarak eklendi. Sonraki büyük update’te para + core yakıp silah enchant, boss key ve özel materyal üretilecek.</p></div><div class="card"><h3>Şimdilik</h3><p>Core kasmak için boss kesmeye devam et. V2.9 mega map endgame alanı burada başlıyor.</p></div></div>`; }
+function renderForgeInfo(){ panelTitle.textContent='🔥 Core Forge'; panelSub.textContent='Endgame para yakma ve core dönüştürme sistemi için hazırlık.'; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Yakında</h3><p>Core Forge bu update’te bina olarak eklendi. Sonraki büyük update’te para + core yakıp silah enchant, boss key ve özel materyal üretilecek.</p></div><div class="card"><h3>Şimdilik</h3><p>Core kasmak için boss kesmeye devam et. V3.0.2 mega map endgame alanı burada başlıyor.</p></div></div>`; }
 function renderFusionInfo(){ panelTitle.textContent='🧪 Fusion Lab'; panelSub.textContent='Fusion counterındasın.'; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Fusion</h3><p>Aynı rarity’den 3 kilitsiz pet varsa E ile otomatik birleştirme yapılır. Envanterden petleri kilitleyerek koruyabilirsin.</p><button class="small good" data-cmd="fuseNow">Fusion Dene</button></div></div>`; }
 
 
 
-/* ===================== V2.9 VEHICLE & SHOP LIFE PATCH ===================== */
+/* ===================== V3.0.2 VEHICLE & SHOP LIFE PATCH ===================== */
 const V25_VEHICLES = [
   {id:'scooter',name:'Scooter',emoji:'🛵',cost:0,rep:0,cores:0,speed:1.75,handling:1.22,trunk:0,armor:.30,desc:'Başlangıç aracı. Ucuz ve hafif; pet taşırken çok güvenli değil.'},
   {id:'kart',name:'Street Kart',emoji:'🏎️',cost:180000,rep:0,cores:0,speed:2.20,handling:1.12,trunk:1,armor:.45,desc:'Büyük haritada hızlı başlangıç. 1 küçük pet bagajı.'},
@@ -1568,21 +1568,21 @@ function renderVehiclePanel(kind='garage'){
   const upgradeCards = ['speed','handling','nitro','armor'].map(k=>`<div class="card"><h3>${k==='speed'?'🚀 Hız':k==='handling'?'🛞 Dönüş':k==='nitro'?'🔥 Nitro':'🛡️ Zırh'} Lv.${up[k]||0}/20</h3><p>${k==='speed'?'Araç maksimum hızını artırır.':k==='handling'?'Araç kontrolünü rahatlatır.':k==='nitro'?'Shift nitro süresini ve gücünü artırır.':'Polis/fake bot kovalamacalarında ceza azaltır.'}</p><p>Fiyat: $${shortNum(vehicleUpgradeCost(k))}</p><button class="small good" data-v25="vehicleUpgrade" data-key="${k}">Yükselt</button></div>`).join('');
   panelBody.innerHTML = `<div class="row"><span class="pill">${v.emoji} ${htmlEscape(v.name)}</span><span class="pill">Araç ${state.settings.vehicleActive?'aktif':'pasif'}</span><span class="pill">Rep ${shortNum(state.hardcore.raidRep)}</span><span class="pill">Core ${shortNum(state.hardcore.cores)}</span></div><div class="card"><h3>Kontroller</h3><p>G = bin/in. Shift = nitro. Pet taşırken araç artık kapanmaz; bagajı düşük araçlarda hız ve wanted riski artar.</p><div class="row"><button class="small good" data-v25="vehicleToggle">${state.settings.vehicleActive?'Araçtan İn':'Araca Bin'}</button><button class="small gold" data-v25="buyNitro">Nitro Doldur $${shortNum(15000*(1+(state.v25.vehicleUpgrades.nitro||0)))}</button></div></div><h3>Araçlar</h3><div class="grid">${vehicleCards}</div><h3 style="margin-top:18px">Modifiye</h3><div class="grid">${upgradeCards}</div>`;
 }
-renderGarageCard = function(){ ensureV25Fields(); const v=currentVehicle(); return `<div class="card"><h3>${v.emoji} Araç: ${htmlEscape(v.name)}</h3><p>V2.9’te araç sistemi gerçek oldu. Araç seç, yükselt, nitro bas, petle kaç. G ile bin/in.</p><p>Hız x${vehicleTotalMult().toFixed(2)} • Nitro ${Math.round(state.v25.nitro)} • Bagaj ${v.trunk}</p><div class="row"><button class="small gold" data-v25="openGarage">Garaj Aç</button><button class="small good" data-v25="vehicleToggle">${state.settings.vehicleActive?'Araçtan İn':'Araca Bin'}</button></div></div>`; };
+renderGarageCard = function(){ ensureV25Fields(); const v=currentVehicle(); return `<div class="card"><h3>${v.emoji} Araç: ${htmlEscape(v.name)}</h3><p>V3.0.2’te araç sistemi gerçek oldu. Araç seç, yükselt, nitro bas, petle kaç. G ile bin/in.</p><p>Hız x${vehicleTotalMult().toFixed(2)} • Nitro ${Math.round(state.v25.nitro)} • Bagaj ${v.trunk}</p><div class="row"><button class="small gold" data-v25="openGarage">Garaj Aç</button><button class="small good" data-v25="vehicleToggle">${state.settings.vehicleActive?'Araçtan İn':'Araca Bin'}</button></div></div>`; };
 renderGarage = function(){ renderVehiclePanel('garage'); };
 function renderCarDealer(){ renderVehiclePanel('dealer'); }
 
-function renderBank(){ ensureV25Fields(); const cash=state.player.cash; const bank=state.v25.bank; const raid=state.v25.bankRaid; panelTitle.textContent='🏦 City Bank'; panelSub.textContent=`Kasadaki para $${shortNum(bank)} • Banka seviyesi ${state.v25.bankLevel} • Rep artık burada da kasılır.`; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Para Güvenliği</h3><p>Bankadaki para polis cezasından ve raid kayıplarından korunur. Faiz düşük ama para güvenli kalır.</p><p>Nakit: $${shortNum(cash)} • Banka: $${shortNum(bank)}</p><div class="row"><button class="small good" data-v25="bankDeposit" data-pct="0.25">%25 Yatır</button><button class="small good" data-v25="bankDeposit" data-pct="0.50">%50 Yatır</button><button class="small gold" data-v25="bankDeposit" data-pct="1">Hepsini Yatır</button><button class="small" data-v25="bankWithdraw" data-pct="1">Hepsini Çek</button></div></div><div class="card"><h3>${raid?'🚨 Bank Raid Aktif':'🛡️ Bank Raid Savunması'}</h3><p>${raid?`Bankaya git ve içeride kal: ${Math.ceil(raid.timer)}sn kaldı • Savunma ${Math.round(raid.progress||0)}/8`:`Sıradaki bank raid yaklaşık ${Math.ceil(state.v25.bankRaidTimer)}sn sonra. Savunursan rep + cash kazanırsın.`}</p><p>Easy modda banka savunması rep kasmanın en rahat yollarından biri.</p><button class="small gold" data-v25="gpsSet" data-x="${ZONES.bank.x+ZONES.bank.w/2}" data-y="${ZONES.bank.y+ZONES.bank.h/2}" data-label="City Bank">GPS Banka</button></div><div class="card"><h3>Rep Yardımı</h3><p>Rep kasmak zor geldiği için V2.9’te tek seferlik başlangıç rep paketi var. Endgame save’leri rahat başlasın.</p><button class="small good" data-v25="claimRepPack" ${state.v25.repHelpClaimed?'disabled':''}>Rep Destek Paketi Al</button></div></div>`; }
+function renderBank(){ ensureV25Fields(); const cash=state.player.cash; const bank=state.v25.bank; const raid=state.v25.bankRaid; panelTitle.textContent='🏦 City Bank'; panelSub.textContent=`Kasadaki para $${shortNum(bank)} • Banka seviyesi ${state.v25.bankLevel} • Rep artık burada da kasılır.`; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Para Güvenliği</h3><p>Bankadaki para polis cezasından ve raid kayıplarından korunur. Faiz düşük ama para güvenli kalır.</p><p>Nakit: $${shortNum(cash)} • Banka: $${shortNum(bank)}</p><div class="row"><button class="small good" data-v25="bankDeposit" data-pct="0.25">%25 Yatır</button><button class="small good" data-v25="bankDeposit" data-pct="0.50">%50 Yatır</button><button class="small gold" data-v25="bankDeposit" data-pct="1">Hepsini Yatır</button><button class="small" data-v25="bankWithdraw" data-pct="1">Hepsini Çek</button></div></div><div class="card"><h3>${raid?'🚨 Bank Raid Aktif':'🛡️ Bank Raid Savunması'}</h3><p>${raid?`Bankaya git ve içeride kal: ${Math.ceil(raid.timer)}sn kaldı • Savunma ${Math.round(raid.progress||0)}/8`:`Sıradaki bank raid yaklaşık ${Math.ceil(state.v25.bankRaidTimer)}sn sonra. Savunursan rep + cash kazanırsın.`}</p><p>Easy modda banka savunması rep kasmanın en rahat yollarından biri.</p><button class="small gold" data-v25="gpsSet" data-x="${ZONES.bank.x+ZONES.bank.w/2}" data-y="${ZONES.bank.y+ZONES.bank.h/2}" data-label="City Bank">GPS Banka</button></div><div class="card"><h3>Rep Yardımı</h3><p>Rep kasmak zor geldiği için V3.0.2’te tek seferlik başlangıç rep paketi var. Endgame save’leri rahat başlasın.</p><button class="small good" data-v25="claimRepPack" ${state.v25.repHelpClaimed?'disabled':''}>Rep Destek Paketi Al</button></div></div>`; }
 function renderDaily(){ ensureV25Fields(); const key=todayKey(); const claimed=state.v25.daily.last===key; const streak=state.v25.daily.streak||0; panelTitle.textContent='🎁 Daily Reward Cafe'; panelSub.textContent='Her gün para, gem ve rep. Local save ile çalışır.'; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>${claimed?'✅ Bugün alındı':'🎁 Günlük ödül hazır'}</h3><p>Seri: ${streak} gün. Ödül: para + gem + rep; 7 günde ekstra core.</p><button class="small gold" data-v25="claimDaily" ${claimed?'disabled':''}>Günlük Ödülü Al</button></div><div class="card"><h3>Not</h3><p>Safari site verisini silersen günlük seri de gider. GitHub Pages linki aynı kalırsa save korunur.</p></div></div>`; }
 function renderNpcJobs(){ ensureV25Fields(); panelTitle.textContent='🧑‍🔧 NPC Job Center'; panelSub.textContent='Rep kasmak için yeni ana merkez. Görevler otomatik ilerler, bitince ödül alırsın.'; panelBody.innerHTML=`<div class="grid">${state.v25.npcJobs.map(j=>{const r=clamp((j.progress||0)/j.goal,0,1);return `<div class="card"><h3>${j.claimed?'✅':'🧾'} ${htmlEscape(j.title)}</h3><p>${htmlEscape(j.desc)}</p><div class="bar"><span style="width:${r*100}%"></span></div><p>${shortNum(j.progress||0)} / ${shortNum(j.goal)} • Ödül: $${shortNum(j.reward.cash)} +${j.reward.rep} rep ${j.reward.cores?`+${j.reward.cores} core`:''}</p><div class="row"><button class="small gold" data-v25="claimNpcJob" data-id="${j.id}" ${(j.progress||0)>=j.goal&&!j.claimed?'':'disabled'}>Ödülü Al</button><button class="small" data-v25="pinNpcJob" data-id="${j.id}">${j.pinned?'GPS Açık':'GPS/İpucu'}</button></div></div>`}).join('')}<div class="card"><h3>Yeni İşler</h3><p>İşleri yenilersen progress sıfırlanır ama farklı rep yolları gelir.</p><button class="small bad" data-v25="rerollNpcJobs">İşleri Yenile $${shortNum(50000*modeCfg().upgradeCostMult)}</button></div></div>`; }
-function renderWeaponShop(){ panelTitle.textContent='⚔️ Weapon Shop'; panelSub.textContent='Boss için kılıç ve özel saldırı merkezi.'; panelBody.innerHTML=`<div class="grid">${renderSwordCard()}<div class="card"><h3>💥 Özel Saldırı</h3><p>V2.9 altyapısı: Space normal kılıç; araçtan inip boss’a saldır. Sonraki patch’te Z/ÖZEL skill’i büyütülebilir.</p><button class="small gold" data-v25="gpsSet" data-x="${center(ZONES.boss).x}" data-y="${center(ZONES.boss).y}" data-label="Boss Stadium">Boss’a GPS</button></div></div>`; }
+function renderWeaponShop(){ panelTitle.textContent='⚔️ Weapon Shop'; panelSub.textContent='Boss için kılıç ve özel saldırı merkezi.'; panelBody.innerHTML=`<div class="grid">${renderSwordCard()}<div class="card"><h3>💥 Özel Saldırı</h3><p>V3.0.2 altyapısı: Space normal kılıç; araçtan inip boss’a saldır. Sonraki patch’te Z/ÖZEL skill’i büyütülebilir.</p><button class="small gold" data-v25="gpsSet" data-x="${center(ZONES.boss).x}" data-y="${center(ZONES.boss).y}" data-label="Boss Stadium">Boss’a GPS</button></div></div>`; }
 function renderInsurance(){ ensureV25Fields(); const cost=Math.round(250000*Math.pow(2.6,state.v25.insuranceLevel||0)*modeCfg().upgradeCostMult); panelTitle.textContent='🛡️ Insurance Office'; panelSub.textContent='Pet/banka kaybını azaltır; raidlerde daha az can yakar.'; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Sigorta Lv.${state.v25.insuranceLevel}/10</h3><p>Botlar senden çalarsa ve polis cezası yersen kayıp oranını azaltır. Bank raid başarısız olursa daha az para gider.</p><p>Fiyat: $${shortNum(cost)}</p><button class="small good" data-v25="buyInsurance">Sigorta Yükselt</button></div><div class="card"><h3>GPS</h3><p>Şehirde kaybolursan sigorta ofisinden GPS noktaları da seçebilirsin.</p><button class="small" data-v25="gpsSet" data-x="${state.player.x}" data-y="${state.player.y}" data-label="Şu anki yer">Konumu İşaretle</button></div></div>`; }
 function renderGPS(){ ensureV25Fields(); const points=[['Base',center(ZONES.playerBase)],['Pet Market',center(ZONES.market)],['Car Dealer',center(ZONES.carDealer)],['Bank',center(ZONES.bank)],['NPC Jobs',center(ZONES.npcHub)],['Police HQ',center(ZONES.police)],['Black Market',center(ZONES.black)],['Boss Stadium',center(ZONES.boss)],['Core Forge',center(ZONES.forge)],['Void Gate',center(ZONES.voidGate)]]; panelTitle.textContent='🗺️ GPS Tower'; panelSub.textContent=state.v25.gpsTarget?`Hedef: ${state.v25.gpsTarget.label}`:'Büyük mapte rota seç.'; panelBody.innerHTML=`<div class="grid">${points.map(([name,p])=>`<div class="card"><h3>${htmlEscape(name)}</h3><p>Uzaklık: ${shortNum(Math.hypot(state.player.x-p.x,state.player.y-p.y))}m</p><button class="small gold" data-v25="gpsSet" data-x="${p.x}" data-y="${p.y}" data-label="${htmlEscape(name)}">GPS Aç</button></div>`).join('')}<div class="card"><h3>Rota</h3><p>HUD’da ok çıkar. Harita aşırı büyüdüğü için GPS neredeyse şart.</p><button class="small bad" data-v25="gpsClear">GPS Kapat</button></div></div>`; }
 
 var __v25_baseOpenPanel = openPanel;
 openPanel = function(kind){ ensureV25Fields(); if(kind==='carDealer'){ state.paused=true; panelEl.classList.remove('hidden'); renderCarDealer(); } else if(kind==='bank'){ state.paused=true; panelEl.classList.remove('hidden'); renderBank(); } else if(kind==='daily'){ state.paused=true; panelEl.classList.remove('hidden'); renderDaily(); } else if(kind==='npcJobs'){ state.paused=true; panelEl.classList.remove('hidden'); renderNpcJobs(); } else if(kind==='weaponShop'){ state.paused=true; panelEl.classList.remove('hidden'); renderWeaponShop(); } else if(kind==='insurance'){ state.paused=true; panelEl.classList.remove('hidden'); renderInsurance(); } else if(kind==='gps'){ state.paused=true; panelEl.classList.remove('hidden'); renderGPS(); } else { __v25_baseOpenPanel(kind); } };
-renderMap = function(){ ensureV25Fields(); panelTitle.textContent='🗺️ V2.9 Mega Sector City Haritası'; panelSub.textContent='14.000 x 9.000 dev map, 3 büyük sektör, mağaza-counter sistemi, araç ve GPS.'; panelBody.innerHTML=`<div class="grid">${DISTRICTS.map(d=>`<div class="card"><h3 style="color:${d.edge}">${htmlEscape(d.name)}</h3><p>${htmlEscape(d.desc)}</p><p>Koordinat: ${Math.round(d.x)}, ${Math.round(d.y)} • Boyut: ${Math.round(d.w)}x${Math.round(d.h)}</p><button class="small gold" data-cmd="travel" data-zone="${d.id}">Metro ile Git</button></div>`).join('')}<div class="card"><h3>🚗 V2.9 Araç Notu</h3><p>Harita artık arabasız çok uzun. Car Dealer’dan araç al, Garage’da seç, G ile bin. Shift nitro.</p><button class="small good" data-v25="openGarage">Garajı Aç</button></div><div class="card"><h3>🧑‍🔧 Rep Kasmak</h3><p>NPC Jobs, banka savunması, araçlı kovalamaca, fake bot yakalama ve daily artık rep verir.</p><button class="small gold" data-v25="openNpcJobs">NPC İşleri</button></div></div>`; };
-renderMarketInfo = function(){ panelTitle.textContent='🛒 Pet Market Mall'; panelSub.textContent='Market artık büyük mağaza. Counter bilgi/refresh; raflardaki petlere yaklaşarak E ile al.'; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Raf sistemi</h3><p>Petler mağazanın içinde akar. E ile al, base’e götür. Rank/core üst rarityleri açar.</p><button class="small gold" data-cmd="marketRefresh">Market Yenile $${shortNum(12000*modeCfg().upgradeCostMult)}</button></div><div class="card"><h3>Mağaza Loop</h3><p>Pet Market → Base → Bank/NPC → Car Dealer → Boss Stadium. V2.9 döngüsü bu.</p><button class="small" data-v25="gpsSet" data-x="${center(ZONES.bank).x}" data-y="${center(ZONES.bank).y}" data-label="City Bank">Sonra Banka GPS</button></div></div>`; };
+renderMap = function(){ ensureV25Fields(); panelTitle.textContent='🗺️ V3.0.2 Mega Sector City Haritası'; panelSub.textContent='14.000 x 9.000 dev map, 3 büyük sektör, mağaza-counter sistemi, araç ve GPS.'; panelBody.innerHTML=`<div class="grid">${DISTRICTS.map(d=>`<div class="card"><h3 style="color:${d.edge}">${htmlEscape(d.name)}</h3><p>${htmlEscape(d.desc)}</p><p>Koordinat: ${Math.round(d.x)}, ${Math.round(d.y)} • Boyut: ${Math.round(d.w)}x${Math.round(d.h)}</p><button class="small gold" data-cmd="travel" data-zone="${d.id}">Metro ile Git</button></div>`).join('')}<div class="card"><h3>🚗 V3.0.2 Araç Notu</h3><p>Harita artık arabasız çok uzun. Car Dealer’dan araç al, Garage’da seç, G ile bin. Shift nitro.</p><button class="small good" data-v25="openGarage">Garajı Aç</button></div><div class="card"><h3>🧑‍🔧 Rep Kasmak</h3><p>NPC Jobs, banka savunması, araçlı kovalamaca, fake bot yakalama ve daily artık rep verir.</p><button class="small gold" data-v25="openNpcJobs">NPC İşleri</button></div></div>`; };
+renderMarketInfo = function(){ panelTitle.textContent='🛒 Pet Market Mall'; panelSub.textContent='Market artık büyük mağaza. Counter bilgi/refresh; raflardaki petlere yaklaşarak E ile al.'; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Raf sistemi</h3><p>Petler mağazanın içinde akar. E ile al, base’e götür. Rank/core üst rarityleri açar.</p><button class="small gold" data-cmd="marketRefresh">Market Yenile $${shortNum(12000*modeCfg().upgradeCostMult)}</button></div><div class="card"><h3>Mağaza Loop</h3><p>Pet Market → Base → Bank/NPC → Car Dealer → Boss Stadium. V3.0.2 döngüsü bu.</p><button class="small" data-v25="gpsSet" data-x="${center(ZONES.bank).x}" data-y="${center(ZONES.bank).y}" data-label="City Bank">Sonra Banka GPS</button></div></div>`; };
 renderForgeInfo = function(){ panelTitle.textContent='🔥 Core Forge'; panelSub.textContent='Endgame para yakma ve rep/core destek merkezi.'; const cost=Math.round(5000000*Math.pow(1.65,state.hardcore.rank||0)*modeCfg().endgameCostMult); panelBody.innerHTML=`<div class="grid"><div class="card"><h3>Rep Döv</h3><p>Çok para var ama rep azsa burada küçük rep takviyesi alabilirsin. Boss hâlâ ana core kaynağı.</p><p>Fiyat: $${shortNum(cost)} + 1 core → ${modeId()==='easy'?3:2} rep</p><button class="small gold" data-v25="forgeRep">Rep Döv</button></div><div class="card"><h3>Boss GPS</h3><p>Core için boss kesmeye devam et.</p><button class="small bad" data-v25="gpsSet" data-x="${center(ZONES.boss).x}" data-y="${center(ZONES.boss).y}" data-label="Boss Stadium">Boss’a Git</button></div></div>`; };
 
 var __v25_baseTravel = travelToDistrict;
@@ -1650,7 +1650,7 @@ function drawV25Decoration(){
 }
 
 
-/* V2.9 mobile tap target visual */
+/* V3.0.2 mobile tap target visual */
 var __v26_baseDrawV25Decoration = drawV25Decoration;
 drawV25Decoration = function(){
   __v26_baseDrawV25Decoration();
@@ -1719,7 +1719,7 @@ resetPhraseEl.addEventListener('keydown', e=>{ if(e.key==='Enter') confirmReset(
 
 function loop(now){ const dt=clamp((now-lastFrame)/1000,0,.05); lastFrame=now; update(dt); draw(); requestAnimationFrame(loop); }
 
-/* ===================== V2.9 JUICE & POLISH PATCH ===================== */
+/* ===================== V3.0.2 JUICE & POLISH PATCH ===================== */
 const V27_EVENTS = [
   {id:'supply',name:'Skibidi Supply Drop',icon:'📦',color:'#ffe680',time:75,kind:'pickup',desc:'Haritada özel sandık. Yetişirsen para, rep ve core verir.'},
   {id:'goldRain',name:'Golden Rain',icon:'💸',color:'#7ef0c1',time:62,kind:'global',desc:'Gelir ve para ödülleri kısa süre artar.'},
@@ -1921,14 +1921,14 @@ function v27BuyEssenceUpgrade(k){ const v=ensureV27Fields(), d=V27_ESSENCE_UPGRA
 function renderV27Panel(){
   ensureV27Fields(); panelEl.classList.remove('hidden'); state.paused=true;
   const v=state.v27, c=v27PrestigeCost(), gain=v27EssenceGain();
-  panelTitle.textContent='🧃 V2.9 Juice & Essence';
+  panelTitle.textContent='🧃 V3.0.2 Juice & Essence';
   panelSub.textContent=`Essence ${shortNum(v.essence)} • Prestige ${v.prestige} • Event ${v.event?v.event.name:'bekleniyor'} • Hava ${v.weatherKind}`;
   const upgrades=Object.entries(V27_ESSENCE_UPGRADES).map(([k,d])=>{ const lvl=v.bonuses[k]||0; return `<div class="card"><h3>${d.icon} ${htmlEscape(d.name)} Lv.${lvl}/${d.max}</h3><p>${htmlEscape(d.desc)}</p><p>Fiyat: ${v27EssenceUpgradeCost(k)} Essence</p><button class="small good" data-v27="essence" data-key="${k}" ${lvl>=d.max?'disabled':''}>Kalıcı Yükselt</button></div>`; }).join('');
   panelBody.innerHTML=`<div class="grid"><div class="card"><h3>♻️ Güvenli Essence Prestige</h3><p>Bu reset değildir: petler, arabalar, skill, base ve save silinmez. Sadece büyük miktar para/core/rep yakar, kalıcı Essence verir.</p><p>Gereken: $${shortNum(c.cash)} • +${shortNum(c.income)}/sn${c.cores?` • ${c.cores} core`:''}${c.rep?` • ${c.rep} rep`:''}</p><p>Kazanç: +${gain} Essence</p><button class="small gold" data-v27="prestige">Essence Prestige Yap</button></div><div class="card"><h3>🎛️ Juice Ayarları</h3><p>Single-file kalır: ses, partikül, ekran titremesi, hava ve eventler tamamen kodla üretilir.</p><div class="row"><button class="small ${v.sound?'good':'bad'}" data-v27="toggle" data-key="sound">Ses ${v.sound?'Açık':'Kapalı'}</button><button class="small ${v.enabled?'good':'bad'}" data-v27="toggle" data-key="enabled">Efekt ${v.enabled?'Açık':'Kapalı'}</button><button class="small ${v.weather?'good':'bad'}" data-v27="toggle" data-key="weather">Hava ${v.weather?'Açık':'Kapalı'}</button><button class="small ${v.lowFx?'gold':'good'}" data-v27="toggle" data-key="lowFx">${v.lowFx?'Performans Modu':'Full Juice'}</button></div></div><div class="card"><h3>🎲 Şehir Eventi</h3><p>${v.event?`${v.event.icon} ${v.event.name}: ${Math.ceil(v.event.timer)}sn kaldı.`:`Sonraki event yaklaşık ${Math.ceil(v.eventTimer)}sn içinde.`}</p><div class="row"><button class="small gold" data-v27="spawnEvent">Event Çağır</button><button class="small good" data-v27="openMobile">Mobil Ayarlar</button></div></div>${upgrades}</div>`;
 }
 function v27AppendUpgradeCards(){
   ensureV27Fields(); const v=state.v27, c=v27PrestigeCost();
-  panelBody.insertAdjacentHTML('beforeend', `<h3 style="margin-top:18px">🧃 V2.9 Juice & Essence</h3><div class="grid"><div class="card"><h3>🧃 Essence Prestige</h3><p>Kalıcı bonus sistemi. Pet ve save silmeden para/core/rep yakıp Essence kazanırsın.</p><p>Essence: ${shortNum(v.essence)} • Prestige: ${v.prestige}</p><p>Gereken: $${shortNum(c.cash)} • +${shortNum(c.income)}/sn${c.cores?` • ${c.cores} core`:''}${c.rep?` • ${c.rep} rep`:''}</p><button class="small gold" data-v27="openJuice">Juice Panelini Aç</button></div><div class="card"><h3>✨ Kodla Üretilen Efektler</h3><p>Ses, partikül, ekran titremesi, gece/gündüz, yağmur/sis/neon ve şehir eventleri harici dosya olmadan çalışır.</p><button class="small good" data-v27="spawnEvent">Rastgele Event Çağır</button></div></div>`);
+  panelBody.insertAdjacentHTML('beforeend', `<h3 style="margin-top:18px">🧃 V3.0.2 Juice & Essence</h3><div class="grid"><div class="card"><h3>🧃 Essence Prestige</h3><p>Kalıcı bonus sistemi. Pet ve save silmeden para/core/rep yakıp Essence kazanırsın.</p><p>Essence: ${shortNum(v.essence)} • Prestige: ${v.prestige}</p><p>Gereken: $${shortNum(c.cash)} • +${shortNum(c.income)}/sn${c.cores?` • ${c.cores} core`:''}${c.rep?` • ${c.rep} rep`:''}</p><button class="small gold" data-v27="openJuice">Juice Panelini Aç</button></div><div class="card"><h3>✨ Kodla Üretilen Efektler</h3><p>Ses, partikül, ekran titremesi, gece/gündüz, yağmur/sis/neon ve şehir eventleri harici dosya olmadan çalışır.</p><button class="small good" data-v27="spawnEvent">Rastgele Event Çağır</button></div></div>`);
 }
 function v27AppendMobileCards(){
   ensureV27Fields(); const v=state.v27;
@@ -1941,7 +1941,7 @@ openPanel = function(kind){
   if(kind==='upgrades') v27AppendUpgradeCards();
   if(kind==='mobile') v27AppendMobileCards();
 };
-panelEl.addEventListener('click', e=>{ const btn=e.target.closest('[data-v27]'); if(!btn) return; const cmd=btn.dataset.v27; ensureV27Fields(); if(cmd==='openJuice') openPanel('juice'); else if(cmd==='openMobile') openPanel('mobile'); else if(cmd==='prestige') v27Prestige(); else if(cmd==='essence') v27BuyEssenceUpgrade(btn.dataset.key); else if(cmd==='spawnEvent') v27SpawnEvent(); else if(cmd==='toggle'){ const k=btn.dataset.key; state.v27[k]=!state.v27[k]; if(k==='lowFx') state.v27.lowFx=!!state.v27.lowFx; toast('V2.9 ayarı güncellendi.'); saveGame(); openPanel(panelTitle.textContent.includes('Juice')?'juice':'mobile'); } else if(cmd==='zoomFix'){ installAntiZoomGuards(); toast('Zoom Guard+ yenilendi.'); } });
+panelEl.addEventListener('click', e=>{ const btn=e.target.closest('[data-v27]'); if(!btn) return; const cmd=btn.dataset.v27; ensureV27Fields(); if(cmd==='openJuice') openPanel('juice'); else if(cmd==='openMobile') openPanel('mobile'); else if(cmd==='prestige') v27Prestige(); else if(cmd==='essence') v27BuyEssenceUpgrade(btn.dataset.key); else if(cmd==='spawnEvent') v27SpawnEvent(); else if(cmd==='toggle'){ const k=btn.dataset.key; state.v27[k]=!state.v27[k]; if(k==='lowFx') state.v27.lowFx=!!state.v27.lowFx; toast('V3.0.2 ayarı güncellendi.'); saveGame(); openPanel(panelTitle.textContent.includes('Juice')?'juice':'mobile'); } else if(cmd==='zoomFix'){ installAntiZoomGuards(); toast('Zoom Guard+ yenilendi.'); } });
 
 var __v27_baseSerializeSave = serializeSave;
 serializeSave = function(){ const data=__v27_baseSerializeSave(); ensureV27Fields(); data.v27=state.v27; data.version=27; return data; };
@@ -1993,7 +1993,7 @@ var __v27_baseDrawMiniMap = drawMiniMap;
 drawMiniMap = function(){
   const v=ensureV27Fields(); const compact=view.w<650; const w=compact?136:250, h=compact?92:160, x=view.w-w-12, y=compact?58:112; ctx.save(); roundedRect(x,y,w,h,16); ctx.fillStyle='rgba(8,14,30,.76)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.14)'; ctx.stroke(); const sx=w/WORLD.w, sy=h/WORLD.h; function dot(px,py,c,r=4){ctx.fillStyle=c;ctx.beginPath();ctx.arc(x+px*sx,y+py*sy,r,0,Math.PI*2);ctx.fill();}
   for(const d of DISTRICTS){ ctx.fillStyle=d.color; ctx.fillRect(x+d.x*sx,y+d.y*sy,d.w*sx,d.h*sy); ctx.strokeStyle=d.edge; ctx.strokeRect(x+d.x*sx,y+d.y*sy,d.w*sx,d.h*sy); }
-  for(const r of state.rivals) dot(r.x+r.w/2,r.y+r.h/2,r.edge,compact?2.3:3); for(const bot of state.fakeBots||[]) dot(bot.x,bot.y,bot.carrying?COLORS.red:COLORS.yellow,compact?2:3); if(state.boss) dot(state.boss.x,state.boss.y,COLORS.red,compact?4:5); if(v.event?.kind==='pickup') dot(v.event.x,v.event.y,v.event.color,compact?5:6); if(state.v25?.gpsTarget) dot(state.v25.gpsTarget.x,state.v25.gpsTarget.y,COLORS.cyan,compact?3:4); dot(state.player.x,state.player.y,state.settings.vehicleActive?COLORS.orange:COLORS.green,compact?4:5); drawText(compact?'MAP':'V2.9 RADAR',x+10,y+17,compact?10:12,COLORS.muted,'left',900); ctx.restore();
+  for(const r of state.rivals) dot(r.x+r.w/2,r.y+r.h/2,r.edge,compact?2.3:3); for(const bot of state.fakeBots||[]) dot(bot.x,bot.y,bot.carrying?COLORS.red:COLORS.yellow,compact?2:3); if(state.boss) dot(state.boss.x,state.boss.y,COLORS.red,compact?4:5); if(v.event?.kind==='pickup') dot(v.event.x,v.event.y,v.event.color,compact?5:6); if(state.v25?.gpsTarget) dot(state.v25.gpsTarget.x,state.v25.gpsTarget.y,COLORS.cyan,compact?3:4); dot(state.player.x,state.player.y,state.settings.vehicleActive?COLORS.orange:COLORS.green,compact?4:5); drawText(compact?'MAP':'V3.0.2 RADAR',x+10,y+17,compact?10:12,COLORS.muted,'left',900); ctx.restore();
 };
 var __v27_baseDraw = draw;
 draw = function(){
@@ -2003,7 +2003,7 @@ draw = function(){
 };
 
 var __v27_baseDrawZones = drawZones;
-drawZones = function(){ __v27_baseDrawZones(); drawText('🧃 V2.9 JUICE & POLISH • PROCEDURAL AUDIO • PARTICLES • WEATHER • ESSENCE • RANDOM EVENTS',WORLD.w/2,100,24,COLORS.green,'center',1000); };
+drawZones = function(){ __v27_baseDrawZones(); drawText('🧃 V3.0.2 JUICE & POLISH • PROCEDURAL AUDIO • PARTICLES • WEATHER • ESSENCE • RANDOM EVENTS',WORLD.w/2,100,24,COLORS.green,'center',1000); };
 
 function installV27AntiZoomPlus(){
   installAntiZoomGuards(); document.documentElement.style.touchAction='none'; document.body.style.touchAction='none'; document.body.style.webkitTextSizeAdjust='100%';
@@ -2013,7 +2013,7 @@ installV27AntiZoomPlus();
 setTimeout(()=>{ document.getElementById('btnJuice')?.addEventListener('click',()=>openPanel('juice')); },0);
 
 
-/* ===================== V2.9 STABILITY GUARD PATCH =====================
+/* ===================== V3.0.2 STABILITY GUARD PATCH =====================
    Gemini risk fix pack: dt guard, numeric save sanitizer, array pruning,
    orientation-safe mobile controls and stronger anti-zoom recovery. */
 const V271_STABILITY_VERSION = '2.7.1';
@@ -2130,7 +2130,7 @@ function v271SanitizeRuntimeState(){
     state.v27.prestige = v271Int(state.v27.prestige,0,0,9999); state.v27.essence = v271Num(state.v27.essence,0,0,V271_ECON_MAX); state.v27.eventTimer = v271Num(state.v27.eventTimer,45,4,9999); state.v27.weatherTimer = v271Num(state.v27.weatherTimer,90,4,9999);
     for(const k of Object.keys(state.v27.bonuses||{})) state.v27.bonuses[k]=v271Int(state.v27.bonuses[k],0,0,99);
     state.__stability = {version:V271_STABILITY_VERSION,lastSanitized:Date.now(),particles:state.particles.length,police:state.police.length,thieves:state.thieves.length};
-  }catch(e){ console.warn('V2.9 stability sanitize failed', e); }
+  }catch(e){ console.warn('V3.0.2 stability sanitize failed', e); }
 }
 function v271PruneWorldArrays(){
   const maxParticles = state.v27?.lowFx ? 180 : 460;
@@ -2166,7 +2166,7 @@ update = function(dt){ dt = (!Number.isFinite(dt) || dt<0) ? 0 : clamp(dt,0,1/30
 var __v271_baseResize = resize;
 resize = function(){ __v271_baseResize(); joy.active=false; joy.dx=joy.dy=0; joyStick.style.transform='translate(0,0)'; updateCamera(); };
 var __v271_baseDrawZones = drawZones;
-drawZones = function(){ __v271_baseDrawZones(); drawText('🛡️ V2.9 STABILITY GUARD • DT LOCK • SAVE SANITIZER • ARRAY PRUNE • MOBILE RESIZE SAFE',WORLD.w/2,132,18,COLORS.cyan,'center',1000); };
+drawZones = function(){ __v271_baseDrawZones(); drawText('🛡️ V3.0.2 STABILITY GUARD • DT LOCK • SAVE SANITIZER • ARRAY PRUNE • MOBILE RESIZE SAFE',WORLD.w/2,132,18,COLORS.cyan,'center',1000); };
 v271InstallViewportSafety();
 
 
@@ -2174,8 +2174,8 @@ applyV25WorldPatch();
 resize();
 
 /* ============================================================================
-   V2.9 — OFFLINE EARNINGS • DAILY REWARD • ACHIEVEMENTS • FRIEND RIVALS + FIXES
-   (V2.9 patch desenini izler: base fonksiyonları sarmalar, save key sabit)
+   V3.0.2 — OFFLINE EARNINGS • DAILY REWARD • ACHIEVEMENTS • FRIEND RIVALS + FIXES
+   (V3.0.2 patch desenini izler: base fonksiyonları sarmalar, save key sabit)
    ============================================================================ */
 (function v28Install(){
   /* ---- 0) CSS düzeltmeleri: masaüstünde topbar butonları görünür + 🏆 butonu ---- */
@@ -2348,10 +2348,10 @@ resize();
   update=function(dt){ __v28_baseUpdate(dt); try{ const v=ensureV28Fields(); v._t-=dt; if(v._t<=0){ v._t=2.0; v28CheckAchievements(false); } }catch(_){} };
 
   const __v28_baseLoop=loop; let __v28_first=true;
-  loop=function(now){ if(__v28_first){ __v28_first=false; try{ v28FirstFrame(); }catch(e){ console.warn('V2.9 first frame', e); } } return __v28_baseLoop(now); };
+  loop=function(now){ if(__v28_first){ __v28_first=false; try{ v28FirstFrame(); }catch(e){ console.warn('V3.0.2 first frame', e); } } return __v28_baseLoop(now); };
 
   const __v28_baseOpenPanel=openPanel;
-  openPanel=function(kind){ if(kind==='achievements'){ try{ ensureV28Fields(); state.paused=true; panelEl.classList.remove('hidden'); v28RenderPanel(); }catch(e){ console.warn('V2.9 panel', e); } return; } return __v28_baseOpenPanel(kind); };
+  openPanel=function(kind){ if(kind==='achievements'){ try{ ensureV28Fields(); state.paused=true; panelEl.classList.remove('hidden'); v28RenderPanel(); }catch(e){ console.warn('V3.0.2 panel', e); } return; } return __v28_baseOpenPanel(kind); };
 
   /* ---- 8) Butonlar + klavye (J) ---- */
   try{
@@ -2383,12 +2383,12 @@ resize();
 
   /* ---- 10) Başlangıç banner'ı ---- */
   const __v28_baseDrawZones=drawZones;
-  drawZones=function(){ __v28_baseDrawZones(); try{ drawText('🏆 V2.9 • OFFLINE KAZANÇ • GÜNLÜK ÖDÜL • BAŞARIMLAR • ARKADAŞ RAKİPLER',WORLD.w/2,160,16,COLORS.yellow,'center',1000); }catch(_){} };
+  drawZones=function(){ __v28_baseDrawZones(); try{ drawText('🏆 V3.0.2 • OFFLINE KAZANÇ • GÜNLÜK ÖDÜL • BAŞARIMLAR • ARKADAŞ RAKİPLER',WORLD.w/2,160,16,COLORS.yellow,'center',1000); }catch(_){} };
 })();
 
 
 /* ============================================================================
-   V2.9 — SEASON RIFT + TERRITORY WAR + BOUNTY + PET EVOLUTION
+   V3.0.2 — SEASON RIFT + TERRITORY WAR + BOUNTY + PET EVOLUTION
    Tek dosya / sıfır dış bağımlılık. Eski save key korunur.
    ============================================================================ */
 (function v29Install(){
@@ -2445,7 +2445,7 @@ resize();
     if(r.pet){ const pet=makeBrainrot({minTier:clamp(4+Math.floor((state.v29?.season?.level||1)/8),4,13),boost:2.1+v27EssenceLuck?.()||0}); pet.name='Season '+pet.name; pet.mutation=pet.mutation==='Normal'?'Seasonal':pet.mutation; pet.color=pet.color||'#ffe680'; pet.ability=pet.ability==='none'?'luckAura':pet.ability; addToInventory(pet,true); }
     if(atPlayer){ particles(state.player.x,state.player.y-32,COLORS.yellow,70); v27Shake?.(5,.18); beep?.('win'); }
   }
-  function v29AddSeasonXp(n,reason=''){ const v=v29Ensure(); if(!Number.isFinite(Number(n))||n<=0) return; v.season.xp += n; let leveled=false; while(v.season.level<60 && v.season.xp>=v29SeasonNeed(v.season.level)){ v.season.xp -= v29SeasonNeed(v.season.level); v.season.level++; leveled=true; } if(leveled){ toast(`🎟️ Season Level ${v.season.level}! V2.9 panelinden ödülü al.`); beep?.('win'); } }
+  function v29AddSeasonXp(n,reason=''){ const v=v29Ensure(); if(!Number.isFinite(Number(n))||n<=0) return; v.season.xp += n; let leveled=false; while(v.season.level<60 && v.season.xp>=v29SeasonNeed(v.season.level)){ v.season.xp -= v29SeasonNeed(v.season.level); v.season.level++; leveled=true; } if(leveled){ toast(`🎟️ Season Level ${v.season.level}! V3.0.2 panelinden ödülü al.`); beep?.('win'); } }
   function v29ClaimSeason(lv){ const v=v29Ensure(); lv=Math.floor(Number(lv)||0); if(lv<1||lv>v.season.level){ showMessage('Bu sezon level ödülü daha açılmadı.'); beep?.('bad'); return; } if(v.season.claimed[lv]){ showMessage('Bu ödül zaten alındı.'); return; } const r=v29Reward(lv); v.season.claimed[lv]=true; v29Grant(r); toast(`🎟️ Sezon ${lv} ödülü: ${v29RewardText(r)}`); saveGame(); openPanel('v29'); }
   function currentDistrictId(){ const d=currentDistrict?.(); return d?.id || 'downtown'; }
   function v29TerritoryBonus(){ const v=v29Ensure(); let cash=1,rep=1,luck=0,vehicle=1; if(v.territory.downtown.owner==='player') cash+=.12; if(v.territory.neon.owner==='player') rep+=.18; if(v.territory.void.owner==='player') luck+=.16; if(v.territory.downtown.owner==='player' && v.territory.neon.owner==='player' && v.territory.void.owner==='player') { cash+=.10; rep+=.10; vehicle+=.08; } return {cash,rep,luck,vehicle}; }
@@ -2456,7 +2456,7 @@ resize();
     v.territory.warTimer -= dt;
     if(v.territory.warTimer<=0){ v.territory.warTimer=rand(35,75); const enemy=choice(['neon','void']); if(v.territory[enemy]?.owner==='player' && Math.random()<(modeId()==='easy'?.18:.42)){ v.territory[enemy].owner='rival'; v.territory[enemy].influence=35; toast(`⚔️ Rival botlar ${V29_DISTRICT_INFO[enemy].name} bölgesini geri aldı!`); } else { v.territory[enemy].influence=clamp((v.territory[enemy]?.influence||0)-rand(8,18),0,100); } }
   }
-  function v29BountyProgress(amount=1,source=''){ const v=v29Ensure(); if(!v.bounty || v.bounty.claimed) return; v.bounty.progress=clamp((v.bounty.progress||0)+amount,0,v.bounty.goal); if(v.bounty.progress>=v.bounty.goal){ toast(`🎯 Bounty tamamlandı: ${v.bounty.target}. V2.9 panelinden ödülü al.`); beep?.('win'); } }
+  function v29BountyProgress(amount=1,source=''){ const v=v29Ensure(); if(!v.bounty || v.bounty.claimed) return; v.bounty.progress=clamp((v.bounty.progress||0)+amount,0,v.bounty.goal); if(v.bounty.progress>=v.bounty.goal){ toast(`🎯 Bounty tamamlandı: ${v.bounty.target}. V3.0.2 panelinden ödülü al.`); beep?.('win'); } }
   function v29ClaimBounty(){ const v=v29Ensure(); const b=v.bounty; if(!b||b.progress<b.goal){ showMessage('Bounty hedefi henüz bitmedi.'); return; } if(b.claimed){ showMessage('Bounty zaten alındı. Yeni hedef yenileniyor.'); v.bounty=makeBounty(); openPanel('v29'); return; } b.claimed=true; v29Grant(b.reward); v29AddSeasonXp(75,'bounty'); toast(`🎯 Bounty ödülü: ${v29RewardText(b.reward)}`); v.bounty=makeBounty(); saveGame(); openPanel('v29'); }
   function v29RerollBounty(){ const cost=Math.round(25000*(1+state.player.level)*modeCfg().upgradeCostMult); if(state.player.cash<cost){ showMessage(`Bounty yenilemek için $${shortNum(cost)} lazım.`); beep?.('bad'); return; } state.player.cash-=cost; state.v29.bounty=makeBounty(); toast('🎯 Yeni bounty hedefi geldi.'); saveGame(); openPanel('v29'); }
   function v29StartDungeon(id){ const def=V29_DUNGEONS[id]; if(!def) return; const v=v29Ensure(); if(v.dungeon){ showMessage('Zaten aktif dungeon var. Önce onu bitir.'); return; } if(state.player.level<def.minLevel){ showMessage(`${def.name} için level ${def.minLevel} lazım.`); beep?.('bad'); return; } if(state.player.cash<def.costCash || state.player.gems<def.costGems || state.hardcore.cores<def.costCore){ showMessage(`${def.name} için $${shortNum(def.costCash)}, ${def.costGems}💎${def.costCore?`, ${def.costCore} core`:''} lazım.`); beep?.('bad'); return; } state.player.cash-=def.costCash; state.player.gems-=def.costGems; if(def.costCore) state.hardcore.cores-=def.costCore; v.dungeon={id:def.id,name:def.name,icon:def.icon,timer:def.timer,goal:def.goal,progress:0,wave:1,nextWave:0,color:def.color}; state.v25 && (state.v25.gpsTarget={x:center(ZONES.boss).x,y:center(ZONES.boss).y,label:def.name}); toast(`${def.icon} ${def.name} başladı! Hırsız/bot temizle, boss kes.`); v29SpawnDungeonWave(4); v29AddSeasonXp(35,'dungeon start'); saveGame(); closePanel(); }
@@ -2468,7 +2468,7 @@ resize();
     if(dg.timer<=0) v29FinishDungeon(dg.progress>=Math.ceil(dg.goal*.75)); }
   function v29EvoCost(p){ const e=Math.floor(v29SafeNum(p.evo,0,0,10)); return {cash:Math.round((p.price||p.income*20)*(0.55+e*.52)*modeCfg().upgradeCostMult),gems:3+e*4,cores:e>=3?1+Math.floor((e-3)/2):0}; }
   function v29Evolve(scope,id){ const arr=scope==='active'?state.activeSlots:state.inventory; const p=arr.find(x=>x.id===id); if(!p){ showMessage('Pet bulunamadı.'); return; } p.evo=Math.floor(v29SafeNum(p.evo,0,0,10)); if(p.evo>=10){ showMessage('Bu pet maksimum evolution.'); return; } const c=v29EvoCost(p); if(state.player.cash<c.cash || state.player.gems<c.gems || state.hardcore.cores<c.cores){ showMessage(`Evolution için $${shortNum(c.cash)}, ${c.gems}💎${c.cores?`, ${c.cores} core`:''} lazım.`); beep?.('bad'); return; } state.player.cash-=c.cash; state.player.gems-=c.gems; if(c.cores) state.hardcore.cores-=c.cores; p.evo++; p.name = p.name.includes('⭐') ? p.name : '⭐ '+p.name; p.income = +(Number(p.income)*1.72).toFixed(1); p.price = Math.round((Number(p.price)||p.income*20)*1.55); state.v29.evoCount++; discover(p); particles(state.player.x,state.player.y,p.color||COLORS.yellow,90); v29AddSeasonXp(60+p.evo*12,'evolution'); toast(`⭐ ${p.name} Evolution ${p.evo}! Gelir arttı.`); saveGame(); openPanel('v29'); }
-  function v29RenderPanel(){ const v=v29Ensure(); const s=v.season; panelEl.classList.remove('hidden'); state.paused=true; panelTitle.textContent='🎟️ V2.9 Season Rift & Territory War'; panelSub.textContent=`${V29_SEASON_NAME} • Level ${s.level}/60 • XP ${shortNum(s.xp)}/${shortNum(v29SeasonNeed(s.level))} • Dungeon ${v.dungeon?`${v.dungeon.name} ${Math.ceil(v.dungeon.timer)}sn`:'pasif'}`;
+  function v29RenderPanel(){ const v=v29Ensure(); const s=v.season; panelEl.classList.remove('hidden'); state.paused=true; panelTitle.textContent='🎟️ V3.0.2 Season Rift & Territory War'; panelSub.textContent=`${V29_SEASON_NAME} • Level ${s.level}/60 • XP ${shortNum(s.xp)}/${shortNum(v29SeasonNeed(s.level))} • Dungeon ${v.dungeon?`${v.dungeon.name} ${Math.ceil(v.dungeon.timer)}sn`:'pasif'}`;
     const nextLevels=[]; for(let i=1;i<=Math.min(60,Math.max(s.level+3,10));i++) if(i<=s.level+8) nextLevels.push(i);
     const seasonCards=nextLevels.map(lv=>{ const open=lv<=s.level, claimed=!!s.claimed[lv], r=v29Reward(lv); return `<div class="card"><h3>${claimed?'✅':open?'🎁':'🔒'} Season Lv.${lv}</h3><p>Ödül: ${v29RewardText(r)}</p><button class="small gold" data-v29="seasonClaim" data-lv="${lv}" ${open&&!claimed?'':'disabled'}>${claimed?'Alındı':open?'Ödülü Al':'Kilitli'}</button></div>`; }).join('');
     const terr=V29_DISTRICTS.map(id=>{ const t=v.territory[id], info=V29_DISTRICT_INFO[id]; const own=t.owner==='player'; return `<div class="card"><h3 style="color:${info.color}">${info.icon} ${info.name}</h3><p>${info.desc}</p><p>Kontrol: <b>${own?'SEN':'RİVAL / BOT'}</b> • Etki ${Math.round(t.influence||0)}%</p><button class="small ${own?'good':'gold'}" data-v29="capture" data-id="${id}">${own?'Kontrol Sende':'Ele Geçir'}</button></div>`; }).join('');
@@ -2482,16 +2482,16 @@ resize();
   function v29DrawWorld(){ const v=v29Ensure(); ctx.save(); for(const id of V29_DISTRICTS){ const d=DISTRICTS.find(x=>x.id===id); const info=V29_DISTRICT_INFO[id]; const own=v.territory[id]?.owner==='player'; if(!d) continue; ctx.globalAlpha=own?.22:.11; ctx.fillStyle=own?info.color:'#ff6688'; ctx.fillRect(d.x+6,d.y+6,d.w-12,18); ctx.globalAlpha=1; drawText(`${info.icon} ${own?'SENİN KONTROLÜN':'RIVAL CONTROL'} • ${Math.round(v.territory[id]?.influence||0)}%`,d.x+d.w-34,d.y+28,14,own?info.color:COLORS.red,'right',1000); }
     if(v.dungeon){ const z=ZONES.boss; ctx.globalAlpha=.55+.2*Math.sin(state.t*8); ctx.strokeStyle=v.dungeon.color||COLORS.purple; ctx.lineWidth=12; roundedRect(z.x-18,z.y-18,z.w+36,z.h+36,38); ctx.stroke(); drawText(`${v.dungeon.icon} ${v.dungeon.name} ACTIVE`,z.x+z.w/2,z.y-28,30,v.dungeon.color,'center',1000); }
     ctx.restore(); }
-  function v29FirstOpen(){ const v=v29Ensure(); if(v.firstOpen) return; v.firstOpen=true; toast('🎟️ V2.9 geldi: SEZON panelinden dungeon, territory, bounty ve evolution açıldı.'); saveGame(); }
+  function v29FirstOpen(){ const v=v29Ensure(); if(v.firstOpen) return; v.firstOpen=true; toast('🎟️ V3.0.2 geldi: SEZON panelinden dungeon, territory, bounty ve evolution açıldı.'); saveGame(); }
 
   // Runtime visible version identity
   try{
-    document.title='Brainrot Heist V2.9.1 Stability & V3 Prep';
-    canvas?.setAttribute('aria-label','Brainrot Heist V2.9.1 Stability & V3 Prep oyun alanı');
-    const eye=document.querySelector('.menuCard .eyebrow'); if(eye) eye.textContent='V2.9.1 Stability & V3 Prep';
-    const h=document.querySelector('.menuCard h1'); if(h) h.innerHTML='Brainrot Heist<br>V2.9.1 CITY WAR';
-    const lead=document.querySelector('.menuCard .lead'); if(lead) lead.textContent='V2.9.1 temizlik update: V2.9 sezon/dungeon/territory sistemleri korunur; sürüm yazıları, mobil oynanış, save sağlık, rehber ve V3 hazırlığı eklendi.';
-    const patch=document.querySelector('.menuCard .patch'); if(patch) patch.innerHTML='<div><b>Bug Fix</b>Araçta pet taşıma çizimi, eski sürüm yazıları, mobile UI ve panel karmaşası toparlandı.</div><div><b>Save Health</b>Save audit, numeric guard, export/import hatırlatıcı ve bozuk değer temizliği güçlendi.</div><div><b>Rehber</b>Core, rep, sezon, territory, dungeon ve mobil oynanış için tek panelden yol haritası geldi.</div><div><b>V3 Hazırlığı</b>Open City Empire için interior, housing, faction, araç 2.0 ve dungeon 2.0 teaser olarak durur.</div>'; 
+    document.title='Brainrot Heist V3.0.2 Open City Empire';
+    canvas?.setAttribute('aria-label','Brainrot Heist V3.0.2 Open City Empire oyun alanı');
+    const eye=document.querySelector('.menuCard .eyebrow'); if(eye) eye.textContent='V3.0.2 Open City Empire';
+    const h=document.querySelector('.menuCard h1'); if(h) h.innerHTML='Brainrot Heist<br>V3 OPEN CITY';
+    const lead=document.querySelector('.menuCard .lead'); if(lead) lead.textContent='V3.0.2 temizlik update: V3.0.2 sezon/dungeon/territory sistemleri korunur; sürüm yazıları, mobil oynanış, save sağlık, rehber ve V3 hazırlığı eklendi.';
+    const patch=document.querySelector('.menuCard .patch'); if(patch) patch.innerHTML='<div><b>Bug Fix</b>Araçta pet taşıma çizimi, eski sürüm yazıları, mobile UI ve panel karmaşası toparlandı.</div><div><b>Save Health</b>Save audit, numeric guard, export/import hatırlatıcı ve bozuk değer temizliği güçlendi.</div><div><b>Rehber</b>Core, rep, sezon, territory, dungeon ve mobil oynanış için tek panelden yol haritası geldi.</div><div><b>V3 Başladı</b>Open City Empire artık teaser değil: housing, faction, dungeon 2.0, vehicle 2.0 ve empire sistemi aktif.</div>'; 
   }catch(_){}
   // CSS + topbar/mobile buttons
   try{ const st=document.createElement('style'); st.textContent=`#btnSeason{background:rgba(255,230,128,.22)!important;color:#fff9c9!important}.v29-hot{border-color:rgba(255,230,128,.46)!important;background:linear-gradient(135deg,rgba(255,230,128,.16),rgba(190,149,255,.10))!important}body.mobileSimple .topbar #btnSeason{display:inline-flex!important}`; document.head.appendChild(st); }catch(_){}
@@ -2502,7 +2502,7 @@ resize();
   const __v29_clean=cleanBrainrot;
   cleanBrainrot=function(item={},idx=0){ const p=__v29_clean(item,idx); p.evo=clamp(Number(item.evo)||0,0,10); return p; };
   const __v29_serialize=serializeSave;
-  serializeSave=function(){ const data=__v29_serialize(); try{ const v=v29Ensure(); data.v29=v; data.version=29; data.patch='V2.9 Season Rift & Territory War'; }catch(_){} return data; };
+  serializeSave=function(){ const data=__v29_serialize(); try{ const v=v29Ensure(); data.v29=v; data.version=29; data.patch='V3.0.2 Season Rift & Territory War'; }catch(_){} return data; };
   const __v29_restore=restoreSave;
   restoreSave=function(saved){ const ok=__v29_restore(saved); try{ v29Ensure(); if(saved?.v29){ state.v29={...state.v29,...saved.v29,season:{...state.v29.season,...(saved.v29.season||{}),claimed:{...(state.v29.season?.claimed||{}),...(saved.v29.season?.claimed||{})}},territory:{...state.v29.territory,...(saved.v29.territory||{})}}; } }catch(_){} return ok; };
   const __v29_addXp=addXp;
@@ -2532,7 +2532,7 @@ resize();
   const __v29_draw=draw;
   draw=function(){ __v29_draw(); v29Hud(); };
   const __v29_drawZones=drawZones;
-  drawZones=function(){ __v29_drawZones(); v29DrawWorld(); drawText('🎟️ V2.9 SEASON RIFT • TERRITORY WAR • BOUNTY BOARD • PET EVOLUTION • DUNGEONS',WORLD.w/2,190,18,COLORS.yellow,'center',1000); };
+  drawZones=function(){ __v29_drawZones(); v29DrawWorld(); drawText('🎟️ V3.0.2 SEASON RIFT • TERRITORY WAR • BOUNTY BOARD • PET EVOLUTION • DUNGEONS',WORLD.w/2,190,18,COLORS.yellow,'center',1000); };
   const __v29_loop=loop; let first=true;
   loop=function(now){ if(first){ first=false; v29Ensure(); v29FirstOpen(); } return __v29_loop(now); };
   panelEl.addEventListener('click',e=>{ const btn=e.target.closest('[data-v29]'); if(btn) v29Handle(btn); });
@@ -2541,12 +2541,12 @@ resize();
 
 
 /* ============================================================================
-   V2.9.1 — CLEANUP + BUGFIX + SAVE HEALTH + GUIDE + V3 PREP
+   V3.0.2 — CLEANUP + BUGFIX + SAVE HEALTH + GUIDE + V3 PREP
    Büyük yeni sistem değil; V3 öncesi sağlamlaştırma/temizlik update'i.
    ============================================================================ */
 (function v291Install(){
   const V291_VERSION = '2.9.1';
-  const V291_PATCH = 'V2.9.1 Stability & V3 Prep';
+  const V291_PATCH = 'V3.0.2 Open City Empire';
   const V291_ECON_CAP = (typeof V271_ECON_MAX === 'number') ? V271_ECON_MAX : 1e300;
   const V291_DISTRICT_INFO = {
     downtown:{name:'Downtown',icon:'🏙️',color:'#7ef0c1'},
@@ -2570,14 +2570,14 @@ resize();
   }
   function v291SetIdentity(){
     try{
-      document.title='Brainrot Heist V2.9.1 Stability & V3 Prep';
-      canvas?.setAttribute('aria-label','Brainrot Heist V2.9.1 Stability & V3 Prep oyun alanı');
-      const eye=document.querySelector('.menuCard .eyebrow'); if(eye) eye.textContent='V2.9.1 Stability & V3 Prep';
-      const h=document.querySelector('.menuCard h1'); if(h) h.innerHTML='Brainrot Heist<br>V2.9.1 CITY WAR';
-      const lead=document.querySelector('.menuCard .lead'); if(lead) lead.textContent='V2.9.1 temizlik update: V2.9 sistemleri korunur; sürüm yazıları, mobil oynanış, save sağlık, rehber ve V3 hazırlığı eklendi.';
-      const patch=document.querySelector('.menuCard .patch'); if(patch) patch.innerHTML='<div><b>Bug Fix</b>Araçta pet taşıma çizimi, eski sürüm yazıları, mobile UI ve panel karmaşası toparlandı.</div><div><b>Save Health</b>Save audit, numeric guard, export/import hatırlatıcı ve bozuk değer temizliği güçlendi.</div><div><b>Rehber</b>Core, rep, sezon, territory, dungeon ve mobil oynanış için tek panelden yol haritası geldi.</div><div><b>V3 Hazırlığı</b>Open City Empire için interior, housing, faction, araç 2.0 ve dungeon 2.0 teaser olarak durur.</div>';
+      document.title='Brainrot Heist V3.0.2 Open City Empire';
+      canvas?.setAttribute('aria-label','Brainrot Heist V3.0.2 Open City Empire oyun alanı');
+      const eye=document.querySelector('.menuCard .eyebrow'); if(eye) eye.textContent='V3.0.2 Open City Empire';
+      const h=document.querySelector('.menuCard h1'); if(h) h.innerHTML='Brainrot Heist<br>V3 OPEN CITY';
+      const lead=document.querySelector('.menuCard .lead'); if(lead) lead.textContent='V3.0 dev update: Open City Empire, 5 dev district, interior mağazalar, housing, faction, dungeon 2.0, araç 2.0, empire progression ve bank raid bug fix geldi.';
+      const patch=document.querySelector('.menuCard .patch'); if(patch) patch.innerHTML='<div><b>Bug Fix</b>Araçta pet taşıma çizimi, eski sürüm yazıları, mobile UI ve panel karmaşası toparlandı.</div><div><b>Save Health</b>Save audit, numeric guard, export/import hatırlatıcı ve bozuk değer temizliği güçlendi.</div><div><b>Rehber</b>Core, rep, sezon, territory, dungeon ve mobil oynanış için tek panelden yol haritası geldi.</div><div><b>V3 Başladı</b>Open City Empire artık teaser değil: housing, faction, dungeon 2.0, vehicle 2.0 ve empire sistemi aktif.</div>';
       const season=document.getElementById('btnSeason'); if(season) season.textContent='SEZON';
-    }catch(e){ console.warn('V2.9.1 identity cleanup failed',e); }
+    }catch(e){ console.warn('V3.0.2 identity cleanup failed',e); }
   }
   function v291SafeStateRepair(silent=false){
     try{
@@ -2589,29 +2589,29 @@ resize();
       state.thieves = (Array.isArray(state.thieves)?state.thieves:[]).filter(t=>t && v291n(t.hp,1,-5,999)>-5).slice(-48); state.police = (Array.isArray(state.police)?state.police:[]).filter(Boolean).slice(-32);
       state.particles = (Array.isArray(state.particles)?state.particles:[]).filter(p=>p && v291n(p.life,0,-1,10)>0).slice(-(state.v27?.lowFx?160:420)); state.floatingTexts = (Array.isArray(state.floatingTexts)?state.floatingTexts:[]).filter(f=>f && v291n(f.life,0,-1,10)>0).slice(-80);
       v291Ensure().lastAudit = new Date().toLocaleString('tr-TR'); if(!silent){ toast('🛡️ Save sağlık kontrolü yapıldı. Bozuk/NaN değerler temizlendi.'); beep?.('win'); } saveGame?.(); return true;
-    }catch(e){ console.warn('V2.9.1 repair failed',e); if(!silent) toast('Save sağlık kontrolünde hata oldu; oyun çalışmaya devam ediyor.'); return false; }
+    }catch(e){ console.warn('V3.0.2 repair failed',e); if(!silent) toast('Save sağlık kontrolünde hata oldu; oyun çalışmaya devam ediyor.'); return false; }
   }
   function v291SaveSnapshotInfo(){ let size=0, exists=false, parsed=false; try{ const raw=localStorage.getItem(SAVE_KEY); exists=!!raw; size=raw?raw.length:0; if(raw){ JSON.parse(raw); parsed=true; } }catch(_){ parsed=false; } return {exists,size,parsed}; }
   function v291HealthScore(){ const s=v291SaveSnapshotInfo(); let ok=0,total=8; if(s.exists) ok++; if(s.parsed) ok++; if(Number.isFinite(Number(state.player.cash))) ok++; if(Number.isFinite(Number(state.player.gems))) ok++; if(Array.isArray(state.activeSlots)) ok++; if(Array.isArray(state.inventory)) ok++; if(GAME_MODES[state.settings?.mode]) ok++; if(!state.player.carrying || typeof state.player.carrying==='object') ok++; return {ok,total,save:s}; }
   function v291ApplyMobilePreset(kind){ ensureV26MobileFields?.(); state.settings.mobile.simple=true; state.settings.mobile.assist=true; state.settings.mobile.tapMove=true; state.settings.mobile.autoSprint=true; if(kind==='comfort'){ state.settings.speedMult=.58; state.settings.mobile.joySize=1.18; state.settings.mobile.joySens=.68; state.settings.mobile.uiScale=1.10; } else if(kind==='ipad'){ state.settings.speedMult=.72; state.settings.mobile.joySize=1.02; state.settings.mobile.joySens=.82; state.settings.mobile.uiScale=.96; } else { state.settings.speedMult=.50; state.settings.mobile.joySize=1.28; state.settings.mobile.joySens=.58; state.settings.mobile.uiScale=1.16; } applyMobileComfortLayout?.(); saveGame?.(); toast('📱 Mobil preset uygulandı. Zoom guard açık.'); if(!panelEl.classList.contains('hidden')) openPanel('v291'); }
   function v291RenderPanel(){
-    v291Ensure(); v291SafeStateRepair(true); state.paused=true; panelEl.classList.remove('hidden'); const h=v291HealthScore(); panelTitle.textContent='🛡️ V2.9.1 Patch Merkezi'; panelSub.textContent=`Save sağlık ${h.ok}/${h.total} • Kayıt ${h.save.exists?(h.save.parsed?'okundu':'bozuk görünüyor'):'yok'} • V3 hazırlık modu açık`;
+    v291Ensure(); v291SafeStateRepair(true); state.paused=true; panelEl.classList.remove('hidden'); const h=v291HealthScore(); panelTitle.textContent='🛡️ V3.0.2 Patch Merkezi'; panelSub.textContent=`Save sağlık ${h.ok}/${h.total} • Kayıt ${h.save.exists?(h.save.parsed?'okundu':'bozuk görünüyor'):'yok'} • V3 hazırlık modu açık`;
     const guide=V291_GUIDE.map(([a,b])=>`<div class="card"><h3>${htmlEscape(a)}</h3><p>${htmlEscape(b)}</p></div>`).join('');
-    const v3Cards=`<div class="card v29-hot"><h3>🚀 V3 Open City Empire geliyor</h3><p>V3 planı: gerçek mağaza içleri, housing/ev, faction sistemi, araç 2.0, dungeon 2.0, territory war 2.0, pet RPG sistemi ve temiz motor düzeni.</p><p>Bu V2.9.1 patch V3’e geçmeden önce save’i ve mobil oynanışı sağlamlaştırır.</p></div><div class="card"><h3>🧭 V3'e hazırlık listesi</h3><p>Petlerini kilitle, save export al, core/rep biriktir, iyi araç ve kılıç yükselt. V3 migration bunları koruyacak şekilde planlanıyor.</p></div>`;
-    panelBody.innerHTML=`<div class="grid"><div class="card"><h3>🛡️ Save Sağlık</h3><p>Durum: ${h.ok}/${h.total} • Dosya: ${h.save.exists?shortNum(h.save.size)+' karakter':'yok'} • JSON: ${h.save.parsed?'sağlam':'kontrol gerekli'}</p><p>Son audit: ${htmlEscape(state.v291.lastAudit||'şimdi')}</p><div class="row"><button class="small good" data-v291="repair">Save Sağlık Kontrolü</button><button class="small gold" data-v291="export">KAYDI KOPYALA</button><button class="small" data-v291="import">KAYIT YÜKLE</button></div></div><div class="card"><h3>📱 Mobil Rahatlık</h3><p>Telefon çok zor gelirse hız/joystick/buton ayarını tek tıkla düşür.</p><div class="row"><button class="small good" data-v291="mobile" data-kind="slow">Çok Rahat</button><button class="small gold" data-v291="mobile" data-kind="comfort">Dengeli Telefon</button><button class="small" data-v291="mobile" data-kind="ipad">iPad/Klavye</button></div></div><div class="card"><h3>🔍 FPS / Debug</h3><p>FPS: ${Math.round(state.v291.fps?.value||0)} • Objeler: P${state.particles?.length||0} / T${state.thieves?.length||0} / Polis${state.police?.length||0}</p><p>Performance düşükse MOBİL panelinden Performans Modu aç.</p><button class="small good" data-v291="lowfx">Performans Modunu Aç/Kapat</button></div><div class="card"><h3>📖 Nasıl Kasılır?</h3><p>Rep/Core/Season/Territory kafanı karıştırıyorsa aşağıdaki rehber kartlarına bak. Bu panel <b>Y</b> tuşuyla veya V2.9.1 butonuyla açılır.</p><button class="small gold" data-v291="openV29">Season/Territory Paneli</button></div></div><h3 style="margin-top:16px">Hızlı Rehber</h3><div class="grid">${guide}</div><h3 style="margin-top:16px">V3 Teaser</h3><div class="grid">${v3Cards}</div>`;
+    const v3Cards=`<div class="card v29-hot"><h3>🚀 V3 Open City Empire geliyor</h3><p>V3 planı: gerçek mağaza içleri, housing/ev, faction sistemi, araç 2.0, dungeon 2.0, territory war 2.0, pet RPG sistemi ve temiz motor düzeni.</p><p>Bu V3.0.2 patch V3’e geçmeden önce save’i ve mobil oynanışı sağlamlaştırır.</p></div><div class="card"><h3>🧭 V3'e hazırlık listesi</h3><p>Petlerini kilitle, save export al, core/rep biriktir, iyi araç ve kılıç yükselt. V3 migration bunları koruyacak şekilde planlanıyor.</p></div>`;
+    panelBody.innerHTML=`<div class="grid"><div class="card"><h3>🛡️ Save Sağlık</h3><p>Durum: ${h.ok}/${h.total} • Dosya: ${h.save.exists?shortNum(h.save.size)+' karakter':'yok'} • JSON: ${h.save.parsed?'sağlam':'kontrol gerekli'}</p><p>Son audit: ${htmlEscape(state.v291.lastAudit||'şimdi')}</p><div class="row"><button class="small good" data-v291="repair">Save Sağlık Kontrolü</button><button class="small gold" data-v291="export">KAYDI KOPYALA</button><button class="small" data-v291="import">KAYIT YÜKLE</button></div></div><div class="card"><h3>📱 Mobil Rahatlık</h3><p>Telefon çok zor gelirse hız/joystick/buton ayarını tek tıkla düşür.</p><div class="row"><button class="small good" data-v291="mobile" data-kind="slow">Çok Rahat</button><button class="small gold" data-v291="mobile" data-kind="comfort">Dengeli Telefon</button><button class="small" data-v291="mobile" data-kind="ipad">iPad/Klavye</button></div></div><div class="card"><h3>🔍 FPS / Debug</h3><p>FPS: ${Math.round(state.v291.fps?.value||0)} • Objeler: P${state.particles?.length||0} / T${state.thieves?.length||0} / Polis${state.police?.length||0}</p><p>Performance düşükse MOBİL panelinden Performans Modu aç.</p><button class="small good" data-v291="lowfx">Performans Modunu Aç/Kapat</button></div><div class="card"><h3>📖 Nasıl Kasılır?</h3><p>Rep/Core/Season/Territory kafanı karıştırıyorsa aşağıdaki rehber kartlarına bak. Bu panel <b>Y</b> tuşuyla veya V3.0.2 butonuyla açılır.</p><button class="small gold" data-v291="openV29">Season/Territory Paneli</button></div></div><h3 style="margin-top:16px">Hızlı Rehber</h3><div class="grid">${guide}</div><h3 style="margin-top:16px">V3 Teaser</h3><div class="grid">${v3Cards}</div>`;
   }
   function v291Handle(btn){ const cmd=btn.dataset.v291; if(cmd==='repair') v291SafeStateRepair(false); else if(cmd==='export') exportSave?.(); else if(cmd==='import') importSave?.(); else if(cmd==='mobile') v291ApplyMobilePreset(btn.dataset.kind||'comfort'); else if(cmd==='lowfx'){ ensureV27Fields?.(); state.v27.lowFx=!state.v27.lowFx; toast(state.v27.lowFx?'Performans modu açık.':'Full Juice modu açık.'); saveGame?.(); openPanel('v291'); } else if(cmd==='openV29') openPanel('v29'); }
   try{ const st=document.createElement('style'); st.textContent=`#btnV291{background:linear-gradient(135deg,rgba(126,240,193,.22),rgba(255,230,128,.18))!important;color:#fff!important}body.mobileSimple .topbar #btnV291{display:inline-flex!important}.v291-badge{color:#ffe680;font-weight:1000}.keyboardMode #btnV291{display:inline-flex!important}#btnSeason{background:rgba(255,230,128,.18)!important}.v29-hot{border-color:rgba(255,230,128,.46)!important;background:linear-gradient(135deg,rgba(255,230,128,.16),rgba(190,149,255,.10))!important}`; document.head.appendChild(st); }catch(_){ }
-  try{ const tb=document.querySelector('.topbar'); if(tb && !document.getElementById('btnV291')){ const b=document.createElement('button'); b.id='btnV291'; b.type='button'; b.textContent='V2.9.1'; b.title='V2.9.1 Patch Merkezi / Rehber'; b.onclick=()=>openPanel('v291'); const ref=document.getElementById('btnSeason')||document.getElementById('btnJuice')||document.getElementById('btnInventory'); tb.insertBefore(b,ref); } }catch(_){ }
+  try{ const tb=document.querySelector('.topbar'); if(tb && !document.getElementById('btnV291')){ const b=document.createElement('button'); b.id='btnV291'; b.type='button'; b.textContent='V3.0.2'; b.title='V3.0.2 Patch Merkezi / Rehber'; b.onclick=()=>openPanel('v291'); const ref=document.getElementById('btnSeason')||document.getElementById('btnJuice')||document.getElementById('btnInventory'); tb.insertBefore(b,ref); } }catch(_){ }
   try{ const mbs=document.querySelector('.mButtons'); if(mbs && !document.getElementById('mV291')){ const mb=document.createElement('button'); mb.id='mV291'; mb.className='mButton warn'; mb.type='button'; mb.textContent='2.9.1'; mb.dataset.action='v291'; mbs.appendChild(mb); mb.addEventListener('click',()=>openPanel('v291')); } }catch(_){ }
   v291SetIdentity();
   drawZones = function(){
     for(const z of Object.values(ZONES)) drawZone(z); drawBuildings(); for(const r of state.rivals) drawZone({x:r.x,y:r.y,w:r.w,h:r.h,name:r.name,color:r.color,edge:r.edge});
     try{ const v=state.v29||{}; const terr=v.territory||{}; for(const id of ['downtown','neon','void']){ const d=DISTRICTS.find(x=>x.id===id), info=V291_DISTRICT_INFO[id]; if(!d||!info) continue; const own=terr[id]?.owner==='player'; ctx.save(); ctx.globalAlpha=own?.22:.10; ctx.fillStyle=own?info.color:'#ff6688'; ctx.fillRect(d.x+6,d.y+6,d.w-12,18); ctx.globalAlpha=1; drawText(`${info.icon} ${own?'SENİN KONTROLÜN':'RIVAL CONTROL'} • ${Math.round(terr[id]?.influence||0)}%`,d.x+d.w-34,d.y+28,14,own?info.color:COLORS.red,'right',1000); ctx.restore(); } if(v.dungeon){ const z=ZONES.boss; ctx.save(); ctx.globalAlpha=.55+.2*Math.sin(state.t*8); ctx.strokeStyle=v.dungeon.color||COLORS.purple; ctx.lineWidth=12; roundedRect(z.x-18,z.y-18,z.w+36,z.h+36,38); ctx.stroke(); drawText(`${v.dungeon.icon||'🌀'} ${v.dungeon.name||'Dungeon'} ACTIVE`,z.x+z.w/2,z.y-28,30,v.dungeon.color||COLORS.purple,'center',1000); ctx.restore(); } }catch(_){ }
-    drawText('🛡️ V2.9.1 • CLEANUP / SAVE HEALTH / MOBILE FIX / V3 PREP',WORLD.w/2,58,24,COLORS.green,'center',1000);
+    drawText('🛡️ V3.0.2 • CLEANUP / SAVE HEALTH / MOBILE FIX / V3 PREP',WORLD.w/2,58,24,COLORS.green,'center',1000);
   };
   const __v291_baseDrawPlayer = drawPlayer;
-  drawPlayer=function(){ try{ if(state.settings?.vehicleActive){ const p=state.player, v=currentVehicle?.() || {id:'car',emoji:'🏎️',name:'Araç'}; ctx.save(); ctx.translate(p.x,p.y); ctx.shadowColor=v.id==='voidcar'?COLORS.purple:v.id==='admincar'?COLORS.yellow:COLORS.cyan; ctx.shadowBlur=16; roundedRect(-34,-21,68,44,14); ctx.fillStyle=v.id==='police'?'#234b88':v.id==='admincar'?'#4d4020':v.id==='voidcar'?'#2d1b52':'#263a45'; ctx.fill(); ctx.strokeStyle=v.id==='police'?'#88b4ff':v.id==='admincar'?COLORS.yellow:COLORS.orange; ctx.lineWidth=3; ctx.stroke(); drawText(v.emoji||'🏎️',0,10,28,'#fff','center',1000); ctx.restore(); drawText(v.name||'Araç',p.x,p.y-32,11,COLORS.orange,'center',900); if(p.carrying){ drawBrainrot(p.carrying,p.x,p.y-58,.78); drawText('BAGAJ / BASE’E GÖTÜR',p.x,p.y+48,11,COLORS.yellow,'center',1000); } return; } }catch(e){ console.warn('V2.9.1 drawPlayer vehicle fix fallback',e); } return __v291_baseDrawPlayer(); };
+  drawPlayer=function(){ try{ if(state.settings?.vehicleActive){ const p=state.player, v=currentVehicle?.() || {id:'car',emoji:'🏎️',name:'Araç'}; ctx.save(); ctx.translate(p.x,p.y); ctx.shadowColor=v.id==='voidcar'?COLORS.purple:v.id==='admincar'?COLORS.yellow:COLORS.cyan; ctx.shadowBlur=16; roundedRect(-34,-21,68,44,14); ctx.fillStyle=v.id==='police'?'#234b88':v.id==='admincar'?'#4d4020':v.id==='voidcar'?'#2d1b52':'#263a45'; ctx.fill(); ctx.strokeStyle=v.id==='police'?'#88b4ff':v.id==='admincar'?COLORS.yellow:COLORS.orange; ctx.lineWidth=3; ctx.stroke(); drawText(v.emoji||'🏎️',0,10,28,'#fff','center',1000); ctx.restore(); drawText(v.name||'Araç',p.x,p.y-32,11,COLORS.orange,'center',900); if(p.carrying){ drawBrainrot(p.carrying,p.x,p.y-58,.78); drawText('BAGAJ / BASE’E GÖTÜR',p.x,p.y+48,11,COLORS.yellow,'center',1000); } return; } }catch(e){ console.warn('V3.0.2 drawPlayer vehicle fix fallback',e); } return __v291_baseDrawPlayer(); };
   try{ mobileControls?.addEventListener('click', e=>{ const b=e.target.closest?.('[data-action]'); if(!b) return; const a=b.dataset.action; if(a==='v291'){ e.preventDefault(); e.stopPropagation(); openPanel('v291'); } else if(a==='ach'){ e.preventDefault(); e.stopPropagation(); openPanel('achievements'); } else if(a==='v29'){ e.preventDefault(); e.stopPropagation(); openPanel('v29'); } }, true); }catch(_){ }
   const __v291_serialize=serializeSave; serializeSave=function(){ const data=__v291_serialize(); try{ const v=v291Ensure(); data.v291={version:V291_VERSION,lastAudit:v.lastAudit,safeMode:v.safeMode,v3TeaserSeen:v.v3TeaserSeen}; data.version=291; data.patch=V291_PATCH; }catch(_){} return data; };
   const __v291_restore=restoreSave; restoreSave=function(saved){ const ok=__v291_restore(saved); try{ v291Ensure(); if(saved?.v291) state.v291={...state.v291,...saved.v291,version:V291_VERSION}; v291SetIdentity(); v291SafeStateRepair(true); }catch(_){} return ok; };
@@ -2620,11 +2620,552 @@ resize();
   const __v291_open=openPanel; openPanel=function(kind){ if(kind==='v291'||kind==='guide'||kind==='saveHealth'){ v291RenderPanel(); return; } return __v291_open(kind); };
   panelEl.addEventListener('click',e=>{ const btn=e.target.closest('[data-v291]'); if(btn) v291Handle(btn); });
   window.addEventListener('keydown',e=>{ if(e.repeat||!e.key) return; const k=e.key.toLowerCase(); if(k==='y'){ openPanel('v291'); } });
-  const __v291_loop=loop; let first=true; loop=function(now){ if(first){ first=false; v291Ensure(); v291SetIdentity(); v291SafeStateRepair(true); if(!state.v291.opened){ state.v291.opened=true; toast('🛡️ V2.9.1 yüklendi: save sağlık, mobil fix ve V3 hazırlığı aktif.'); } } return __v291_loop(now); };
+  const __v291_loop=loop; let first=true; loop=function(now){ if(first){ first=false; v291Ensure(); v291SetIdentity(); v291SafeStateRepair(true); if(!state.v291.opened){ state.v291.opened=true; toast('🛡️ V3.0.2 yüklendi: save sağlık, mobil fix ve V3 hazırlığı aktif.'); } } return __v291_loop(now); };
 })();
 
 
-const loaded=loadSave(); ensureTransientWorld(); ensureV25Fields(); v25PostLoadFix(); ensureV26MobileFields(); ensureV27Fields(); applyMobileComfortLayout(); refreshModeButtons(); if(!loaded) showMessage('V2.9.1 hazır. Save key sabit, zoom guard aktif, V3 hazırlığı başladı.',3); saveGame(); requestAnimationFrame(loop);
+/* ============================================================================
+   V3.0 — OPEN CITY EMPIRE EXPANSION
+   Massive single-file expansion: 5-sector city, interiors, housing, factions,
+   dungeon 2.0, vehicle 2.0, empire progression and bank-raid spam fix.
+   Save key stays the same; V3.0.2/V3.0.2 saves migrate in-place.
+   ============================================================================ */
+(function v3Install(){
+  const V3_VERSION = 301;
+  const V3_PATCH = 'V3.0.2 Open City Empire';
+  const V3_ECON_CAP = (typeof V271_ECON_MAX === 'number') ? V271_ECON_MAX : 1e300;
+  const V3_DISTRICT_INFO = {
+    downtown:{name:'Starter City',icon:'🏙️',color:'#7ef0c1',desc:'Base, banka, market ve ilk görevlerin olduğu güvenli başlangıç merkezi.'},
+    neon:{name:'Neon Metropolis',icon:'🌃',color:'#79d9ff',desc:'Heist, trade, fake multiplayer bot savaşları ve yüksek trafik bölgesi.'},
+    industrial:{name:'Industrial Core',icon:'🏭',color:'#ffb86c',desc:'Factory, core parçaları, crafting ve para yakma ekonomisi.'},
+    sky:{name:'Sky District',icon:'☁️',color:'#ffffff',desc:'Premium evler, sky garage, rare convoy ve yüksek prestij sistemi.'},
+    void:{name:'Void Wasteland',icon:'🌀',color:'#be95ff',desc:'Dungeon 2.0, rift bossları, final base savaşları ve endgame loot.'}
+  };
+  const V3_FACTIONS = {
+    street:{name:'Street Thieves',icon:'🥷',color:'#ffb86c',bonus:'Pet çalma, taşıma ve kaçış görevlerinde daha çok Empire XP.'},
+    police:{name:'Police Department',icon:'👮',color:'#88b4ff',bonus:'Wanted daha yavaş artar, bank savunması ve bounty daha çok rep verir.'},
+    garage:{name:'Garage Crew',icon:'🏎️',color:'#ffb86c',bonus:'Araç hızı, nitro ve araçlı görev ödülleri artar.'},
+    scientists:{name:'Pet Scientists',icon:'🧪',color:'#7ef0c1',bonus:'Fusion, pet evolution, mutation ve museum bonusları artar.'},
+    void:{name:'Void Cult',icon:'🌀',color:'#be95ff',bonus:'Dungeon ve boss core ödülleri artar ama risk yükselir.'},
+    tycoon:{name:'Rich Tycoons',icon:'💎',color:'#ffe680',bonus:'Banka, vergi, housing ve pasif gelir bonusları artar.'}
+  };
+  const V3_HOUSING_UPGRADES = {
+    vault:{name:'Mega Vault',icon:'🏦',max:25,desc:'Banka/housing güvenliği, para koruması ve vergi sandığı büyür.'},
+    trophy:{name:'Trophy Room',icon:'🏆',max:25,desc:'Koleksiyon, achievement ve season ödüllerine gelir bonusu verir.'},
+    garage:{name:'Home Garage',icon:'🚗',max:20,desc:'Araç nitro, hız ve bagaj kapasitesini güçlendirir.'},
+    lab:{name:'Pet Lab',icon:'🧬',max:20,desc:'Fusion, evolution, mutation ve pet training maliyetlerini azaltır.'},
+    security:{name:'Smart Security',icon:'🛡️',max:25,desc:'Fake bot raid, hırsız ve bank raid savunmasını güçlendirir.'},
+    lounge:{name:'Brainrot Lounge',icon:'🧃',max:20,desc:'Offline income, daily reward ve Empire XP çarpanını artırır.'}
+  };
+  const V3_DUNGEONS = {
+    sewer:{id:'sewer',name:'Sewer Pet Lab',icon:'🕳️',district:'downtown',minLevel:1,waves:3,time:150,color:'#7ef0c1',cost:{cash:35000,gems:0,cores:0},reward:{cash:180000,gems:8,rep:4,cores:0,xp:240,pet:true}},
+    mall:{id:'mall',name:'Neon Mall Raid',icon:'🏬',district:'neon',minLevel:5,waves:4,time:185,color:'#79d9ff',cost:{cash:420000,gems:5,cores:0},reward:{cash:950000,gems:16,rep:8,cores:1,xp:520,pet:true}},
+    factory:{id:'factory',name:'Core Factory Breach',icon:'🏭',district:'industrial',minLevel:12,waves:5,time:230,color:'#ffb86c',cost:{cash:2500000,gems:18,cores:1},reward:{cash:5000000,gems:30,rep:12,cores:2,xp:900,pet:true}},
+    sky:{id:'sky',name:'Sky Vault Tower',icon:'☁️',district:'sky',minLevel:20,waves:6,time:270,color:'#ffffff',cost:{cash:18000000,gems:45,cores:3},reward:{cash:24000000,gems:65,rep:20,cores:4,xp:1500,pet:true}},
+    void:{id:'void',name:'Void Rift 2.0',icon:'🌀',district:'void',minLevel:30,waves:7,time:320,color:'#be95ff',cost:{cash:120000000,gems:110,cores:8},reward:{cash:180000000,gems:160,rep:36,cores:8,xp:2600,pet:true}}
+  };
+  const V3_CITY_EVENTS = [
+    {id:'convoy',name:'Money Convoy',icon:'🚚',color:'#ffe680',time:90,district:'downtown',desc:'Büyük para konvoyu. Yaklaşırsan cash/rep verir.'},
+    {id:'factory',name:'Factory Overload',icon:'🏭',color:'#ffb86c',time:95,district:'industrial',desc:'Core factory patlıyor; içeri girersen core shard alırsın.'},
+    {id:'skyDrop',name:'Sky Supply Drop',icon:'🪂',color:'#ffffff',time:85,district:'sky',desc:'Sky District özel kasa düşürür.'},
+    {id:'factionWar',name:'Faction War',icon:'⚔️',color:'#ff6688',time:105,district:'neon',desc:'Faction savaşı başlar, bot/fake raid ödülü artar.'},
+    {id:'voidSurge',name:'Void Surge',icon:'🌀',color:'#be95ff',time:100,district:'void',desc:'Void dungeons ve boss core ödülü geçici artar.'}
+  ];
+
+  function v3N(v,fb=0,min=0,max=V3_ECON_CAP){ const n=Number(v); return Number.isFinite(n)?Math.max(min,Math.min(max,n)):fb; }
+  function v3I(v,fb=0,min=0,max=999999){ return Math.round(v3N(v,fb,min,max)); }
+  function v3DistrictById(id){ return V3_DISTRICT_INFO[id] || V3_DISTRICT_INFO.downtown; }
+  function v3Today(){ try{ const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }catch(_){ return 'today'; } }
+  function v3Ensure(){
+    state.v3 = state.v3 || {};
+    const v=state.v3;
+    v.version = V3_VERSION;
+    v.opened = !!v.opened;
+    v.empire = {xp:0,level:1,cityRank:0,taxes:0,totalInfluence:0, ...(v.empire||{})};
+    v.empire.xp=v3N(v.empire.xp,0); v.empire.level=Math.max(1,Math.min(500,Math.floor(v3N(v.empire.level,1,1,500)))); v.empire.cityRank=v3I(v.empire.cityRank,0,0,999); v.empire.taxes=v3N(v.empire.taxes,0);
+    v.districts = v.districts || {};
+    for(const id of Object.keys(V3_DISTRICT_INFO)){
+      v.districts[id] = {owner:id==='downtown'?'player':'rival',influence:id==='downtown'?28:0,level:1,lastTax:0, ...(v.districts[id]||{})};
+      v.districts[id].influence = clamp(v3N(v.districts[id].influence,id==='downtown'?28:0,0,100),0,100);
+      v.districts[id].level = v3I(v.districts[id].level,1,1,99);
+      if(!['player','rival','neutral'].includes(v.districts[id].owner)) v.districts[id].owner = id==='downtown'?'player':'rival';
+    }
+    v.factions = v.factions || {};
+    for(const id of Object.keys(V3_FACTIONS)){ v.factions[id]={rep:0,level:1,unlocked:id==='street'||id==='police'||id==='garage', ...(v.factions[id]||{})}; v.factions[id].rep=v3N(v.factions[id].rep,0); v.factions[id].level=v3I(v.factions[id].level,1,1,50); }
+    v.currentFaction = V3_FACTIONS[v.currentFaction] ? v.currentFaction : 'street';
+    v.housing = {tier:1,location:'downtown',upgrades:{},decorScore:0,lastVisit:'', ...(v.housing||{})};
+    for(const k of Object.keys(V3_HOUSING_UPGRADES)) v.housing.upgrades[k]=clamp(v3I(v.housing.upgrades?.[k],0,0,V3_HOUSING_UPGRADES[k].max),0,V3_HOUSING_UPGRADES[k].max);
+    v.vehicle2 = {tune:0,boost:0,handling:0,armor:0,bag:0,skins:{}, ...(v.vehicle2||{})};
+    for(const k of ['tune','boost','handling','armor','bag']) v.vehicle2[k]=clamp(v3I(v.vehicle2[k],0,0,60),0,60);
+    v.petRpg = {training:0,museumPower:0,totalPetLevels:0, ...(v.petRpg||{})};
+    v.dungeon = v.dungeon || null;
+    if(v.dungeon){ v.dungeon.progress=v3N(v.dungeon.progress,0); v.dungeon.wave=v3I(v.dungeon.wave,1,1,99); v.dungeon.timer=v3N(v.dungeon.timer,0,0,9999); }
+    v.cityEvent = v.cityEvent || null; if(v.cityEvent){ v.cityEvent.timer=v3N(v.cityEvent.timer,0,0,9999); v.cityEvent.x=v3N(v.cityEvent.x,state.player.x,0,WORLD.w); v.cityEvent.y=v3N(v.cityEvent.y,state.player.y,0,WORLD.h); }
+    v.cityEventTimer = v3N(v.cityEventTimer, rand(70,140), 8, 9999);
+    v.bankFix = {cooldown:0,last:'',completions:0, ...(v.bankFix||{})}; v.bankFix.cooldown=v3N(v.bankFix.cooldown,0,0,9999); v.bankFix.completions=v3I(v.bankFix.completions,0,0,99999);
+    v.stats = {dungeons:0,interiors:0,factionSwitches:0,bankFixes:0,cityEvents:0, ...(v.stats||{})};
+    return v;
+  }
+  function v3Need(lv){ return Math.round(360 + Math.pow(lv,1.52)*210); }
+  function v3AddEmpireXp(n,reason=''){ const v=v3Ensure(); n=v3N(n,0); if(n<=0) return; const mult=1 + (v.housing.upgrades.lounge||0)*.018 + (v.factions[v.currentFaction]?.level||1)*.004; v.empire.xp += n*mult; let up=false; while(v.empire.level<500 && v.empire.xp>=v3Need(v.empire.level)){ v.empire.xp-=v3Need(v.empire.level); v.empire.level++; up=true; v.empire.taxes += 1; }
+    if(up){ toast(`🏙️ Empire Level ${v.empire.level}! V3 panelinden vergi/bonus topla.`); beep?.('win'); }
+  }
+  function v3FactionGain(id,n=1,reason=''){ const v=v3Ensure(); id=V3_FACTIONS[id]?id:v.currentFaction; const f=v.factions[id]; f.unlocked=true; f.rep+=v3N(n,0); const need=f.level*40+60; if(f.rep>=need && f.level<50){ f.rep-=need; f.level++; toast(`${V3_FACTIONS[id].icon} ${V3_FACTIONS[id].name} Level ${f.level}!`); } }
+  function v3CurrentDistrictId(){ const d=DISTRICTS.find(x=>pointInRect(state.player,x)); return d?.id || 'downtown'; }
+  function v3DistrictBonus(){ const v=v3Ensure(); let cash=1,rep=1,luck=0,damage=1,vehicle=1,security=1; for(const [id,d] of Object.entries(v.districts)){ if(d.owner==='player'){ cash+=.035*d.level; rep+=id==='neon'?.05*d.level:.015*d.level; luck+=id==='void'?.018*d.level:.006*d.level; vehicle+=id==='sky'?.025*d.level:.006*d.level; damage+=id==='industrial'?.022*d.level:.004*d.level; security+=id==='downtown'?.025*d.level:.006*d.level; } }
+    const h=v.housing.upgrades; cash += (h.trophy||0)*.012 + (h.lounge||0)*.018; rep += (h.security||0)*.01; vehicle += (h.garage||0)*.018; luck += (h.lab||0)*.012; security += (h.vault||0)*.018;
+    const fac=v.currentFaction; if(fac==='tycoon') cash+=.12+(v.factions.tycoon.level||1)*.006; if(fac==='police') security+=.14+(v.factions.police.level||1)*.006; if(fac==='garage') vehicle+=.18+(v.factions.garage.level||1)*.008; if(fac==='scientists') luck+=.10+(v.factions.scientists.level||1)*.006; if(fac==='void') damage+=.12+(v.factions.void.level||1)*.008; if(fac==='street') rep+=.08+(v.factions.street.level||1)*.005;
+    return {cash,rep,luck,damage,vehicle,security}; }
+  function v3ApplyWorldPatch(){
+    if(state.__v3WorldPatched) return; state.__v3WorldPatched=true;
+    WORLD.w=22000; WORLD.h=15000;
+    DISTRICTS.splice(0,DISTRICTS.length,
+      {id:'downtown',name:'STARTER CITY',x:40,y:40,w:4300,h:14920,color:'rgba(126,240,193,.045)',edge:'#7ef0c1',desc:'Başlangıç base, banka, market, daily, housing ve ilk görevler.'},
+      {id:'neon',name:'NEON METROPOLIS',x:4550,y:40,w:4300,h:14920,color:'rgba(121,217,255,.045)',edge:'#79d9ff',desc:'Heist, police, skill, black market, trade hub ve bot savaşları.'},
+      {id:'industrial',name:'INDUSTRIAL CORE',x:9060,y:40,w:4300,h:14920,color:'rgba(255,184,108,.050)',edge:'#ffb86c',desc:'Factory, core forge, weapon plant, crafting ve endgame para yakma.'},
+      {id:'sky',name:'SKY DISTRICT',x:13570,y:40,w:3900,h:14920,color:'rgba(255,255,255,.040)',edge:'#ffffff',desc:'Sky housing, airport, race track, premium garage ve premium faction görevleri.'},
+      {id:'void',name:'VOID WASTELAND',x:17680,y:40,w:4280,h:14920,color:'rgba(190,149,255,.055)',edge:'#be95ff',desc:'Void Gate, dungeon 2.0, boss tower ve en tehlikeli rival base’ler.'}
+    );
+    BIG_ROADS.splice(0,BIG_ROADS.length,
+      {x:950,y:80,w:280,h:14840},{x:2950,y:80,w:260,h:14840},{x:4440,y:80,w:260,h:14840},{x:6040,y:80,w:270,h:14840},{x:8840,y:80,w:270,h:14840},{x:10750,y:80,w:280,h:14840},{x:13350,y:80,w:270,h:14840},{x:15050,y:80,w:270,h:14840},{x:17450,y:80,w:280,h:14840},{x:19480,y:80,w:280,h:14840},{x:21200,y:80,w:260,h:14840},
+      {x:80,y:1350,w:21840,h:270},{x:80,y:3150,w:21840,h:280},{x:80,y:5250,w:21840,h:280},{x:80,y:7550,w:21840,h:280},{x:80,y:10350,w:21840,h:280},{x:80,y:12850,w:21840,h:270}
+    );
+    Object.assign(ZONES,{
+      playerBase:{x:190,y:760,w:760,h:1080,name:'SENİN BASE',color:'#15564c',edge:'#7ef0c1',district:'downtown'},
+      home:{x:1280,y:720,w:760,h:560,name:'YOUR HOUSE',color:'#17363f',edge:'#7ef0c1',district:'downtown'},
+      bank:{x:2180,y:720,w:760,h:560,name:'EMPIRE BANK',color:'#143d37',edge:'#7ef0c1',district:'downtown'},
+      cityHall:{x:3140,y:720,w:880,h:580,name:'CITY HALL',color:'#1c2e4f',edge:'#ffe680',district:'downtown'},
+      market:{x:1280,y:1800,w:1680,h:1900,name:'PET MARKET INTERIOR',color:'#273763',edge:'#ffe680',district:'downtown'},
+      carDealer:{x:3120,y:1820,w:920,h:640,name:'CAR DEALER 2.0',color:'#3b2b18',edge:'#ffb86c',district:'downtown'},
+      garage:{x:250,y:2850,w:820,h:620,name:'MEGA GARAGE 2.0',color:'#263a45',edge:'#ffb86c',district:'downtown'},
+      daily:{x:3180,y:2920,w:760,h:520,name:'DAILY CAFE',color:'#2c1d44',edge:'#be95ff',district:'downtown'},
+      quest:{x:520,y:4350,w:720,h:540,name:'QUEST OFFICE',color:'#16304d',edge:'#79d9ff',district:'downtown'},
+      fusion:{x:1570,y:4450,w:820,h:560,name:'FUSION LAB',color:'#123d38',edge:'#7ef0c1',district:'downtown'},
+      npcHub:{x:2800,y:4350,w:1050,h:650,name:'NPC JOB CENTER',color:'#3d3320',edge:'#ffe680',district:'downtown'},
+      heist:{x:5000,y:780,w:830,h:560,name:'HEIST HUB',color:'#213150',edge:'#79d9ff',district:'neon'},
+      police:{x:6240,y:780,w:870,h:560,name:'POLICE HQ',color:'#17263f',edge:'#88b4ff',district:'neon'},
+      skills:{x:7560,y:780,w:780,h:540,name:'SKILL DOJO',color:'#243018',edge:'#7ef0c1',district:'neon'},
+      black:{x:5100,y:2280,w:1160,h:690,name:'BLACK MARKET INTERIOR',color:'#2d183f',edge:'#be95ff',district:'neon'},
+      botPlaza:{x:6870,y:2280,w:1180,h:690,name:'BOT WAR PLAZA',color:'#2b2f4f',edge:'#79d9ff',district:'neon'},
+      tradeHub:{x:5100,y:3950,w:1000,h:620,name:'FAKE TRADE HUB',color:'#243a52',edge:'#79d9ff',district:'neon'},
+      factionHQ:{x:6900,y:3990,w:980,h:620,name:'FACTION HQ',color:'#37264f',edge:'#ffe680',district:'neon'},
+      factory:{x:9550,y:840,w:1150,h:780,name:'CORE FACTORY',color:'#3a2718',edge:'#ffb86c',district:'industrial'},
+      weaponShop:{x:11300,y:860,w:980,h:690,name:'WEAPON PLANT',color:'#351c24',edge:'#ff6688',district:'industrial'},
+      forge:{x:12430,y:2320,w:980,h:720,name:'CORE FORGE 2.0',color:'#3a1d16',edge:'#ffb86c',district:'industrial'},
+      industrialDungeon:{x:9700,y:3980,w:1020,h:680,name:'FACTORY DUNGEON',color:'#40220f',edge:'#ffb86c',district:'industrial'},
+      skyHousing:{x:13920,y:760,w:920,h:660,name:'SKY HOUSING',color:'#303849',edge:'#ffffff',district:'sky'},
+      airport:{x:15330,y:780,w:1120,h:720,name:'SKYPORT / AIRPORT',color:'#1b3048',edge:'#ffffff',district:'sky'},
+      raceTrack:{x:13900,y:2540,w:2300,h:980,name:'SKY RACE TRACK',color:'#1a263e',edge:'#79d9ff',district:'sky'},
+      skyGarage:{x:16100,y:4230,w:920,h:650,name:'SKY GARAGE',color:'#313747',edge:'#ffb86c',district:'sky'},
+      boss:{x:18340,y:980,w:1900,h:1300,name:'BOSS RAID TOWER',color:'#4d1729',edge:'#ff6688',district:'void'},
+      voidGate:{x:18440,y:3200,w:1700,h:800,name:'VOID GATE TERMINAL',color:'#23153f',edge:'#be95ff',district:'void'},
+      voidDungeon:{x:20250,y:3200,w:1340,h:820,name:'VOID DUNGEON 2.0',color:'#261547',edge:'#be95ff',district:'void'},
+      museum:{x:18180,y:5080,w:1220,h:720,name:'PET MUSEUM 2.0',color:'#2c2c42',edge:'#ffffff',district:'void'},
+      insurance:{x:20040,y:5080,w:1000,h:700,name:'INSURANCE OFFICE',color:'#17363f',edge:'#7ef0c1',district:'void'}
+    });
+    BUILDINGS.splice(0,BUILDINGS.length,
+      {id:'homeCounter',panel:'v3:home',name:'Home Terminal',icon:'🏠',zone:'home',counter:{x:1380,y:800,w:560,h:96},hint:'Counter: housing / trophy / vault'},
+      {id:'bankCounter',panel:'bank',name:'Empire Bank Counter',icon:'🏦',zone:'bank',counter:{x:2260,y:810,w:600,h:100},hint:'Counter: yatır / çek / bank bug guard'},
+      {id:'cityHallCounter',panel:'v3:empire',name:'City Hall Empire Desk',icon:'🏛️',zone:'cityHall',counter:{x:3240,y:810,w:680,h:100},hint:'Counter: empire / district / tax'},
+      {id:'marketCounter',panel:'marketInfo',name:'Pet Market Clerk',icon:'🛒',zone:'market',counter:{x:1380,y:1890,w:1460,h:100},hint:'Counter: pet market / refresh'},
+      {id:'carDealerCounter',panel:'carDealer',name:'Car Dealer 2.0',icon:'🚗',zone:'carDealer',counter:{x:3220,y:1910,w:720,h:100},hint:'Counter: araç satın al'},
+      {id:'garageCounter',panel:'garage',name:'Mega Garage 2.0',icon:'🏎️',zone:'garage',counter:{x:350,y:2950,w:620,h:98},hint:'Counter: araç seç / modifiye'},
+      {id:'dailyCounter',panel:'daily',name:'Daily Cafe',icon:'🎁',zone:'daily',counter:{x:3280,y:3010,w:560,h:92},hint:'Counter: günlük ödül'},
+      {id:'questCounter',panel:'quests',name:'Quest Office',icon:'📋',zone:'quest',counter:{x:620,y:4440,w:540,h:92},hint:'Counter: görevler'},
+      {id:'fusionCounter',panel:'fusionInfo',name:'Fusion Lab Counter',icon:'🧪',zone:'fusion',counter:{x:1670,y:4540,w:620,h:92},hint:'Counter: fusion'},
+      {id:'npcCounter',panel:'npcJobs',name:'NPC Job Desk',icon:'🧑‍🔧',zone:'npcHub',counter:{x:2910,y:4450,w:830,h:98},hint:'Counter: rep işleri'},
+      {id:'heistCounter',panel:'heists',name:'Heist Contracts',icon:'🎭',zone:'heist',counter:{x:5100,y:880,w:620,h:92},hint:'Counter: heist'},
+      {id:'policeCounter',panel:'policePay',name:'Police Desk',icon:'👮',zone:'police',counter:{x:6340,y:880,w:670,h:92},hint:'Counter: wanted temizle'},
+      {id:'skillsCounter',panel:'skills',name:'Skill Trainer',icon:'🌳',zone:'skills',counter:{x:7650,y:870,w:600,h:92},hint:'Counter: skill'},
+      {id:'blackCounter',panel:'blackInfo',name:'Black Market Bouncer',icon:'🕶️',zone:'black',counter:{x:5230,y:2390,w:880,h:100},hint:'Counter: black market'},
+      {id:'botCounter',panel:'v3:botwar',name:'Bot War Terminal',icon:'🤖',zone:'botPlaza',counter:{x:6990,y:2390,w:900,h:100},hint:'Counter: fake multiplayer wars'},
+      {id:'tradeCounter',panel:'v3:trade',name:'Fake Trade Desk',icon:'🔁',zone:'tradeHub',counter:{x:5210,y:4050,w:780,h:92},hint:'Counter: fake trade'},
+      {id:'factionCounter',panel:'v3:factions',name:'Faction Recruiter',icon:'🏴',zone:'factionHQ',counter:{x:7020,y:4090,w:740,h:96},hint:'Counter: faction seç'},
+      {id:'factoryCounter',panel:'v3:factory',name:'Core Factory Foreman',icon:'🏭',zone:'factory',counter:{x:9680,y:960,w:880,h:108},hint:'Counter: factory tasks'},
+      {id:'weaponCounter',panel:'weaponShop',name:'Weapon Plant Dealer',icon:'⚔️',zone:'weaponShop',counter:{x:11420,y:980,w:720,h:100},hint:'Counter: kılıç / special'},
+      {id:'forgeCounter',panel:'forgeInfo',name:'Core Forge 2.0',icon:'🔥',zone:'forge',counter:{x:12550,y:2440,w:730,h:100},hint:'Counter: core forge'},
+      {id:'industrialDungeonCounter',panel:'v3:dungeons',name:'Factory Dungeon Gate',icon:'🏭',zone:'industrialDungeon',counter:{x:9810,y:4100,w:800,h:98},hint:'Counter: dungeon 2.0'},
+      {id:'skyHousingCounter',panel:'v3:home',name:'Sky Housing Agent',icon:'☁️',zone:'skyHousing',counter:{x:14030,y:880,w:700,h:98},hint:'Counter: premium housing'},
+      {id:'airportCounter',panel:'v3:vehicle',name:'Skyport Vehicle Desk',icon:'✈️',zone:'airport',counter:{x:15450,y:900,w:860,h:100},hint:'Counter: vehicle 2.0'},
+      {id:'raceCounter',panel:'v3:vehicle',name:'Race Track Coach',icon:'🏁',zone:'raceTrack',counter:{x:14100,y:2680,w:1900,h:105},hint:'Counter: race / vehicle xp'},
+      {id:'skyGarageCounter',panel:'v3:vehicle',name:'Sky Garage Tuner',icon:'🏎️',zone:'skyGarage',counter:{x:16210,y:4350,w:700,h:98},hint:'Counter: advanced tuning'},
+      {id:'bossCounter',panel:'bossStart',name:'Boss Raid Tower Gate',icon:'👹',zone:'boss',counter:{x:18580,y:1140,w:1420,h:112},hint:'Counter: boss raid'},
+      {id:'voidCounter',panel:'districtMap',name:'Void Terminal',icon:'🌀',zone:'voidGate',counter:{x:18620,y:3340,w:1360,h:110},hint:'Counter: district map'},
+      {id:'voidDungeonCounter',panel:'v3:dungeons',name:'Void Dungeon 2.0 Gate',icon:'🌀',zone:'voidDungeon',counter:{x:20360,y:3340,w:1120,h:110},hint:'Counter: endgame dungeon'},
+      {id:'museumCounter',panel:'collection',name:'Museum Archive 2.0',icon:'🏛️',zone:'museum',counter:{x:18320,y:5200,w:900,h:100},hint:'Counter: collection'},
+      {id:'insuranceCounter',panel:'insurance',name:'Insurance Agent',icon:'🛡️',zone:'insurance',counter:{x:20150,y:5200,w:780,h:100},hint:'Counter: insurance'}
+    );
+    RIVAL_CONFIG.splice(0,RIVAL_CONFIG.length,
+      {id:'enis',owner:'Enis iPad',name:'ENİS iPAD TOWER',x:4860,y:1450,w:780,h:650,color:'#1d405c',edge:'#79d9ff',minTier:3,slots:14,ai:'balanced',threat:2,district:'neon'},
+      {id:'kuzey',owner:'Kuzey',name:'KUZEY RUNNER BASE',x:6160,y:1460,w:820,h:680,color:'#5b2032',edge:'#ff6688',minTier:4,slots:15,ai:'aggressive',threat:3,district:'neon'},
+      {id:'demirkan',owner:'Demirkan',name:'DEMİRKAN DIGITAL VAULT',x:7540,y:1460,w:830,h:690,color:'#534016',edge:'#ffe680',minTier:5,slots:16,ai:'tycoon',threat:4,district:'neon'},
+      {id:'babur',owner:'Babür',name:'BABÜR SİNERJİ MOTEL',x:4860,y:5920,w:800,h:640,color:'#3b244c',edge:'#ff8ed4',minTier:3,slots:13,ai:'chaos',threat:2,district:'neon'},
+      {id:'muhammed',owner:'Muhammed',name:'MUHAMMED DOCKS',x:7300,y:6040,w:840,h:680,color:'#4b271b',edge:'#ffb86c',minTier:4,slots:15,ai:'defender',threat:3,district:'neon'},
+      {id:'factorylord',owner:'FactoryLord',name:'FACTORY LORD BASE',x:9480,y:6540,w:920,h:720,color:'#3a2718',edge:'#ffb86c',minTier:6,slots:17,ai:'core',threat:5,district:'industrial'},
+      {id:'skyracer',owner:'SkyRacer',name:'SKY RACER HANGAR',x:14320,y:5860,w:940,h:720,color:'#263a45',edge:'#ffffff',minTier:6,slots:17,ai:'runner',threat:5,district:'sky'},
+      {id:'richsky',owner:'RichSky',name:'RICH SKY PENTHOUSE',x:15920,y:5860,w:980,h:760,color:'#534016',edge:'#ffe680',minTier:7,slots:18,ai:'tycoon',threat:6,district:'sky'},
+      {id:'voidguest',owner:'VoidGuest',name:'VOID GUEST RIFT BASE',x:18140,y:6880,w:980,h:780,color:'#2d1b52',edge:'#be95ff',minTier:7,slots:18,ai:'sneaky',threat:7,district:'void'},
+      {id:'admin',owner:'AdminBot',name:'ADMIN BOT FORTRESS',x:19640,y:6760,w:1040,h:820,color:'#353b48',edge:'#ffffff',minTier:8,slots:20,ai:'boss',threat:8,district:'void'},
+      {id:'quantum',owner:'QuantumKid',name:'QUANTUM SECRET BASE',x:20820,y:5480,w:1000,h:820,color:'#18314f',edge:'#6ffcff',minTier:8,slots:20,ai:'endgame',threat:9,district:'void'},
+      {id:'riftking',owner:'RiftKing',name:'RIFT KING CITADEL',x:19080,y:9640,w:1120,h:860,color:'#23153f',edge:'#be95ff',minTier:9,slots:22,ai:'void',threat:10,district:'void'}
+    );
+    for(const n of ['FactoryLord','SkyRacer','RichSky','RiftKing','Kuzey','Demirkan','Babür','Muhammed']){ if(!FAKE_BOT_NAMES.includes(n)) FAKE_BOT_NAMES.push(n); }
+  }
+  function v3SetIdentity(){
+    try{
+      document.title='Brainrot Heist V3.0.2 Open City Empire';
+      canvas?.setAttribute('aria-label','Brainrot Heist V3.0.2 Open City Empire oyun alanı');
+      const eye=document.querySelector('.menuCard .eyebrow'); if(eye) eye.textContent='V3.0.2 OPEN CITY EMPIRE';
+      const h=document.querySelector('.menuCard h1'); if(h) h.innerHTML='Brainrot Heist<br>OPEN CITY EMPIRE';
+      const lead=document.querySelector('.menuCard .lead'); if(lead) lead.textContent='V3 geldi: 5 dev district, gerçek mağaza/interior counterları, housing, faction, dungeon 2.0, vehicle 2.0, empire level ve bank raid bug fix. Save key aynı kaldı.';
+      const patch=document.querySelector('.menuCard .patch'); if(patch) patch.innerHTML='<div><b>Dev Open City</b>Harita 22.000 x 15.000 oldu; Starter, Neon, Industrial, Sky ve Void olmak üzere 5 dev district var.</div><div><b>Empire Systems</b>Housing, faction, City Hall, tax, district influence, pet RPG ve vehicle 2.0 artık ana döngüye bağlandı.</div><div><b>Dungeon 2.0</b>Sewer Lab, Neon Mall, Core Factory, Sky Vault ve Void Rift dungeonları var; wave/boss/loot ilerlemesi eklendi.</div><div><b>Bug Fix</b>City Bank savunması artık spam ödül/toast yazmaz; completion cooldown ve raid lock guard eklendi.</div>';
+      const old=document.getElementById('btnV291'); if(old){ old.textContent='V3'; old.title='V3.0.2 Open City Empire Paneli'; old.onclick=()=>openPanel('v3'); }
+      const season=document.getElementById('btnSeason'); if(season) season.textContent='SEZON';
+    }catch(e){ console.warn('V3 identity failed',e); }
+  }
+  function v3Cost(base,scale,lvl){ return Math.round(base*Math.pow(scale,lvl||0)*(modeId?.()==='easy'?.72:1)); }
+  function v3CaptureCost(id){ const d=v3Ensure().districts[id]||{}; const order={downtown:0,neon:1,industrial:2,sky:3,void:4}[id]||0; return {cash:v3Cost(150000*Math.pow(5,order),2.15,d.level||1), rep:Math.max(0,Math.ceil(order*5+(d.level||1)*2)), cores:Math.max(0,Math.ceil((order-1)*(d.level||1)/3))}; }
+  function v3CaptureDistrict(id){ const v=v3Ensure(), d=v.districts[id], info=v3DistrictById(id); if(!d) return; const c=v3CaptureCost(id); if(state.player.cash<c.cash || state.hardcore.raidRep<c.rep || state.hardcore.cores<c.cores){ showMessage(`${info.name} için $${shortNum(c.cash)} ${c.rep?c.rep+' rep ':''}${c.cores?c.cores+' core':''} lazım.`); beep?.('bad'); return; }
+    state.player.cash-=c.cash; state.hardcore.raidRep-=c.rep; state.hardcore.cores-=c.cores; d.influence=clamp((d.influence||0)+28+v.empire.cityRank*2,0,100); if(d.influence>=100){ d.owner='player'; d.level++; d.influence=0; toast(`${info.icon} ${info.name} senin kontrolünde! Level ${d.level}.`); } else toast(`${info.icon} ${info.name} influence ${Math.round(d.influence)}%.`); v3AddEmpireXp(80+Object.keys(V3_DISTRICT_INFO).indexOf(id)*35,'district'); saveGame?.(); openPanel('v3'); }
+  function v3ClaimTaxes(){ const v=v3Ensure(); let cash=0,rep=0,cores=0; for(const [id,d] of Object.entries(v.districts)){ if(d.owner==='player'){ cash += 60000*d.level*(id==='sky'?2.2:id==='void'?3.5:id==='industrial'?1.8:1); rep += id==='neon'?d.level*2:d.level*.8; cores += (id==='void'||id==='industrial') ? Math.floor(d.level/3) : 0; } } cash=Math.round(cash*(1+(v.housing.upgrades.vault||0)*.03)); if(cash<=0 && rep<=0 && cores<=0){ showMessage('Vergi için önce district ele geçir.'); return; } state.player.cash+=cash; state.hardcore.raidRep+=Math.ceil(rep); if(cores) addCores?.(cores); v.empire.taxes=0; toast(`🏛️ Empire Tax: +$${shortNum(cash)}, +${Math.ceil(rep)} rep${cores?`, +${cores} core`:''}`); beep?.('win'); saveGame?.(); openPanel('v3'); }
+  function v3BuyHousing(k){ const v=v3Ensure(), def=V3_HOUSING_UPGRADES[k]; if(!def) return; const lvl=v.housing.upgrades[k]||0; if(lvl>=def.max){ showMessage('Bu housing upgrade maksimum.'); return; } const cost={cash:v3Cost(85000,2.2,lvl)*Math.pow(1.35,v.housing.tier-1), gems:Math.max(0,Math.floor(lvl/3)), cores:Math.max(0,Math.floor((lvl-8)/5))}; if(state.player.cash<cost.cash || state.player.gems<cost.gems || state.hardcore.cores<cost.cores){ showMessage(`${def.name} için $${shortNum(cost.cash)} ${cost.gems?cost.gems+'💎 ':''}${cost.cores?cost.cores+' core':''} lazım.`); beep?.('bad'); return; } state.player.cash-=cost.cash; state.player.gems-=cost.gems; state.hardcore.cores-=cost.cores; v.housing.upgrades[k]=lvl+1; v.housing.decorScore += 3; v3AddEmpireXp(25+lvl*3,'housing'); toast(`${def.icon} ${def.name} Lv.${lvl+1}!`); beep?.('buy'); saveGame?.(); openPanel('v3home'); }
+  function v3ChooseFaction(id){ const v=v3Ensure(); if(!V3_FACTIONS[id]) return; v.currentFaction=id; v.factions[id].unlocked=true; v.stats.factionSwitches++; v3AddEmpireXp(45,'faction'); toast(`${V3_FACTIONS[id].icon} ${V3_FACTIONS[id].name} faction aktif.`); beep?.('win'); saveGame?.(); openPanel('v3factions'); }
+  function v3StartDungeon(id){ const def=V3_DUNGEONS[id]; if(!def) return; const v=v3Ensure(); if(v.dungeon){ showMessage('Zaten aktif V3 dungeon var. Önce bitir.'); beep?.('bad'); return; } if(state.player.level<def.minLevel){ showMessage(`${def.name} için level ${def.minLevel} lazım.`); beep?.('bad'); return; } const c=def.cost; if(state.player.cash<c.cash || state.player.gems<c.gems || state.hardcore.cores<c.cores){ showMessage(`${def.name} için $${shortNum(c.cash)} ${c.gems?c.gems+'💎 ':''}${c.cores?c.cores+' core':''} lazım.`); beep?.('bad'); return; }
+    state.player.cash-=c.cash; state.player.gems-=c.gems; state.hardcore.cores-=c.cores; v.dungeon={id:def.id,name:def.name,icon:def.icon,color:def.color,timer:def.time,wave:1,waves:def.waves,progress:0,goal:def.waves*100,startedAt:Date.now()}; if(ZONES[def.district==='industrial'?'industrialDungeon':def.district==='void'?'voidDungeon':'boss']){ const z=ZONES[def.district==='industrial'?'industrialDungeon':def.district==='void'?'voidDungeon':'boss']; state.v25 && (state.v25.gpsTarget={x:center(z).x,y:center(z).y,label:def.name}); }
+    toast(`${def.icon} ${def.name} başladı! Wave temizle, boss kes, V3 panelinden takip et.`); beep?.('portal'); v3AddEmpireXp(60,'dungeon start'); saveGame?.(); closePanel?.(); }
+  function v3FinishDungeon(success=true){ const v=v3Ensure(); const d=v.dungeon; if(!d) return; const def=V3_DUNGEONS[d.id]; if(!def){ v.dungeon=null; return; } if(success){ const bonus=v3DistrictBonus(); const r=def.reward; const cash=Math.round((r.cash||0)*bonus.cash*rewardMult?.()); state.player.cash+=cash; state.player.gems+=r.gems||0; state.hardcore.raidRep+=Math.ceil((r.rep||0)*bonus.rep); if(r.cores) addCores?.(Math.ceil(r.cores*(def.id==='void'?1.15:1))); if(r.xp) addXp?.(r.xp); if(r.pet){ const pet=makeBrainrot({minTier:def.id==='void'?8:def.id==='sky'?7:def.id==='factory'?6:4,boost:2.8+v3DistrictBonus().luck}); pet.name='V3 Dungeon '+pet.name; pet.mutation=pet.mutation==='Normal'?'Empire':pet.mutation; addToInventory?.(pet,true); }
+      v.stats.dungeons++; v3AddEmpireXp(260+(def.waves*70),'dungeon finish'); v3FactionGain(v.currentFaction,12+def.waves,'dungeon'); toast(`${def.icon} ${def.name} bitti! +$${shortNum(cash)}, +${r.rep} rep, loot geldi.`); beep?.('win'); particles?.(state.player.x,state.player.y,def.color,120); }
+    else { toast(`${def.icon} ${def.name} başarısız oldu.`); beep?.('bad'); }
+    v.dungeon=null; saveGame?.(); }
+  function v3SpawnCityEvent(){ const def=choice(V3_CITY_EVENTS); const district = DISTRICTS.find(d=>d.id===def.district) || DISTRICTS[0]; const v=v3Ensure(); v.cityEvent={id:def.id,name:def.name,icon:def.icon,color:def.color,timer:def.time,x:rand(district.x+300,district.x+district.w-300),y:rand(district.y+300,district.y+district.h-300),district:def.district,desc:def.desc}; v.cityEventTimer=rand(100,190); toast(`${def.icon} V3 Event: ${def.name} başladı! GPS hedefi açıldı.`); if(state.v25) state.v25.gpsTarget={x:v.cityEvent.x,y:v.cityEvent.y,label:def.name}; beep?.('drop'); }
+  function v3CollectCityEvent(){ const v=v3Ensure(); const ev=v.cityEvent; if(!ev) return false; if(Math.hypot(state.player.x-ev.x,state.player.y-ev.y)>125) return false; const bonus=v3DistrictBonus(); let cash=120000+getIncome?.()*18+state.player.level*9000, rep=4, cores=0, gems=10; if(ev.id==='factory'){ cores=2; rep=7; cash*=1.8; } if(ev.id==='skyDrop'){ gems+=30; cash*=2.4; } if(ev.id==='factionWar'){ rep+=16; } if(ev.id==='voidSurge'){ cores+=4; rep+=12; cash*=2.2; }
+    cash=Math.round(cash*bonus.cash); state.player.cash+=cash; state.player.gems+=gems; state.hardcore.raidRep+=Math.ceil(rep*bonus.rep); if(cores) addCores?.(cores); v.stats.cityEvents++; v3AddEmpireXp(180,'city event'); v3FactionGain(v.currentFaction,8,'event'); particles?.(ev.x,ev.y,ev.color,120); toast(`${ev.icon} ${ev.name} toplandı! +$${shortNum(cash)}, +${gems}💎, +${rep} rep${cores?`, +${cores} core`:''}`); beep?.('win'); v.cityEvent=null; saveGame?.(); return true; }
+  function v3BuyVehicleTune(k){ const v=v3Ensure(); if(!v.vehicle2[k] && v.vehicle2[k]!==0) return; const lvl=v.vehicle2[k]||0; if(lvl>=60){ showMessage('Vehicle 2.0 upgrade maksimum.'); return; } const cost=v3Cost(160000,2.15,lvl)*(k==='bag'?2.2:1); if(state.player.cash<cost){ showMessage(`Vehicle upgrade için $${shortNum(cost)} lazım.`); beep?.('bad'); return; } state.player.cash-=cost; v.vehicle2[k]=lvl+1; toast(`🏎️ Vehicle 2.0 ${k} Lv.${lvl+1}`); v3AddEmpireXp(22+lvl,'vehicle'); saveGame?.(); openPanel('v3vehicle'); }
+  function v3BankFixNow(manual=false){ const v=v3Ensure(); ensureV25Fields?.(); let fixed=false; if(state.v25){ if(state.v25.bankRaid && v3N(state.v25.bankRaid.progress,0)>=8){ state.v25.bankRaid=null; fixed=true; } if(v.bankFix.cooldown<120) v.bankFix.cooldown=120; state.v25.bankRaidTimer=Math.max(v3N(state.v25.bankRaidTimer,0),120); }
+    v.bankFix.last=new Date().toLocaleTimeString('tr-TR'); if(manual){ toast(fixed?'🏦 Bank raid bug kilidi kapatıldı.':'🏦 Bank guard aktif: raid spam cooldown yenilendi.'); beep?.('win'); } v.stats.bankFixes++; saveGame?.(); return fixed; }
+  function v3RenderMain(kind='main'){
+    const v=v3Ensure(); v3SetIdentity(); state.paused=true; panelEl.classList.remove('hidden');
+    const bonus=v3DistrictBonus(); const activeFaction=V3_FACTIONS[v.currentFaction];
+    panelTitle.textContent = kind==='home'?'🏠 V3 Housing & Home':kind==='factions'?'🏴 V3 Factions':kind==='dungeons'?'🌀 V3 Dungeon 2.0':kind==='vehicle'?'🏎️ V3 Vehicle 2.0':'🚀 V3.0.2 Open City Empire';
+    panelSub.textContent = `Empire Lv.${v.empire.level} • XP ${shortNum(v.empire.xp)}/${shortNum(v3Need(v.empire.level))} • Faction ${activeFaction.icon} ${activeFaction.name} • Cash x${bonus.cash.toFixed(2)} Rep x${bonus.rep.toFixed(2)}`;
+    const nav=`<div class="row"><button class="small good" data-v3="open" data-kind="v3">Empire</button><button class="small gold" data-v3="open" data-kind="v3home">Housing</button><button class="small" data-v3="open" data-kind="v3factions">Factions</button><button class="small bad" data-v3="open" data-kind="v3dungeons">Dungeons</button><button class="small good" data-v3="open" data-kind="v3vehicle">Vehicle 2.0</button><button class="small" data-v3="bankfix">Bank Fix</button></div>`;
+    if(kind==='home') return v3RenderHome(nav);
+    if(kind==='factions') return v3RenderFactions(nav);
+    if(kind==='dungeons') return v3RenderDungeons(nav);
+    if(kind==='vehicle') return v3RenderVehicle(nav);
+    const districts=Object.entries(V3_DISTRICT_INFO).map(([id,info])=>{ const d=v.districts[id], c=v3CaptureCost(id); const own=d.owner==='player'; return `<div class="card"><h3 style="color:${info.color}">${info.icon} ${info.name}</h3><p>${info.desc}</p><p>Kontrol: <b>${own?'SEN':'RIVAL'}</b> • District Lv.${d.level} • Influence ${Math.round(d.influence)}%</p><p>Ele geçirme: $${shortNum(c.cash)} ${c.rep?`• ${c.rep} rep`:''} ${c.cores?`• ${c.cores} core`:''}</p><button class="small ${own?'good':'gold'}" data-v3="district" data-id="${id}">${own?'Güçlendir':'Ele Geçir'}</button></div>`; }).join('');
+    const event=v.cityEvent?`<div class="card v29-hot"><h3 style="color:${v.cityEvent.color}">${v.cityEvent.icon} ${v.cityEvent.name}</h3><p>${v.cityEvent.desc}</p><p>Kalan ${Math.ceil(v.cityEvent.timer)}sn • Uzaklık ${shortNum(Math.hypot(state.player.x-v.cityEvent.x,state.player.y-v.cityEvent.y))}m</p><button class="small gold" data-v3="gps" data-x="${v.cityEvent.x}" data-y="${v.cityEvent.y}" data-label="${htmlEscape(v.cityEvent.name)}">GPS Aç</button></div>`:`<div class="card"><h3>🎲 City Event</h3><p>Sonraki şehir eventi yaklaşık ${Math.ceil(v.cityEventTimer)}sn içinde. Konvoy, factory overload, sky drop, faction war ve void surge gelebilir.</p><button class="small gold" data-v3="event">Event Çağır</button></div>`;
+    panelBody.innerHTML=`${nav}<div class="grid" style="margin-top:12px"><div class="card"><h3>🏛️ Empire Core</h3><p>V3 artık para oyunu değil; district, faction, housing, dungeon ve vehicle 2.0 birlikte ilerler.</p><div class="bar"><span style="width:${clamp(v.empire.xp/v3Need(v.empire.level),0,1)*100}%"></span></div><p>Empire XP: boss, dungeon, bank, bot savaşları, event, housing ve territory ile gelir.</p><button class="small gold" data-v3="tax">Empire Tax Topla</button></div><div class="card"><h3>🏦 Bank Raid Bug Fix</h3><p>Bankaya girince “Banka savunuldu” yazısının spam atmasını engelleyen cooldown/lock aktif.</p><p>Cooldown: ${Math.ceil(v.bankFix.cooldown)}sn • Fix sayısı ${v.stats.bankFixes||0}</p><button class="small good" data-v3="bankfix">Bank Guard Yenile</button></div>${event}<div class="card"><h3>🔥 V3 Endgame</h3><p>V3 Dungeon 2.0, housing, factions, district tax ve pet RPG artık yeni endgame. V3.0.2 sistemleri korunur.</p><button class="small bad" data-v3="open" data-kind="v3dungeons">Dungeon 2.0 Aç</button></div></div><h3 style="margin-top:16px">District War 2.0</h3><div class="grid">${districts}</div>`;
+  }
+  function v3RenderHome(nav){ const v=v3Ensure(); const cards=Object.entries(V3_HOUSING_UPGRADES).map(([k,d])=>{ const lvl=v.housing.upgrades[k]||0; const cost=v3Cost(85000,2.2,lvl)*Math.pow(1.35,v.housing.tier-1); return `<div class="card"><h3>${d.icon} ${d.name} Lv.${lvl}/${d.max}</h3><p>${d.desc}</p><p>Cost: $${shortNum(cost)} ${Math.floor(lvl/3)?`• ${Math.floor(lvl/3)}💎`:''}</p><button class="small good" data-v3="house" data-key="${k}" ${lvl>=d.max?'disabled':''}>Upgrade</button></div>`; }).join(''); panelBody.innerHTML=`${nav}<div class="grid" style="margin-top:12px"><div class="card"><h3>🏠 Open City Home</h3><p>Ev artık kozmetik değil: vault, trophy, garage, lab, security ve lounge bonusları tüm oyuna etki eder.</p><p>Decor Score: ${v.housing.decorScore||0} • House Tier ${v.housing.tier}</p><button class="small gold" data-v3="gps" data-x="${center(ZONES.home).x}" data-y="${center(ZONES.home).y}" data-label="Your House">Eve GPS</button></div>${cards}</div>`; }
+  function v3RenderFactions(nav){ const v=v3Ensure(); const cards=Object.entries(V3_FACTIONS).map(([id,f])=>{ const s=v.factions[id]; return `<div class="card"><h3 style="color:${f.color}">${f.icon} ${f.name} ${v.currentFaction===id?'✅':''}</h3><p>${f.bonus}</p><p>Level ${s.level} • Rep ${shortNum(s.rep)}</p><button class="small ${v.currentFaction===id?'good':'gold'}" data-v3="faction" data-id="${id}">${v.currentFaction===id?'Aktif':'Katıl'}</button></div>`; }).join(''); panelBody.innerHTML=`${nav}<div class="grid" style="margin-top:12px"><div class="card"><h3>🏴 Faction Sistemi</h3><p>Tek taraf seçebilirsin; istediğin zaman değişir. Her faction farklı grind yolunu güçlendirir.</p></div>${cards}</div>`; }
+  function v3RenderDungeons(nav){ const v=v3Ensure(); const active=v.dungeon?`<div class="card v29-hot"><h3 style="color:${v.dungeon.color}">${v.dungeon.icon} ${v.dungeon.name} ACTIVE</h3><p>Wave ${v.dungeon.wave}/${v.dungeon.waves} • Progress ${Math.round(v.dungeon.progress)}/${v.dungeon.goal} • ${Math.ceil(v.dungeon.timer)}sn</p><div class="bar"><span style="width:${clamp(v.dungeon.progress/v.dungeon.goal,0,1)*100}%"></span></div><button class="small gold" data-v3="finishDungeon">Bossu Bitir / Claim</button></div>`:''; const cards=Object.values(V3_DUNGEONS).map(d=>`<div class="card"><h3 style="color:${d.color}">${d.icon} ${d.name}</h3><p>${d.waves} wave • Level ${d.minLevel}+ • Süre ${d.time}sn</p><p>Giriş: $${shortNum(d.cost.cash)} ${d.cost.gems?`• ${d.cost.gems}💎`:''}${d.cost.cores?` • ${d.cost.cores} core`:''}</p><p>Ödül: $${shortNum(d.reward.cash)} • ${d.reward.rep} rep • ${d.reward.cores} core • özel pet</p><button class="small bad" data-v3="dungeon" data-id="${d.id}" ${v.dungeon?'disabled':''}>Başlat</button></div>`).join(''); panelBody.innerHTML=`${nav}<div class="grid" style="margin-top:12px">${active}<div class="card"><h3>🌀 Dungeon 2.0 Mantığı</h3><p>Dungeon sırasında bot yakala, boss vur, event topla; progress dolunca ödül gelir. Bu sistem V3’ün ana core/rep motoru.</p></div>${cards}</div>`; }
+  function v3RenderVehicle(nav){ const v=v3Ensure(); const defs={tune:['🚀 Engine Tune','Genel araç hızı ve map dolaşımı.'],boost:['🔥 Nitro Core','Nitro süresi/gücü ve yarış ödülü.'],handling:['🛞 Handling','Mobilde araç kontrolünü rahatlatır.'],armor:['🛡️ Armor','Polis/fake bot/raid cezalarını azaltır.'],bag:['🎒 Trunk Bag','Pet taşırken araç hız kaybını azaltır.']}; const cards=Object.entries(defs).map(([k,[name,desc]])=>{ const lvl=v.vehicle2[k]||0; const cost=v3Cost(160000,2.15,lvl)*(k==='bag'?2.2:1); return `<div class="card"><h3>${name} Lv.${lvl}/60</h3><p>${desc}</p><p>Cost: $${shortNum(cost)}</p><button class="small good" data-v3="vehicle" data-key="${k}">Upgrade</button></div>`; }).join(''); panelBody.innerHTML=`${nav}<div class="grid" style="margin-top:12px"><div class="card"><h3>🏎️ Vehicle 2.0</h3><p>V3 map arabasız devasa. Bu sistem V2.5 araçlarını büyütür: tuning, bagaj, armor ve nitro artık empire sistemine bağlı.</p><button class="small gold" data-v3="gps" data-x="${center(ZONES.skyGarage).x}" data-y="${center(ZONES.skyGarage).y}" data-label="Sky Garage">Sky Garage GPS</button></div>${cards}</div>`; }
+  function v3RenderInterior(kind){ const map={home:'home',factions:'factionHQ',dungeons:'voidDungeon',vehicle:'skyGarage',empire:'cityHall',botwar:'botPlaza',trade:'tradeHub',factory:'factory'}; const zone=ZONES[map[kind]||kind]||ZONES.cityHall; v3Ensure().stats.interiors++; if(kind==='home') return v3RenderMain('home'); if(kind==='factions') return v3RenderMain('factions'); if(kind==='dungeons') return v3RenderMain('dungeons'); if(kind==='vehicle') return v3RenderMain('vehicle'); if(kind==='empire') return v3RenderMain('main'); panelTitle.textContent='🏬 V3 Interior'; panelSub.textContent=`${zone.name} • İç mekân / counter sistemi`; panelBody.innerHTML=`<div class="grid"><div class="card"><h3>${htmlEscape(zone.name)}</h3><p>V3 interior sistemi: mağazalar artık yalnızca düz kutu değil, counter ve iç mekân paneliyle çalışır.</p><p>Bu mağaza V3 büyük sistemlerine bağlı. Haritada countera yaklaşınca bu panel açılır.</p><button class="small gold" data-v3="open" data-kind="v3">V3 Empire Paneli</button></div><div class="card"><h3>GPS</h3><p>Tekrar bu binaya dönmek için rota aç.</p><button class="small good" data-v3="gps" data-x="${center(zone).x}" data-y="${center(zone).y}" data-label="${htmlEscape(zone.name)}">GPS Aç</button></div></div>`; }
+  function v3Handle(btn){ const cmd=btn.dataset.v3; if(cmd==='open') openPanel(btn.dataset.kind||'v3'); else if(cmd==='district') v3CaptureDistrict(btn.dataset.id); else if(cmd==='tax') v3ClaimTaxes(); else if(cmd==='house') v3BuyHousing(btn.dataset.key); else if(cmd==='faction') v3ChooseFaction(btn.dataset.id); else if(cmd==='dungeon') v3StartDungeon(btn.dataset.id); else if(cmd==='finishDungeon') v3FinishDungeon(true); else if(cmd==='vehicle') v3BuyVehicleTune(btn.dataset.key); else if(cmd==='event') v3SpawnCityEvent(); else if(cmd==='bankfix') { v3BankFixNow(true); if(!panelEl.classList.contains('hidden')) openPanel('v3'); } else if(cmd==='gps'){ ensureV25Fields?.(); state.v25.gpsTarget={x:Number(btn.dataset.x),y:Number(btn.dataset.y),label:btn.dataset.label||'V3 hedef'}; toast(`GPS: ${state.v25.gpsTarget.label}`); closePanel?.(); } }
+  function v3Update(dt){ const v=v3Ensure(); v.bankFix.cooldown=Math.max(0,v.bankFix.cooldown-dt); if(v.dungeon){ v.dungeon.timer-=dt; const activeInDungeon = pointInRect(state.player, ZONES.industrialDungeon||ZONES.boss) || pointInRect(state.player, ZONES.voidDungeon||ZONES.boss) || pointInRect(state.player,ZONES.boss); const progressRate=(activeInDungeon?6:1.2) + (state.boss?2.5:0) + (state.thieves?.length?0.4:0); v.dungeon.progress += progressRate*dt; if(v.dungeon.progress >= v.dungeon.wave*100 && v.dungeon.wave<v.dungeon.waves){ v.dungeon.wave++; toast(`${v.dungeon.icon} Dungeon wave ${v.dungeon.wave}/${v.dungeon.waves}`); if(Math.random()<.55) spawnThief?.(); }
+      if(v.dungeon.progress>=v.dungeon.goal) v3FinishDungeon(true); else if(v.dungeon.timer<=0) v3FinishDungeon(false); }
+    if(v.cityEvent){ v.cityEvent.timer-=dt; if(v.cityEvent.timer<=0){ toast(`${v.cityEvent.icon} ${v.cityEvent.name} kaçtı.`); v.cityEvent=null; } }
+    else { v.cityEventTimer-=dt; if(v.cityEventTimer<=0) v3SpawnCityEvent(); }
+    if(!state.paused){ v.empire.taxes += dt*(.012 + v.empire.level*.0008 + Object.values(v.districts).filter(d=>d.owner==='player').length*.006); }
+  }
+  function drawV3Objects(){ const v=v3Ensure(); if(v.cityEvent){ const ev=v.cityEvent; ctx.save(); ctx.translate(ev.x,ev.y); const pulse=1+Math.sin(state.t*6)*.1; ctx.scale(pulse,pulse); ctx.shadowColor=ev.color; ctx.shadowBlur=32; roundedRect(-62,-52,124,104,28); ctx.fillStyle='rgba(8,14,30,.78)'; ctx.fill(); ctx.strokeStyle=ev.color; ctx.lineWidth=5; ctx.stroke(); drawText(ev.icon,0,16,50,'#fff','center',1000); drawText('V3 EVENT',0,-72,14,ev.color,'center',1000); drawText(Math.ceil(ev.timer)+'sn',0,83,13,COLORS.text,'center',1000); ctx.restore(); }
+    if(v.dungeon){ const z=ZONES[v.dungeon.id==='void'?'voidDungeon':v.dungeon.id==='factory'?'industrialDungeon':'boss']||ZONES.boss; ctx.save(); ctx.globalAlpha=.55+.2*Math.sin(state.t*8); ctx.strokeStyle=v.dungeon.color||COLORS.purple; ctx.lineWidth=14; roundedRect(z.x-24,z.y-24,z.w+48,z.h+48,48); ctx.stroke(); drawText(`${v.dungeon.icon} ${v.dungeon.name} • WAVE ${v.dungeon.wave}/${v.dungeon.waves}`,z.x+z.w/2,z.y-36,30,v.dungeon.color||COLORS.purple,'center',1000); ctx.restore(); }
+  }
+  function drawV3HUD(){ const v=v3Ensure(); ctx.save(); const y=view.h>650?262:216; const f=V3_FACTIONS[v.currentFaction]; const text=`🚀 V3 Empire Lv.${v.empire.level} • ${f.icon} ${f.name} • Tax ${shortNum(v.empire.taxes)} • ${v.dungeon?`${v.dungeon.icon} W${v.dungeon.wave}/${v.dungeon.waves}`:v.cityEvent?`${v.cityEvent.icon} ${Math.ceil(v.cityEvent.timer)}sn`:'Open City'}`; ctx.font='1000 13px system-ui'; const w=Math.min(view.w-28,ctx.measureText(text).width+30); roundedRect(14,y,w,38,15); ctx.fillStyle='rgba(8,14,30,.70)'; ctx.fill(); ctx.strokeStyle='rgba(126,240,193,.28)'; ctx.stroke(); drawText(text,28,y+24,13,COLORS.green,'left',1000); if(v.cityEvent){ const dx=v.cityEvent.x-state.player.x, dy=v.cityEvent.y-state.player.y, d=Math.hypot(dx,dy)||1; const cx=view.w-82,cy=view.h-178; ctx.save(); ctx.translate(cx,cy); ctx.rotate(Math.atan2(dy,dx)); ctx.fillStyle=v.cityEvent.color; ctx.beginPath(); ctx.moveTo(31,0); ctx.lineTo(-12,-12); ctx.lineTo(-4,0); ctx.lineTo(-12,12); ctx.closePath(); ctx.fill(); ctx.restore(); drawText(`${v.cityEvent.icon} ${shortNum(d)}m`,cx,cy+36,12,v.cityEvent.color,'center',1000); } ctx.restore(); }
+  function v3CleanBankRaid(){ const v=v3Ensure(); ensureV25Fields?.(); if(!state.v25) return; if(state.v25.bankRaid && v3N(state.v25.bankRaid.progress,0)>=8){ state.v25.bankRaid=null; v.bankFix.cooldown=Math.max(v.bankFix.cooldown,180); state.v25.bankRaidTimer=Math.max(v3N(state.v25.bankRaidTimer,0),180); v.bankFix.completions++; v.bankFix.last='auto-close '+new Date().toLocaleTimeString('tr-TR'); } }
+
+  // Install world + identity early, before loadSave/ensureTransientWorld.
+  v3ApplyWorldPatch(); v3SetIdentity();
+  try{ const st=document.createElement('style'); st.textContent=`#btnV3{background:linear-gradient(135deg,rgba(126,240,193,.28),rgba(190,149,255,.22))!important;color:#fff!important}.v3-card{border-color:rgba(126,240,193,.42)!important;background:linear-gradient(135deg,rgba(126,240,193,.12),rgba(190,149,255,.10))!important}body.mobileSimple .topbar #btnV3{display:inline-flex!important}`; document.head.appendChild(st); }catch(_){ }
+  try{ const tb=document.querySelector('.topbar'); if(tb && !document.getElementById('btnV3')){ const b=document.createElement('button'); b.id='btnV3'; b.type='button'; b.textContent='V3'; b.title='V3.0.2 Open City Empire'; b.onclick=()=>openPanel('v3'); const ref=document.getElementById('btnSeason')||document.getElementById('btnV291')||document.getElementById('btnInventory'); tb.insertBefore(b,ref); } }catch(_){ }
+  try{ const mbs=document.querySelector('.mButtons'); if(mbs && !document.getElementById('mV3')){ const mb=document.createElement('button'); mb.id='mV3'; mb.className='mButton good'; mb.type='button'; mb.textContent='V3'; mb.dataset.action='v3'; mbs.appendChild(mb); mb.addEventListener('click',()=>openPanel('v3')); } }catch(_){ }
+
+  const __v3_serialize=serializeSave; serializeSave=function(){ const data=__v3_serialize(); try{ data.v3=v3Ensure(); data.version=V3_VERSION; data.patch=V3_PATCH; }catch(_){} return data; };
+  const __v3_restore=restoreSave; restoreSave=function(saved){ const ok=__v3_restore(saved); try{ v3Ensure(); if(saved?.v3){ state.v3={...state.v3,...saved.v3,empire:{...state.v3.empire,...(saved.v3.empire||{})},districts:{...state.v3.districts,...(saved.v3.districts||{})},factions:{...state.v3.factions,...(saved.v3.factions||{})},housing:{...state.v3.housing,...(saved.v3.housing||{}),upgrades:{...(state.v3.housing?.upgrades||{}),...(saved.v3.housing?.upgrades||{})}},vehicle2:{...state.v3.vehicle2,...(saved.v3.vehicle2||{})}}; } v3SetIdentity(); }catch(e){ console.warn('V3 restore failed',e); } return ok; };
+  const __v3_encode=encodeSave; encodeSave=function(data){ try{ const json=JSON.stringify(data); const bytes=new TextEncoder().encode(json); let bin=''; for(const b of bytes) bin+=String.fromCharCode(b); return 'BRAINROT_MEGA_V301:'+btoa(bin); }catch(_){ return __v3_encode(data); } };
+  const __v3_openCounter=openCounter; openCounter=function(b){ if(b?.panel && String(b.panel).startsWith('v3:')){ const kind=String(b.panel).split(':')[1]; openPanel('v3'+kind); return true; } return __v3_openCounter(b); };
+  const __v3_open=openPanel; openPanel=function(kind){ if(kind==='v3'||kind==='v3empire') { v3RenderMain('main'); return; } if(kind==='v3home') { v3RenderMain('home'); return; } if(kind==='v3factions') { v3RenderMain('factions'); return; } if(kind==='v3dungeons') { v3RenderMain('dungeons'); return; } if(kind==='v3vehicle') { v3RenderMain('vehicle'); return; } if(String(kind).startsWith('v3')){ v3RenderInterior(String(kind).replace(/^v3/,'')); return; } return __v3_open(kind); };
+  panelEl.addEventListener('click',e=>{ const btn=e.target.closest('[data-v3]'); if(btn) v3Handle(btn); });
+  window.addEventListener('keydown',e=>{ if(e.repeat||!e.key) return; const k=e.key.toLowerCase(); if(k==='3'){ openPanel('v3'); } });
+  try{ mobileControls?.addEventListener('click', e=>{ const b=e.target.closest?.('[data-action]'); if(!b) return; if(b.dataset.action==='v3'){ e.preventDefault(); e.stopPropagation(); openPanel('v3'); } }, true); }catch(_){ }
+
+  // Bonus wrappers.
+  const __v3_incomeMult=incomeMult; incomeMult=function(){ return __v3_incomeMult()*v3DistrictBonus().cash; };
+  const __v3_rewardMult=rewardMult; rewardMult=function(){ return __v3_rewardMult()*v3DistrictBonus().cash; };
+  const __v3_swordDamage=swordDamage; swordDamage=function(){ return __v3_swordDamage()*v3DistrictBonus().damage; };
+  const __v3_vehicleTotalMult=vehicleTotalMult; vehicleTotalMult=function(){ return __v3_vehicleTotalMult()*v3DistrictBonus().vehicle*(1+(v3Ensure().vehicle2.tune||0)*.018); };
+  const __v3_weightedRarity=weightedRarity; weightedRarity=function(opts={}){ return __v3_weightedRarity({...opts,boost:(opts.boost||0)+v3DistrictBonus().luck}); };
+  const __v3_addXp=addXp; addXp=function(n){ __v3_addXp(n); v3AddEmpireXp((Number(n)||0)*.20,'xp'); };
+  const __v3_addRaidRep=addRaidRep; addRaidRep=function(n=1){ const bonus=v3DistrictBonus().rep; __v3_addRaidRep((Number(n)||1)*bonus); v3AddEmpireXp((Number(n)||1)*10,'rep'); v3FactionGain(v3Ensure().currentFaction,(Number(n)||1)*1.2,'rep'); };
+  const __v3_addCores=addCores; addCores=function(n=1){ __v3_addCores(n); v3AddEmpireXp((Number(n)||1)*35,'core'); if(v3Ensure().currentFaction==='void') v3FactionGain('void',(Number(n)||1)*2,'core'); };
+  const __v3_steal=stealRivalPet; stealRivalPet=function(hit){ __v3_steal(hit); v3AddEmpireXp(55+(hit?.pet?.tier||1)*8,'steal'); v3FactionGain('street',5,'steal'); };
+  const __v3_captureBot=captureFakeBot; captureFakeBot=function(bot,byPlayer=true){ __v3_captureBot(bot,byPlayer); if(byPlayer){ v3AddEmpireXp(40,'bot catch'); v3FactionGain(v3Ensure().currentFaction,3,'bot catch'); } };
+  const __v3_defeatBoss=defeatBoss; defeatBoss=function(){ __v3_defeatBoss(); v3AddEmpireXp(220,'boss'); v3FactionGain(v3Ensure().currentFaction,10,'boss'); };
+
+  // Bank raid spam fix: prevents repeated "Banka savunuldu" completion loops.
+  const __v3_startBankRaid=startBankRaid; startBankRaid=function(){ const v=v3Ensure(); ensureV25Fields?.(); if(v.bankFix.cooldown>0){ return; } if(state.v25?.bankRaid){ return; } const res=__v3_startBankRaid(); if(state.v25?.bankRaid){ state.v25.bankRaid._v3id = state.v25.bankRaid._v3id || ('bank'+Date.now()+Math.random().toString(36).slice(2)); state.v25.bankRaid._v3started = true; } return res; };
+  const __v3_updateV25=updateV25; updateV25=function(dt){ const v=v3Ensure(); ensureV25Fields?.(); v.bankFix.cooldown=Math.max(0,v.bankFix.cooldown-dt); const before=!!state.v25?.bankRaid; const beforeId=state.v25?.bankRaid?._v3id || null; __v3_updateV25(dt); if(before && !state.v25?.bankRaid){ v.bankFix.cooldown=Math.max(v.bankFix.cooldown,150); if(state.v25) state.v25.bankRaidTimer=Math.max(v3N(state.v25.bankRaidTimer,0),150); v.bankFix.completions++; v.bankFix.last='completed '+new Date().toLocaleTimeString('tr-TR'); }
+    v3CleanBankRaid(); };
+  const __v3_renderBank=renderBank; renderBank=function(){ __v3_renderBank(); try{ const v=v3Ensure(); panelBody.insertAdjacentHTML('beforeend',`<h3 style="margin-top:16px">🏦 V3 Bank Guard</h3><div class="grid"><div class="card v3-card"><h3>Bank Raid Spam Fix</h3><p>Bankaya girince savunma mesajı loop’a girmesin diye V3 cooldown/lock guard aktif.</p><p>Cooldown: ${Math.ceil(v.bankFix.cooldown)}sn • Tamamlanan savunma: ${v.bankFix.completions||0} • Son: ${htmlEscape(v.bankFix.last||'yok')}</p><button class="small good" data-v3="bankfix">Bank Guard Yenile</button></div></div>`); }catch(_){} };
+
+  const __v3_update=update; update=function(dt){ dt=(!Number.isFinite(dt)||dt<0)?0:clamp(dt,0,1/30); __v3_update(dt); if(!state.paused) v3Update(dt); };
+  const __v3_drawZones=drawZones; drawZones=function(){ for(const z of Object.values(ZONES)) drawZone(z); drawBuildings(); for(const r of state.rivals) drawZone({x:r.x,y:r.y,w:r.w,h:r.h,name:r.name,color:r.color,edge:r.edge}); const v=v3Ensure(); for(const [id,info] of Object.entries(V3_DISTRICT_INFO)){ const d=DISTRICTS.find(x=>x.id===id); if(!d) continue; const own=v.districts[id]?.owner==='player'; ctx.save(); ctx.globalAlpha=own?.26:.12; ctx.fillStyle=own?info.color:'#ff6688'; ctx.fillRect(d.x+10,d.y+8,d.w-20,24); ctx.globalAlpha=1; drawText(`${info.icon} ${own?'EMPIRE CONTROL':'RIVAL CONTROL'} • Lv.${v.districts[id]?.level||1} • ${Math.round(v.districts[id]?.influence||0)}%`,d.x+d.w-36,d.y+31,15,own?info.color:COLORS.red,'right',1000); ctx.restore(); } drawV3Objects(); drawText('🚀 V3.0.2 OPEN CITY EMPIRE • 5 DISTRICTS • HOUSING • FACTIONS • DUNGEON 2.0 • BANK FIX',WORLD.w/2,58,28,COLORS.green,'center',1000); };
+  const __v3_drawHUD=drawHUD; drawHUD=function(){ __v3_drawHUD(); drawV3HUD(); };
+  const __v3_loop=loop; let first=true; loop=function(now){ const out=__v3_loop(now); try{ if(first){ first=false; v3Ensure(); if(!state.v3.opened){ state.v3.opened=true; toast('🚀 V3.0.2 Open City Empire yüklendi! Save korundu, Bank Guard aktif.'); } } v3SetIdentity(); }catch(e){ console.warn('V3 final identity guard failed',e); } return out; };
+})();
+
+
+/* V3 minor navigation bridge: 5-district metro support */
+(function v3NavigationBridge(){
+  const __v3nav_travel = travelToDistrict;
+  travelToDistrict = function(id){
+    const targets={
+      downtown:{x:620,y:1240,cost:0,label:'Starter City'},
+      neon:{x:5480,y:2100,cost:15000,label:'Neon Metropolis'},
+      industrial:{x:9960,y:2080,cost:180000,label:'Industrial Core'},
+      sky:{x:14540,y:1480,cost:1200000,label:'Sky District'},
+      void:{x:18780,y:3340,cost:5500000,label:'Void Wasteland'}
+    };
+    const t=targets[id];
+    if(!t) return __v3nav_travel(id);
+    const price=Math.round(t.cost*(modeId?.()==='easy'?.55:1));
+    if(state.player.cash<price){ showMessage(`Metro için $${shortNum(price)} lazım.`); beep?.('bad'); return; }
+    state.player.cash-=price; state.player.x=t.x; state.player.y=t.y; state.player.carrying=null; mobileTapTarget=null; updateCamera?.(); toast(`🚇 ${t.label} bölgesine geçtin.`); saveGame?.(); closePanel?.();
+  };
+})();
+
+
+/* ============================================================================
+   V3.0.2 — BANK GUARD + IDENTITY HOTFIX
+   Fixes the reported City Bank issue: standing inside the bank no longer causes
+   repeated “Banka savunuldu” toast/reward loops. It also forces the visible
+   version back to V3.0.2 after older patch wrappers finish their first-frame work.
+   ============================================================================ */
+(function v301BankGuardHotfix(){
+  const PATCH='V3.0.2 Open City Empire';
+  function bankFixState(){
+    state.v3 = state.v3 || {};
+    state.v3.bankFix = {cooldown:0,last:'',completions:0, ...(state.v3.bankFix||{})};
+    state.v3.bankFix.cooldown = Math.max(0, Number(state.v3.bankFix.cooldown)||0);
+    state.v3.bankFix.completions = Math.max(0, Number(state.v3.bankFix.completions)||0);
+    return state.v3.bankFix;
+  }
+  function forceV3Identity(){
+    try{
+      document.title='Brainrot Heist V3.0.2 Open City Empire';
+      canvas?.setAttribute('aria-label','Brainrot Heist V3.0.2 Open City Empire oyun alanı');
+      const eye=document.querySelector('.menuCard .eyebrow'); if(eye) eye.textContent='V3.0.2 OPEN CITY EMPIRE';
+      const h=document.querySelector('.menuCard h1'); if(h) h.innerHTML='Brainrot Heist<br>OPEN CITY EMPIRE';
+      const lead=document.querySelector('.menuCard .lead'); if(lead) lead.textContent='V3.0.2 geldi: dev 5 district şehir, housing, faction, dungeon 2.0, vehicle 2.0, empire level ve Bank Guard spam fix aktif. Save key aynı kaldı.';
+      const patch=document.querySelector('.menuCard .patch'); if(patch) patch.innerHTML='<div><b>Dev Open City</b>Harita 22.000 x 15.000; Starter, Neon, Industrial, Sky ve Void olmak üzere 5 dev district.</div><div><b>Empire Systems</b>Housing, faction, City Hall, tax, district influence, pet RPG ve vehicle 2.0 ana döngüye bağlandı.</div><div><b>Dungeon 2.0</b>Sewer Lab, Neon Mall, Core Factory, Sky Vault ve Void Rift dungeonları var.</div><div><b>Bank Guard Fix</b>City Bank savunması artık spam ödül/toast yazmaz; tek ödül + 180sn cooldown.</div>';
+      const old=document.getElementById('btnV291'); if(old){ old.textContent='V3'; old.title='V3.0.2 Open City Empire Paneli'; old.onclick=()=>openPanel('v3'); }
+      const v3=document.getElementById('btnV3'); if(v3){ v3.textContent='V3.0.2'; v3.title='V3.0.2 Open City Empire'; }
+    }catch(e){ console.warn('V3.0.2 identity failed',e); }
+  }
+  function completeBankRaidOnce(br, source='guard'){
+    ensureV25Fields?.();
+    if(!state.v25 || !br) return false;
+    const fix=bankFixState();
+    if(br._v301Done || fix.completing){ state.v25.bankRaid=null; state.v25.bankRaidTimer=Math.max(Number(state.v25.bankRaidTimer)||0,180); return true; }
+    br._v301Done=true; fix.completing=true;
+    try{
+      const reward=Math.round(65000 + (typeof getIncome==='function'?getIncome():0)*8 + (Number(br.loot)||0)*0.25);
+      state.player.cash=Math.min((typeof V271_ECON_MAX==='number'?V271_ECON_MAX:1e300), (Number(state.player.cash)||0)+reward);
+      if(typeof addRaidRep==='function') addRaidRep(4);
+      if(typeof v25AddJobProgress==='function'){ v25AddJobProgress('defend',2); v25AddJobProgress('bank',500000); }
+      if(typeof v3AddEmpireXp==='function') v3AddEmpireXp(120,'bank guard');
+      particles?.(state.player.x,state.player.y,COLORS.cyan,70);
+      floating?.(state.player.x,state.player.y-58,`BANK GUARD +$${shortNum(reward)}`,COLORS.cyan);
+      toast?.(`🏦 Banka savunması tamamlandı! +$${shortNum(reward)} +rep`);
+      beep?.('win');
+      fix.completions++; fix.last=`${source} ${new Date().toLocaleTimeString('tr-TR')}`; fix.cooldown=180;
+      state.v25.bankRaid=null; state.v25.bankRaidTimer=Math.max(Number(state.v25.bankRaidTimer)||0,180);
+      saveGame?.();
+    } finally { fix.completing=false; }
+    return true;
+  }
+  try{
+    const _start=startBankRaid;
+    startBankRaid=function(){ ensureV25Fields?.(); const fix=bankFixState(); if(fix.cooldown>0 || state.v25?.bankRaid) return; return _start(); };
+  }catch(e){ console.warn('V3.0.2 start bank wrap failed',e); }
+  try{
+    const _updateV25=updateV25;
+    updateV25=function(dt){
+      ensureV25Fields?.();
+      const fix=bankFixState();
+      dt=Number.isFinite(Number(dt))?Math.max(0,Math.min(Number(dt),1/30)):0;
+      fix.cooldown=Math.max(0,fix.cooldown-dt);
+      if(state.v25?.bankRaid){
+        const br=state.v25.bankRaid;
+        if(br._v301Done || Number(br.progress)>=8){ completeBankRaidOnce(br,'pre-update'); return; }
+      }
+      _updateV25(dt);
+      if(state.v25?.bankRaid){
+        const br=state.v25.bankRaid;
+        if(br._v301Done || Number(br.progress)>=8){ completeBankRaidOnce(br,'post-update'); return; }
+      }
+      if(fix.cooldown>0 && state.v25) state.v25.bankRaidTimer=Math.max(Number(state.v25.bankRaidTimer)||0, fix.cooldown);
+    };
+  }catch(e){ console.warn('V3.0.2 update bank wrap failed',e); }
+  try{
+    const _renderBank=renderBank;
+    renderBank=function(){
+      _renderBank();
+      const fix=bankFixState();
+      try{ panelBody.insertAdjacentHTML('beforeend',`<h3 style="margin-top:16px">🏦 V3.0.2 Bank Guard</h3><div class="grid"><div class="card v3-card"><h3>Spam Fix Aktif</h3><p>Banka savunması artık tek sefer ödül verir, sonra 180 saniye yeni raid açmaz.</p><p>Cooldown: ${Math.ceil(fix.cooldown)}sn • Tamamlanan: ${fix.completions||0} • Son: ${htmlEscape(fix.last||'yok')}</p><button class="small good" data-v301="bankfix">Bank Guard Yenile</button></div></div>`); }catch(_){}
+    };
+  }catch(e){ console.warn('V3.0.2 render bank wrap failed',e); }
+  try{
+    panelEl.addEventListener('click',e=>{ const b=e.target.closest?.('[data-v301]'); if(!b) return; if(b.dataset.v301==='bankfix'){ const fix=bankFixState(); if(state.v25) { state.v25.bankRaid=null; state.v25.bankRaidTimer=Math.max(Number(state.v25.bankRaidTimer)||0,180); } fix.cooldown=180; fix.last='manual '+new Date().toLocaleTimeString('tr-TR'); toast?.('🏦 Bank Guard yenilendi. Bank raid spam temizlendi.'); if(!panelEl.classList.contains('hidden')) openPanel('bank'); } });
+  }catch(_){}
+  try{ window.addEventListener('keydown', e=>{ if((e.key||'').toLowerCase()==='y'){ e.stopImmediatePropagation(); e.preventDefault(); openPanel('v3'); } }, true); }catch(_){}
+  try{
+    const _drawZones=drawZones;
+    drawZones=function(){ _drawZones(); try{ drawText('✅ V3.0.2 BANK GUARD HOTFIX • OPEN CITY EMPIRE LIVE',WORLD.w/2,92,18,COLORS.cyan,'center',1000); }catch(_){} };
+  }catch(_){}
+  forceV3Identity(); setTimeout(forceV3Identity,0); setTimeout(forceV3Identity,80); setTimeout(forceV3Identity,500); setTimeout(forceV3Identity,1500);
+})();
+
+
+
+
+/* ===================== V3.0.2 SHOWTIME + ESSENCE FIX =====================
+   Final release patch: visible version cleanup, reliable Brainrot Essence,
+   missed-essence compensation, V3 mega onboarding and extra empire contracts.
+   Save key remains brainrot-heist-save. */
+(function v302ShowtimeEssenceFix(){
+  const V302_VERSION = 302;
+  const V302_PATCH = 'V3.0.2 Open City Empire Showtime';
+  const V302_CHAPTERS = [
+    {id:'starter',name:'Starter Empire',icon:'🏙️',goal:8,desc:'Pet al, base’e koy, ilk kasaları aç ve şehir akışını öğren.',reward:{cash:250000,gems:10,rep:3}},
+    {id:'cars',name:'Street Driver',icon:'🏎️',goal:6,desc:'Araçla gez, GPS kullan, bankaya/garaja git ve kovalamaca yaşa.',reward:{cash:850000,gems:18,rep:6}},
+    {id:'rivals',name:'Rival Breaker',icon:'⚔️',goal:10,desc:'Fake bot savaşlarına karış, rival base’lerden pet çal ve savun.',reward:{cash:2200000,gems:28,rep:10,cores:1}},
+    {id:'empire',name:'Open City Empire',icon:'👑',goal:12,desc:'Territory, faction, housing ve bank sistemleriyle şehir gücünü büyüt.',reward:{cash:6500000,gems:45,rep:16,cores:2}},
+    {id:'rift',name:'Rift Controller',icon:'🌀',goal:8,desc:'Dungeon 2.0, void eventleri ve boss core döngüsünü ilerlet.',reward:{cash:22000000,gems:80,rep:24,cores:4}},
+    {id:'showtime',name:'Showtime Endgame',icon:'🚀',goal:15,desc:'Essence prestige, empire level ve V3 sistemlerini kalıcı güce çevir.',reward:{cash:100000000,gems:150,rep:40,cores:8,essence:3}}
+  ];
+  function n(v,fb=0,min=0,max=1e300){ v=Number(v); return Number.isFinite(v)?Math.max(min,Math.min(max,v)):fb; }
+  function i(v,fb=0,min=0,max=999999){ return Math.round(n(v,fb,min,max)); }
+  function esc(s){ try{return htmlEscape(String(s));}catch(_){return String(s).replace(/[&<>"']/g,'');} }
+  function ensureV302(){
+    try{ ensureV27Fields?.(); v3Ensure?.(); }catch(_){}
+    state.v302 = {
+      version:V302_VERSION,
+      opened:false,
+      essenceCompensated:false,
+      chapter:{active:'starter',progress:{},claimed:{}},
+      migrationLog:[],
+      ...(state.v302||{})
+    };
+    state.v302.version=V302_VERSION;
+    state.v302.chapter = {active:'starter',progress:{},claimed:{}, ...(state.v302.chapter||{})};
+    for(const c of V302_CHAPTERS){ state.v302.chapter.progress[c.id]=n(state.v302.chapter.progress[c.id],0,0,c.goal); }
+    return state.v302;
+  }
+  function v302Identity(){
+    try{
+      document.title='Brainrot Heist V3.0.2 Open City Empire';
+      canvas?.setAttribute('aria-label','Brainrot Heist V3.0.2 Open City Empire oyun alanı');
+      const eye=document.querySelector('.menuCard .eyebrow'); if(eye) eye.textContent='V3.0.2 OPEN CITY EMPIRE';
+      const h=document.querySelector('.menuCard h1'); if(h) h.innerHTML='Brainrot Heist<br>V3 SHOWTIME';
+      const lead=document.querySelector('.menuCard .lead'); if(lead) lead.textContent='V3.0.2 dev update: Open City Empire aktif. 5 dev district, interior mağazalar, housing, faction, dungeon 2.0, vehicle 2.0, empire progression, season/territory ve Essence Fix geldi. Save key aynı.';
+      const patch=document.querySelector('.menuCard .patch'); if(patch) patch.innerHTML='<div><b>Essence Fix</b>Prestige artık Essence’i garanti verir; eski prestige yapıp essence alamayan save’e telafi otomatik gelir.</div><div><b>Open City Empire</b>5 büyük district, housing, faction, dungeon 2.0, city event ve territory loop aktif.</div><div><b>Showtime Progression</b>Yeni V3 chapter görevleri, empire tax, dungeon/territory/endgame rehberi ve büyük ödüller.</div><div><b>Mobile Guard</b>Anti-zoom, save health, FPS guard ve performans ayarları V3 içine taşındı.</div>';
+      const old=document.getElementById('btnV291'); if(old){ old.textContent='SAVE'; old.title='V3 Save / Rehber'; old.onclick=()=>openPanel('v302'); }
+      const btn=document.getElementById('btnV3'); if(btn){ btn.textContent='V3.0.2'; btn.title='V3.0.2 Open City Empire'; btn.onclick=()=>openPanel('v302'); }
+      const juice=document.getElementById('btnJuice'); if(juice) juice.textContent='ESSENCE';
+    }catch(e){ console.warn('V3.0.2 identity failed',e); }
+  }
+  function v302EssenceGainFromSnapshot(cashBefore,incomeBefore){
+    const v=ensureV27Fields?.() || state.v27 || {};
+    const cashScore=Math.max(0,Math.floor(Math.log10(Math.max(10,n(cashBefore,10)))/1.8)-3);
+    const incomeScore=Math.max(0,Math.floor(Math.log10(Math.max(10,n(incomeBefore,10)))/2.1)-2);
+    return Math.max(3, 3 + Math.floor((state.hardcore?.worldTier||1)*0.9) + Math.floor((state.hardcore?.rank||0)*0.65) + Math.floor((v.prestige||0)*0.55) + cashScore + incomeScore);
+  }
+  function v302CompensateEssence(silent=false){
+    const meta=ensureV302();
+    const v=ensureV27Fields?.() || (state.v27=state.v27||{});
+    v.essence=n(v.essence,0); v.prestige=i(v.prestige,0);
+    if(!meta.essenceCompensated && v.prestige>0 && v.essence<=0){
+      const give=Math.max(5, v.prestige*4 + Math.floor((state.hardcore?.rank||0)*1.5) + Math.floor((state.hardcore?.worldTier||1)*2));
+      v.essence += give; meta.essenceCompensated=true; meta.migrationLog.push('Essence compensation +'+give+' at '+new Date().toLocaleTimeString('tr-TR'));
+      if(!silent){ toast('🧃 Eski prestige telafisi: +'+give+' Essence verildi.'); beep?.('win'); }
+      saveGame?.();
+    }
+  }
+  // Reliable prestige override: gain is computed BEFORE cash/core/rep deduction.
+  v27Prestige = function(){
+    const v=ensureV27Fields?.() || (state.v27=state.v27||{});
+    v.essence=n(v.essence,0); v.prestige=i(v.prestige,0); v.stats={prestiges:0,...(v.stats||{})};
+    const c = v27PrestigeCost?.() || {cash:0,income:0,cores:0,rep:0};
+    const cashBefore=n(state.player?.cash,0), incomeBefore=(typeof getIncome==='function'?getIncome():0);
+    if(cashBefore<n(c.cash,0) || incomeBefore<n(c.income,0) || n(state.hardcore?.cores,0)<n(c.cores,0) || n(state.hardcore?.raidRep,0)<n(c.rep,0)){
+      showMessage?.(`Essence için $${shortNum(c.cash)}, +${shortNum(c.income)}/sn${c.cores?`, ${c.cores} core`:''}${c.rep?`, ${c.rep} rep`:''} lazım.`);
+      beep?.('bad'); return;
+    }
+    const gain=v302EssenceGainFromSnapshot(cashBefore,incomeBefore);
+    state.player.cash=Math.max(0,cashBefore-n(c.cash,0));
+    if(state.hardcore){ state.hardcore.cores=Math.max(0,n(state.hardcore.cores,0)-n(c.cores,0)); state.hardcore.raidRep=Math.max(0,n(state.hardcore.raidRep,0)-n(c.rep,0)); }
+    v.essence=n(v.essence,0)+gain; v.prestige=i(v.prestige,0)+1; v.stats.prestiges=i(v.stats.prestiges,0)+1;
+    try{ v3Ensure().empire.xp += gain*55; }catch(_){}
+    try{ const meta=ensureV302(); meta.chapter.progress.showtime=Math.min(V302_CHAPTERS.find(c=>c.id==='showtime').goal, n(meta.chapter.progress.showtime,0)+2); }catch(_){}
+    toast(`🧃 Essence Prestige FIXED: +${gain} Essence verildi! Toplam: ${shortNum(v.essence)}`);
+    beep?.('win'); v27RewardBurst?.(state.player.x,state.player.y,'portal',3.8); saveGame?.(); openPanel?.('juice');
+  };
+  v27EssenceGain = function(){ return v302EssenceGainFromSnapshot(state.player?.cash||0, (typeof getIncome==='function'?getIncome():0)); };
+  function grantReward(r){
+    if(!r) return;
+    if(r.cash) state.player.cash=n(state.player.cash,0)+n(r.cash,0);
+    if(r.gems) state.player.gems=n(state.player.gems,0)+n(r.gems,0);
+    if(r.rep) { if(state.hardcore) state.hardcore.raidRep=n(state.hardcore.raidRep,0)+n(r.rep,0); }
+    if(r.cores) addCores?.(r.cores);
+    if(r.essence){ const v=ensureV27Fields?.() || (state.v27=state.v27||{}); v.essence=n(v.essence,0)+n(r.essence,0); }
+  }
+  function rewardText(r){ const a=[]; if(r.cash)a.push('$'+shortNum(r.cash)); if(r.gems)a.push(r.gems+'💎'); if(r.rep)a.push(r.rep+' rep'); if(r.cores)a.push(r.cores+' core'); if(r.essence)a.push(r.essence+' Essence'); return a.join(' + '); }
+  function v302Progress(id,amt=1){
+    const meta=ensureV302(); const c=V302_CHAPTERS.find(x=>x.id===id); if(!c) return;
+    meta.chapter.progress[id]=Math.min(c.goal,n(meta.chapter.progress[id],0)+n(amt,0));
+    if(meta.chapter.progress[id]>=c.goal && !meta.chapter.claimed[id]){ toast(`${c.icon} V3 Chapter hazır: ${c.name}. V3 panelinden ödülü al.`); }
+  }
+  function v302ClaimChapter(id){
+    const meta=ensureV302(); const c=V302_CHAPTERS.find(x=>x.id===id); if(!c) return;
+    if((meta.chapter.progress[id]||0)<c.goal){ showMessage?.(`${c.name} için progress eksik.`); beep?.('bad'); return; }
+    if(meta.chapter.claimed[id]){ showMessage?.('Bu chapter ödülü alınmış.'); return; }
+    meta.chapter.claimed[id]=true; grantReward(c.reward); try{ v3Ensure().empire.xp += c.goal*45; }catch(_){}
+    toast(`${c.icon} Chapter tamam: ${c.name}! +${rewardText(c.reward)}`); beep?.('win'); saveGame?.(); openPanel('v302');
+  }
+  function v302RenderPanel(){
+    v302Identity(); v302CompensateEssence(true); state.paused=true; panelEl.classList.remove('hidden');
+    const meta=ensureV302(); const v=ensureV27Fields?.() || state.v27 || {}; const vg=(typeof v3Ensure==='function'?v3Ensure():null);
+    panelTitle.textContent='🚀 V3.0.2 Open City Empire';
+    panelSub.textContent=`Essence ${shortNum(v.essence||0)} • Prestige ${v.prestige||0} • Empire Lv.${vg?.empire?.level||1} • Save key aynı`;
+    const nav=`<div class="row"><button class="small good" data-v302="open" data-kind="v3">Empire</button><button class="small gold" data-v302="open" data-kind="juice">Essence</button><button class="small" data-v302="open" data-kind="v3dungeons">Dungeon</button><button class="small" data-v302="open" data-kind="v3home">Home</button><button class="small" data-v302="open" data-kind="v3factions">Faction</button><button class="small" data-v302="open" data-kind="bank">Bank</button><button class="small" data-v302="export">KAYDI KOPYALA</button></div>`;
+    const chapterCards=V302_CHAPTERS.map(c=>{ const p=meta.chapter.progress[c.id]||0, done=meta.chapter.claimed[c.id]; return `<div class="card ${done?'v3-card':''}"><h3 style="color:${done?COLORS.green:COLORS.yellow}">${c.icon} ${esc(c.name)} ${done?'✅':''}</h3><p>${esc(c.desc)}</p><div class="bar"><span style="width:${Math.min(100,p/c.goal*100)}%"></span></div><p>${shortNum(p)} / ${shortNum(c.goal)} • Ödül: ${rewardText(c.reward)}</p><button class="small gold" data-v302="claim" data-id="${c.id}" ${p>=c.goal&&!done?'':'disabled'}>Ödülü Al</button></div>`; }).join('');
+    panelBody.innerHTML=`${nav}<div class="grid" style="margin-top:12px"><div class="card v3-card"><h3>🧃 Essence Bug Fix Aktif</h3><p>Prestige gain artık para düşmeden önce hesaplanır ve Essence değeri Number guard ile kaydedilir. Önceden prestige yapıp Essence alamadıysan otomatik telafi çalışır.</p><p>Sonraki prestige kazancı: <b>+${v302EssenceGainFromSnapshot(state.player.cash, (typeof getIncome==='function'?getIncome():0))} Essence</b></p><button class="small gold" data-v302="prestige">Essence Prestige Yap</button><button class="small good" data-v302="comp">Telafiyi Kontrol Et</button></div><div class="card"><h3>🏙️ V3 Şov Paketi</h3><p>Open City Empire: 5 district, mağaza/interior counterları, housing, faction, dungeon 2.0, araç 2.0, city event, territory ve empire level aktif.</p><p>Y tuşu / V3.0.2 butonu bu merkezi açar.</p></div><div class="card"><h3>🛡️ Save Güvenliği</h3><p>Save key değişmedi: <b>brainrot-heist-save</b>. V2.9/V3 migration korunur. Büyük update öncesi export al.</p><button class="small good" data-v302="repair">Save Sağlık Kontrolü</button></div></div><h3 style="margin-top:16px">V3 Chapter Görevleri</h3><div class="grid">${chapterCards}</div>`;
+  }
+  function v302Handle(btn){ const cmd=btn.dataset.v302; if(cmd==='open') openPanel(btn.dataset.kind||'v3'); else if(cmd==='export') exportSave?.(); else if(cmd==='repair'){ try{ v291SafeStateRepair?.(false); v302CompensateEssence(false); toast('🛡️ V3 save/essence sağlık kontrolü tamam.'); }catch(_){ toast('Save kontrolü tamam.'); } } else if(cmd==='claim') v302ClaimChapter(btn.dataset.id); else if(cmd==='prestige') v27Prestige(); else if(cmd==='comp') v302CompensateEssence(false); }
+  try{ const st=document.createElement('style'); st.textContent=`#btnV302{background:linear-gradient(135deg,rgba(126,240,193,.32),rgba(255,230,128,.22),rgba(190,149,255,.18))!important;color:#fff!important}.v302-glow{border-color:rgba(126,240,193,.5)!important;background:linear-gradient(135deg,rgba(126,240,193,.14),rgba(190,149,255,.10))!important}body.mobileSimple .topbar #btnV302{display:inline-flex!important}`; document.head.appendChild(st); }catch(_){}
+  try{ const tb=document.querySelector('.topbar'); if(tb && !document.getElementById('btnV302')){ const b=document.createElement('button'); b.id='btnV302'; b.type='button'; b.textContent='V3.0.2'; b.title='V3.0.2 Showtime / Essence Fix'; b.onclick=()=>openPanel('v302'); const ref=document.getElementById('btnV3')||document.getElementById('btnInventory'); tb.insertBefore(b,ref); } }catch(_){}
+  try{ const mbs=document.querySelector('.mButtons'); if(mbs && !document.getElementById('mV302')){ const mb=document.createElement('button'); mb.id='mV302'; mb.className='mButton good'; mb.type='button'; mb.textContent='V3.0.2'; mb.dataset.action='v302'; mbs.appendChild(mb); mb.addEventListener('click',()=>openPanel('v302')); } }catch(_){}
+  const __v302_serialize=serializeSave; serializeSave=function(){ const data=__v302_serialize(); try{ data.v302=ensureV302(); data.version=V302_VERSION; data.patch=V302_PATCH; }catch(_){} return data; };
+  const __v302_restore=restoreSave; restoreSave=function(saved){ const ok=__v302_restore(saved); try{ ensureV302(); if(saved?.v302){ state.v302={...ensureV302(),...saved.v302,chapter:{...ensureV302().chapter,...(saved.v302.chapter||{}),progress:{...(ensureV302().chapter.progress||{}),...(saved.v302.chapter?.progress||{})},claimed:{...(ensureV302().chapter.claimed||{}),...(saved.v302.chapter?.claimed||{})}}}; } v302CompensateEssence(true); v302Identity(); }catch(e){ console.warn('V3.0.2 restore failed',e); } return ok; };
+  const __v302_encode=encodeSave; encodeSave=function(data){ try{ const json=JSON.stringify(data); const bytes=new TextEncoder().encode(json); let bin=''; for(const b of bytes) bin+=String.fromCharCode(b); return 'BRAINROT_MEGA_V302:'+btoa(bin); }catch(_){ return __v302_encode(data); } };
+  const __v302_open=openPanel; openPanel=function(kind){ if(kind==='v302'||kind==='v3showtime'){ v302RenderPanel(); return; } return __v302_open(kind); };
+  panelEl.addEventListener('click', e=>{ const btn=e.target.closest('[data-v302]'); if(btn) v302Handle(btn); });
+  try{ mobileControls?.addEventListener('click', e=>{ const b=e.target.closest?.('[data-action]'); if(b?.dataset?.action==='v302'){ e.preventDefault(); e.stopPropagation(); openPanel('v302'); } }, true); }catch(_){}
+  const __v302_update=update; update=function(dt){ __v302_update(dt); try{ if(!state.paused){ const inc=(typeof getIncome==='function'?getIncome():0); if(inc>0) v302Progress('starter',dt*.015); if(state.settings?.vehicleActive) v302Progress('cars',dt*.025); if((state.fakeBots?.length||0)>0) v302Progress('rivals',dt*.005); if((state.v3?.empire?.xp||0)>0) v302Progress('empire',dt*.01); if(state.v3?.dungeon || state.boss) v302Progress('rift',dt*.02); if((state.v27?.prestige||0)>0 || (state.v27?.essence||0)>0) v302Progress('showtime',dt*.015); } }catch(_){} };
+  const __v302_addRaidRep=addRaidRep; addRaidRep=function(n=1){ __v302_addRaidRep(n); v302Progress('empire',Math.max(.15,Number(n)||1)); };
+  const __v302_addCores=addCores; addCores=function(n=1){ __v302_addCores(n); v302Progress('rift',Math.max(.25,Number(n)||1)); };
+  try{ const __v302_steal=stealRivalPet; stealRivalPet=function(hit){ __v302_steal(hit); v302Progress('rivals',1.2); }; }catch(_){}
+  try{ const __v302_openCrate=openCrate; openCrate=function(kind){ __v302_openCrate(kind); v302Progress('starter',.75); }; }catch(_){}
+  const __v302_drawZones=drawZones; drawZones=function(){ __v302_drawZones(); try{ drawText('🚀 V3.0.2 OPEN CITY EMPIRE SHOWTIME • ESSENCE FIX • CHAPTERS • SAVE SAFE',WORLD.w/2,92,20,COLORS.yellow,'center',1000); }catch(_){} };
+  const __v302_loop=loop; let first=true; loop=function(now){ const out=__v302_loop(now); try{ if(first){ first=false; ensureV302(); v302CompensateEssence(false); v302Identity(); if(!state.v302.opened){ state.v302.opened=true; toast('🚀 V3.0.2 Showtime yüklendi! Essence fix aktif, save korundu.'); } } v302Identity(); }catch(e){ console.warn('V3.0.2 loop guard failed',e); } return out; };
+  window.addEventListener('keydown', e=>{ if(e.repeat||!e.key) return; const k=e.key.toLowerCase(); if(k==='y'||k==='3'){ try{ e.preventDefault(); e.stopPropagation(); }catch(_){} openPanel('v302'); } }, true);
+  v302Identity(); setTimeout(v302Identity,0); setTimeout(v302Identity,120); setTimeout(v302Identity,600);
+})();
+
+
+const loaded=loadSave(); ensureTransientWorld(); ensureV25Fields(); v25PostLoadFix(); ensureV26MobileFields(); ensureV27Fields(); applyMobileComfortLayout(); refreshModeButtons(); if(!loaded) showMessage('V3.0.2 Open City Empire hazır. Save key sabit, Bank Guard aktif, zoom guard açık.',3); saveGame(); requestAnimationFrame(loop);
 })();
 </script>
 </body>
