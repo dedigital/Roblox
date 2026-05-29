@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, viewport-fit=cover, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Brainrot Heist V2.9 Season Rift & Territory War</title>
+<title>Brainrot Heist V2.9.1 Stability & V3 Prep</title>
 <style>
   :root{
     --bg:#060914;--panel:rgba(8,14,30,.86);--panel2:rgba(255,255,255,.08);--line:rgba(255,255,255,.14);
@@ -86,7 +86,7 @@
 </head>
 <body>
 <div id="app">
-  <canvas id="game" aria-label="Brainrot Heist V2.9 Season Rift & Territory War oyun alanı"></canvas>
+  <canvas id="game" aria-label="Brainrot Heist V2.9.1 Stability & V3 Prep oyun alanı"></canvas>
   <div id="toast" class="toast" aria-live="polite"></div>
   <div class="topbar">
     <button id="btnMenu" type="button">MENÜ</button>
@@ -121,14 +121,14 @@
   <div id="mobileAssistChip" class="mobileAssistChip">📍 Dokun: yürü • Çift dokunma zoom kapalı</div>
   <section id="menu" class="menu">
     <div class="menuCard">
-      <p class="eyebrow">V2.9 Season Rift & Territory War</p>
-      <h1>Brainrot Heist<br>V2.9 CITY WAR</h1>
-      <p class="lead">V2.9 büyük update: sezon sistemi, Rift Dungeon, Territory War, bounty panosu, pet evolution, kontrol noktası vergileri ve V2.9 menüsü geldi. Önceki juice/stability/mobil anti-zoom sistemleri korunur. Save key aynı kaldı.</p>
+      <p class="eyebrow">V2.9.1 Stability & V3 Prep</p>
+      <h1>Brainrot Heist<br>V2.9.1 CITY WAR</h1>
+      <p class="lead">V2.9.1 temizlik update: V2.9 sezon/dungeon/territory sistemleri korunur; eski sürüm yazıları, mobil oynanış, save sağlık, rehber ve V3 hazırlığı eklendi.</p>
       <div class="patch">
-        <div><b>Season 1</b>Oynadıkça sezon XP kasılır, seviye atlanır ve cash/gem/rep/core/pet ödülleri alınır.</div>
-        <div><b>Rift Dungeon</b>Void/Neon dungeon aç, dalga dalga hırsız ve bot temizle, boss/core ödülü kazan.</div>
-        <div><b>Territory War</b>3 büyük district artık ele geçirilebilir. Kontrol noktası vergisi, rep ve core bonusu verir.</div>
-        <div><b>Bounty + Evolution</b>Hedef bot avla, petleri yıldız evrimle güçlendir, V2.9 panelinden hepsini yönet.</div>
+        <div><b>Bug Fix</b>Araçta pet taşıma çizimi, eski sürüm yazıları, mobile UI ve panel karmaşası toparlandı.</div>
+        <div><b>Save Health</b>Save audit, numeric guard, export/import hatırlatıcı ve bozuk değer temizliği güçlendi.</div>
+        <div><b>Rehber</b>Core, rep, sezon, territory, dungeon ve mobil oynanış için tek panelden yol haritası geldi.</div>
+        <div><b>V3 Hazırlığı</b>Open City Empire için interior, housing, faction, araç 2.0 ve dungeon 2.0 teaser olarak durur.</div>
       </div>
       <div class="difficultyBox" aria-label="Oyun modu seçimi">
         <button id="btnEasyMode" class="modeBtn" type="button"><b>😄 EASY MOD</b><span>Az önceki gibi daha rahat: ucuz upgrade, daha az polis, botlar var ama oyuncuya baskı düşük. Enis modu.</span></button>
@@ -2486,17 +2486,17 @@ resize();
 
   // Runtime visible version identity
   try{
-    document.title='Brainrot Heist V2.9 Season Rift & Territory War';
-    canvas?.setAttribute('aria-label','Brainrot Heist V2.9 Season Rift & Territory War oyun alanı');
-    const eye=document.querySelector('.menuCard .eyebrow'); if(eye) eye.textContent='V2.9 Season Rift & Territory War';
-    const h=document.querySelector('.menuCard h1'); if(h) h.innerHTML='Brainrot Heist<br>V2.9 CITY WAR';
-    const lead=document.querySelector('.menuCard .lead'); if(lead) lead.textContent='V2.9 büyük update: Season 1, Rift Dungeon, Territory War, Bounty Board ve Pet Evolution geldi. Önceki mobil anti-zoom, V2.8 başarımlar, offline kazanç ve save güvenliği korunur.';
-    const patch=document.querySelector('.menuCard .patch'); if(patch) patch.innerHTML='<div><b>Season 1</b>Sezon XP kas, level ödülleri al, özel pet ve core kazan.</div><div><b>Rift Dungeon</b>Neon/Void/Admin dungeon aç; dalga temizle, boss kes, büyük ödül al.</div><div><b>Territory War</b>Downtown, Neon ve Void districtlerini ele geçirip vergi topla.</div><div><b>Bounty + Evolution</b>Hedef bot avla, petlere yıldız evolution bas, endgame uzasın.</div>';
+    document.title='Brainrot Heist V2.9.1 Stability & V3 Prep';
+    canvas?.setAttribute('aria-label','Brainrot Heist V2.9.1 Stability & V3 Prep oyun alanı');
+    const eye=document.querySelector('.menuCard .eyebrow'); if(eye) eye.textContent='V2.9.1 Stability & V3 Prep';
+    const h=document.querySelector('.menuCard h1'); if(h) h.innerHTML='Brainrot Heist<br>V2.9.1 CITY WAR';
+    const lead=document.querySelector('.menuCard .lead'); if(lead) lead.textContent='V2.9.1 temizlik update: V2.9 sezon/dungeon/territory sistemleri korunur; sürüm yazıları, mobil oynanış, save sağlık, rehber ve V3 hazırlığı eklendi.';
+    const patch=document.querySelector('.menuCard .patch'); if(patch) patch.innerHTML='<div><b>Bug Fix</b>Araçta pet taşıma çizimi, eski sürüm yazıları, mobile UI ve panel karmaşası toparlandı.</div><div><b>Save Health</b>Save audit, numeric guard, export/import hatırlatıcı ve bozuk değer temizliği güçlendi.</div><div><b>Rehber</b>Core, rep, sezon, territory, dungeon ve mobil oynanış için tek panelden yol haritası geldi.</div><div><b>V3 Hazırlığı</b>Open City Empire için interior, housing, faction, araç 2.0 ve dungeon 2.0 teaser olarak durur.</div>'; 
   }catch(_){}
   // CSS + topbar/mobile buttons
   try{ const st=document.createElement('style'); st.textContent=`#btnSeason{background:rgba(255,230,128,.22)!important;color:#fff9c9!important}.v29-hot{border-color:rgba(255,230,128,.46)!important;background:linear-gradient(135deg,rgba(255,230,128,.16),rgba(190,149,255,.10))!important}body.mobileSimple .topbar #btnSeason{display:inline-flex!important}`; document.head.appendChild(st); }catch(_){}
-  try{ const tb=document.querySelector('.topbar'); if(tb && !document.getElementById('btnSeason')){ const b=document.createElement('button'); b.id='btnSeason'; b.type='button'; b.textContent='V2.9'; b.onclick=()=>openPanel('v29'); const ref=document.getElementById('btnJuice')||document.getElementById('btnInventory'); tb.insertBefore(b,ref); } }catch(_){}
-  try{ const mb=document.createElement('button'); mb.className='mButton warn'; mb.type='button'; mb.textContent='V2.9'; mb.dataset.action='v29'; document.querySelector('.mButtons')?.appendChild(mb); mb.addEventListener('click',()=>openPanel('v29')); }catch(_){}
+  try{ const tb=document.querySelector('.topbar'); if(tb && !document.getElementById('btnSeason')){ const b=document.createElement('button'); b.id='btnSeason'; b.type='button'; b.textContent='SEZON'; b.onclick=()=>openPanel('v29'); const ref=document.getElementById('btnJuice')||document.getElementById('btnInventory'); tb.insertBefore(b,ref); } }catch(_){}
+  try{ const mb=document.createElement('button'); mb.className='mButton warn'; mb.type='button'; mb.textContent='SEZON'; mb.dataset.action='v29'; document.querySelector('.mButtons')?.appendChild(mb); mb.addEventListener('click',()=>openPanel('v29')); }catch(_){}
 
   // Wrappers
   const __v29_clean=cleanBrainrot;
@@ -2540,7 +2540,91 @@ resize();
 })();
 
 
-const loaded=loadSave(); ensureTransientWorld(); ensureV25Fields(); v25PostLoadFix(); ensureV26MobileFields(); ensureV27Fields(); applyMobileComfortLayout(); refreshModeButtons(); if(!loaded) showMessage('V2.9 Season Rift hazır. Save key sabit, zoom guard aktif.',3); saveGame(); requestAnimationFrame(loop);
+/* ============================================================================
+   V2.9.1 — CLEANUP + BUGFIX + SAVE HEALTH + GUIDE + V3 PREP
+   Büyük yeni sistem değil; V3 öncesi sağlamlaştırma/temizlik update'i.
+   ============================================================================ */
+(function v291Install(){
+  const V291_VERSION = '2.9.1';
+  const V291_PATCH = 'V2.9.1 Stability & V3 Prep';
+  const V291_ECON_CAP = (typeof V271_ECON_MAX === 'number') ? V271_ECON_MAX : 1e300;
+  const V291_DISTRICT_INFO = {
+    downtown:{name:'Downtown',icon:'🏙️',color:'#7ef0c1'},
+    neon:{name:'Neon',icon:'🌃',color:'#79d9ff'},
+    void:{name:'Void',icon:'🌀',color:'#be95ff'}
+  };
+  const V291_GUIDE = [
+    ['İlk hedef', 'Pet Market’ten pet al → base’e koy → gelir kas → slot/luck/speed yükselt.'],
+    ['Rep kasma', 'NPC Job Center, Bank Raid savunması, fake bot yakalama, heist kontratı, daily reward ve bounty en iyi rep kaynakları.'],
+    ['Core kasma', 'Boss Stadium ve Rift Dungeon ana core kaynağı. Void/Core Meteor eventlerini kaçırma.'],
+    ['Para güvenliği', 'City Bank’e para yatır; polis/fake raid cezalarında nakit daha az riskli olur.'],
+    ['Endgame', 'Season level, Territory War, Pet Evolution, Hardcore Rank ve World Tier beraber ilerler.'],
+    ['Mobil rahatlık', 'MOBİL panelinden sade UI, joystick boyutu, dokun-git ve hız ayarını düşür.']
+  ];
+  function v291n(v,fb=0,min=0,max=V291_ECON_CAP){ const n=Number(v); return Number.isFinite(n)?Math.max(min,Math.min(max,n)):fb; }
+  function v291i(v,fb=0,min=0,max=999999){ return Math.round(v291n(v,fb,min,max)); }
+  function v291Ensure(){
+    state.v291 = state.v291 || {};
+    const v = state.v291;
+    v.version = V291_VERSION; v.opened = !!v.opened; v.lastAudit = v.lastAudit || ''; v.fps = v.fps || {value:0,frames:0,t:0}; v.safeMode = !!v.safeMode; v.v3TeaserSeen = !!v.v3TeaserSeen; v.quickFixes = {...(v.quickFixes||{})}; return v;
+  }
+  function v291SetIdentity(){
+    try{
+      document.title='Brainrot Heist V2.9.1 Stability & V3 Prep';
+      canvas?.setAttribute('aria-label','Brainrot Heist V2.9.1 Stability & V3 Prep oyun alanı');
+      const eye=document.querySelector('.menuCard .eyebrow'); if(eye) eye.textContent='V2.9.1 Stability & V3 Prep';
+      const h=document.querySelector('.menuCard h1'); if(h) h.innerHTML='Brainrot Heist<br>V2.9.1 CITY WAR';
+      const lead=document.querySelector('.menuCard .lead'); if(lead) lead.textContent='V2.9.1 temizlik update: V2.9 sistemleri korunur; sürüm yazıları, mobil oynanış, save sağlık, rehber ve V3 hazırlığı eklendi.';
+      const patch=document.querySelector('.menuCard .patch'); if(patch) patch.innerHTML='<div><b>Bug Fix</b>Araçta pet taşıma çizimi, eski sürüm yazıları, mobile UI ve panel karmaşası toparlandı.</div><div><b>Save Health</b>Save audit, numeric guard, export/import hatırlatıcı ve bozuk değer temizliği güçlendi.</div><div><b>Rehber</b>Core, rep, sezon, territory, dungeon ve mobil oynanış için tek panelden yol haritası geldi.</div><div><b>V3 Hazırlığı</b>Open City Empire için interior, housing, faction, araç 2.0 ve dungeon 2.0 teaser olarak durur.</div>';
+      const season=document.getElementById('btnSeason'); if(season) season.textContent='SEZON';
+    }catch(e){ console.warn('V2.9.1 identity cleanup failed',e); }
+  }
+  function v291SafeStateRepair(silent=false){
+    try{
+      ensureV27Fields?.(); ensureV25Fields?.(); ensureV26MobileFields?.(); if(typeof v271SanitizeRuntimeState === 'function') v271SanitizeRuntimeState();
+      state.player.cash = v291n(state.player.cash,2500,0,V291_ECON_CAP); state.player.highCash = Math.max(v291n(state.player.highCash,state.player.cash,0,V291_ECON_CAP), state.player.cash); state.player.gems = v291n(state.player.gems,20,0,V291_ECON_CAP);
+      state.hardcore.cores = v291n(state.hardcore?.cores,0,0,V291_ECON_CAP); state.hardcore.raidRep = v291n(state.hardcore?.raidRep,0,0,V291_ECON_CAP);
+      state.player.level = v291i(state.player.level,1,1,9999); state.player.x = clamp(v291n(state.player.x,center(ZONES.playerBase).x,30,WORLD.w-30),30,WORLD.w-30); state.player.y = clamp(v291n(state.player.y,center(ZONES.playerBase).y,30,WORLD.h-30),30,WORLD.h-30);
+      state.activeSlots = (Array.isArray(state.activeSlots)?state.activeSlots:[]).filter(Boolean).slice(0,getMaxSlots()).map((p,i)=>cleanBrainrot(p,i)); state.inventory = (Array.isArray(state.inventory)?state.inventory:[]).filter(Boolean).slice(-220).map((p,i)=>cleanBrainrot(p,i));
+      state.thieves = (Array.isArray(state.thieves)?state.thieves:[]).filter(t=>t && v291n(t.hp,1,-5,999)>-5).slice(-48); state.police = (Array.isArray(state.police)?state.police:[]).filter(Boolean).slice(-32);
+      state.particles = (Array.isArray(state.particles)?state.particles:[]).filter(p=>p && v291n(p.life,0,-1,10)>0).slice(-(state.v27?.lowFx?160:420)); state.floatingTexts = (Array.isArray(state.floatingTexts)?state.floatingTexts:[]).filter(f=>f && v291n(f.life,0,-1,10)>0).slice(-80);
+      v291Ensure().lastAudit = new Date().toLocaleString('tr-TR'); if(!silent){ toast('🛡️ Save sağlık kontrolü yapıldı. Bozuk/NaN değerler temizlendi.'); beep?.('win'); } saveGame?.(); return true;
+    }catch(e){ console.warn('V2.9.1 repair failed',e); if(!silent) toast('Save sağlık kontrolünde hata oldu; oyun çalışmaya devam ediyor.'); return false; }
+  }
+  function v291SaveSnapshotInfo(){ let size=0, exists=false, parsed=false; try{ const raw=localStorage.getItem(SAVE_KEY); exists=!!raw; size=raw?raw.length:0; if(raw){ JSON.parse(raw); parsed=true; } }catch(_){ parsed=false; } return {exists,size,parsed}; }
+  function v291HealthScore(){ const s=v291SaveSnapshotInfo(); let ok=0,total=8; if(s.exists) ok++; if(s.parsed) ok++; if(Number.isFinite(Number(state.player.cash))) ok++; if(Number.isFinite(Number(state.player.gems))) ok++; if(Array.isArray(state.activeSlots)) ok++; if(Array.isArray(state.inventory)) ok++; if(GAME_MODES[state.settings?.mode]) ok++; if(!state.player.carrying || typeof state.player.carrying==='object') ok++; return {ok,total,save:s}; }
+  function v291ApplyMobilePreset(kind){ ensureV26MobileFields?.(); state.settings.mobile.simple=true; state.settings.mobile.assist=true; state.settings.mobile.tapMove=true; state.settings.mobile.autoSprint=true; if(kind==='comfort'){ state.settings.speedMult=.58; state.settings.mobile.joySize=1.18; state.settings.mobile.joySens=.68; state.settings.mobile.uiScale=1.10; } else if(kind==='ipad'){ state.settings.speedMult=.72; state.settings.mobile.joySize=1.02; state.settings.mobile.joySens=.82; state.settings.mobile.uiScale=.96; } else { state.settings.speedMult=.50; state.settings.mobile.joySize=1.28; state.settings.mobile.joySens=.58; state.settings.mobile.uiScale=1.16; } applyMobileComfortLayout?.(); saveGame?.(); toast('📱 Mobil preset uygulandı. Zoom guard açık.'); if(!panelEl.classList.contains('hidden')) openPanel('v291'); }
+  function v291RenderPanel(){
+    v291Ensure(); v291SafeStateRepair(true); state.paused=true; panelEl.classList.remove('hidden'); const h=v291HealthScore(); panelTitle.textContent='🛡️ V2.9.1 Patch Merkezi'; panelSub.textContent=`Save sağlık ${h.ok}/${h.total} • Kayıt ${h.save.exists?(h.save.parsed?'okundu':'bozuk görünüyor'):'yok'} • V3 hazırlık modu açık`;
+    const guide=V291_GUIDE.map(([a,b])=>`<div class="card"><h3>${htmlEscape(a)}</h3><p>${htmlEscape(b)}</p></div>`).join('');
+    const v3Cards=`<div class="card v29-hot"><h3>🚀 V3 Open City Empire geliyor</h3><p>V3 planı: gerçek mağaza içleri, housing/ev, faction sistemi, araç 2.0, dungeon 2.0, territory war 2.0, pet RPG sistemi ve temiz motor düzeni.</p><p>Bu V2.9.1 patch V3’e geçmeden önce save’i ve mobil oynanışı sağlamlaştırır.</p></div><div class="card"><h3>🧭 V3'e hazırlık listesi</h3><p>Petlerini kilitle, save export al, core/rep biriktir, iyi araç ve kılıç yükselt. V3 migration bunları koruyacak şekilde planlanıyor.</p></div>`;
+    panelBody.innerHTML=`<div class="grid"><div class="card"><h3>🛡️ Save Sağlık</h3><p>Durum: ${h.ok}/${h.total} • Dosya: ${h.save.exists?shortNum(h.save.size)+' karakter':'yok'} • JSON: ${h.save.parsed?'sağlam':'kontrol gerekli'}</p><p>Son audit: ${htmlEscape(state.v291.lastAudit||'şimdi')}</p><div class="row"><button class="small good" data-v291="repair">Save Sağlık Kontrolü</button><button class="small gold" data-v291="export">KAYDI KOPYALA</button><button class="small" data-v291="import">KAYIT YÜKLE</button></div></div><div class="card"><h3>📱 Mobil Rahatlık</h3><p>Telefon çok zor gelirse hız/joystick/buton ayarını tek tıkla düşür.</p><div class="row"><button class="small good" data-v291="mobile" data-kind="slow">Çok Rahat</button><button class="small gold" data-v291="mobile" data-kind="comfort">Dengeli Telefon</button><button class="small" data-v291="mobile" data-kind="ipad">iPad/Klavye</button></div></div><div class="card"><h3>🔍 FPS / Debug</h3><p>FPS: ${Math.round(state.v291.fps?.value||0)} • Objeler: P${state.particles?.length||0} / T${state.thieves?.length||0} / Polis${state.police?.length||0}</p><p>Performance düşükse MOBİL panelinden Performans Modu aç.</p><button class="small good" data-v291="lowfx">Performans Modunu Aç/Kapat</button></div><div class="card"><h3>📖 Nasıl Kasılır?</h3><p>Rep/Core/Season/Territory kafanı karıştırıyorsa aşağıdaki rehber kartlarına bak. Bu panel <b>Y</b> tuşuyla veya V2.9.1 butonuyla açılır.</p><button class="small gold" data-v291="openV29">Season/Territory Paneli</button></div></div><h3 style="margin-top:16px">Hızlı Rehber</h3><div class="grid">${guide}</div><h3 style="margin-top:16px">V3 Teaser</h3><div class="grid">${v3Cards}</div>`;
+  }
+  function v291Handle(btn){ const cmd=btn.dataset.v291; if(cmd==='repair') v291SafeStateRepair(false); else if(cmd==='export') exportSave?.(); else if(cmd==='import') importSave?.(); else if(cmd==='mobile') v291ApplyMobilePreset(btn.dataset.kind||'comfort'); else if(cmd==='lowfx'){ ensureV27Fields?.(); state.v27.lowFx=!state.v27.lowFx; toast(state.v27.lowFx?'Performans modu açık.':'Full Juice modu açık.'); saveGame?.(); openPanel('v291'); } else if(cmd==='openV29') openPanel('v29'); }
+  try{ const st=document.createElement('style'); st.textContent=`#btnV291{background:linear-gradient(135deg,rgba(126,240,193,.22),rgba(255,230,128,.18))!important;color:#fff!important}body.mobileSimple .topbar #btnV291{display:inline-flex!important}.v291-badge{color:#ffe680;font-weight:1000}.keyboardMode #btnV291{display:inline-flex!important}#btnSeason{background:rgba(255,230,128,.18)!important}.v29-hot{border-color:rgba(255,230,128,.46)!important;background:linear-gradient(135deg,rgba(255,230,128,.16),rgba(190,149,255,.10))!important}`; document.head.appendChild(st); }catch(_){ }
+  try{ const tb=document.querySelector('.topbar'); if(tb && !document.getElementById('btnV291')){ const b=document.createElement('button'); b.id='btnV291'; b.type='button'; b.textContent='V2.9.1'; b.title='V2.9.1 Patch Merkezi / Rehber'; b.onclick=()=>openPanel('v291'); const ref=document.getElementById('btnSeason')||document.getElementById('btnJuice')||document.getElementById('btnInventory'); tb.insertBefore(b,ref); } }catch(_){ }
+  try{ const mbs=document.querySelector('.mButtons'); if(mbs && !document.getElementById('mV291')){ const mb=document.createElement('button'); mb.id='mV291'; mb.className='mButton warn'; mb.type='button'; mb.textContent='2.9.1'; mb.dataset.action='v291'; mbs.appendChild(mb); mb.addEventListener('click',()=>openPanel('v291')); } }catch(_){ }
+  v291SetIdentity();
+  drawZones = function(){
+    for(const z of Object.values(ZONES)) drawZone(z); drawBuildings(); for(const r of state.rivals) drawZone({x:r.x,y:r.y,w:r.w,h:r.h,name:r.name,color:r.color,edge:r.edge});
+    try{ const v=state.v29||{}; const terr=v.territory||{}; for(const id of ['downtown','neon','void']){ const d=DISTRICTS.find(x=>x.id===id), info=V291_DISTRICT_INFO[id]; if(!d||!info) continue; const own=terr[id]?.owner==='player'; ctx.save(); ctx.globalAlpha=own?.22:.10; ctx.fillStyle=own?info.color:'#ff6688'; ctx.fillRect(d.x+6,d.y+6,d.w-12,18); ctx.globalAlpha=1; drawText(`${info.icon} ${own?'SENİN KONTROLÜN':'RIVAL CONTROL'} • ${Math.round(terr[id]?.influence||0)}%`,d.x+d.w-34,d.y+28,14,own?info.color:COLORS.red,'right',1000); ctx.restore(); } if(v.dungeon){ const z=ZONES.boss; ctx.save(); ctx.globalAlpha=.55+.2*Math.sin(state.t*8); ctx.strokeStyle=v.dungeon.color||COLORS.purple; ctx.lineWidth=12; roundedRect(z.x-18,z.y-18,z.w+36,z.h+36,38); ctx.stroke(); drawText(`${v.dungeon.icon||'🌀'} ${v.dungeon.name||'Dungeon'} ACTIVE`,z.x+z.w/2,z.y-28,30,v.dungeon.color||COLORS.purple,'center',1000); ctx.restore(); } }catch(_){ }
+    drawText('🛡️ V2.9.1 • CLEANUP / SAVE HEALTH / MOBILE FIX / V3 PREP',WORLD.w/2,58,24,COLORS.green,'center',1000);
+  };
+  const __v291_baseDrawPlayer = drawPlayer;
+  drawPlayer=function(){ try{ if(state.settings?.vehicleActive){ const p=state.player, v=currentVehicle?.() || {id:'car',emoji:'🏎️',name:'Araç'}; ctx.save(); ctx.translate(p.x,p.y); ctx.shadowColor=v.id==='voidcar'?COLORS.purple:v.id==='admincar'?COLORS.yellow:COLORS.cyan; ctx.shadowBlur=16; roundedRect(-34,-21,68,44,14); ctx.fillStyle=v.id==='police'?'#234b88':v.id==='admincar'?'#4d4020':v.id==='voidcar'?'#2d1b52':'#263a45'; ctx.fill(); ctx.strokeStyle=v.id==='police'?'#88b4ff':v.id==='admincar'?COLORS.yellow:COLORS.orange; ctx.lineWidth=3; ctx.stroke(); drawText(v.emoji||'🏎️',0,10,28,'#fff','center',1000); ctx.restore(); drawText(v.name||'Araç',p.x,p.y-32,11,COLORS.orange,'center',900); if(p.carrying){ drawBrainrot(p.carrying,p.x,p.y-58,.78); drawText('BAGAJ / BASE’E GÖTÜR',p.x,p.y+48,11,COLORS.yellow,'center',1000); } return; } }catch(e){ console.warn('V2.9.1 drawPlayer vehicle fix fallback',e); } return __v291_baseDrawPlayer(); };
+  try{ mobileControls?.addEventListener('click', e=>{ const b=e.target.closest?.('[data-action]'); if(!b) return; const a=b.dataset.action; if(a==='v291'){ e.preventDefault(); e.stopPropagation(); openPanel('v291'); } else if(a==='ach'){ e.preventDefault(); e.stopPropagation(); openPanel('achievements'); } else if(a==='v29'){ e.preventDefault(); e.stopPropagation(); openPanel('v29'); } }, true); }catch(_){ }
+  const __v291_serialize=serializeSave; serializeSave=function(){ const data=__v291_serialize(); try{ const v=v291Ensure(); data.v291={version:V291_VERSION,lastAudit:v.lastAudit,safeMode:v.safeMode,v3TeaserSeen:v.v3TeaserSeen}; data.version=291; data.patch=V291_PATCH; }catch(_){} return data; };
+  const __v291_restore=restoreSave; restoreSave=function(saved){ const ok=__v291_restore(saved); try{ v291Ensure(); if(saved?.v291) state.v291={...state.v291,...saved.v291,version:V291_VERSION}; v291SetIdentity(); v291SafeStateRepair(true); }catch(_){} return ok; };
+  const __v291_encode=encodeSave; encodeSave=function(data){ try{ const json=JSON.stringify(data); const bytes=new TextEncoder().encode(json); let bin=''; for(const b of bytes) bin+=String.fromCharCode(b); return 'BRAINROT_MEGA_V291:'+btoa(bin); }catch(_){ return __v291_encode(data); } };
+  const __v291_update=update; update=function(dt){ dt = (!Number.isFinite(dt)||dt<0) ? 0 : clamp(dt,0,1/30); __v291_update(dt); const v=v291Ensure(); v.fps.frames++; v.fps.t += dt; if(v.fps.t>=.75){ v.fps.value = v.fps.frames / v.fps.t; v.fps.frames=0; v.fps.t=0; } if(!state.paused){ state.__v291Audit=(state.__v291Audit||0)-dt; if(state.__v291Audit<=0){ v291SafeStateRepair(true); state.__v291Audit=12; } } };
+  const __v291_open=openPanel; openPanel=function(kind){ if(kind==='v291'||kind==='guide'||kind==='saveHealth'){ v291RenderPanel(); return; } return __v291_open(kind); };
+  panelEl.addEventListener('click',e=>{ const btn=e.target.closest('[data-v291]'); if(btn) v291Handle(btn); });
+  window.addEventListener('keydown',e=>{ if(e.repeat||!e.key) return; const k=e.key.toLowerCase(); if(k==='y'){ openPanel('v291'); } });
+  const __v291_loop=loop; let first=true; loop=function(now){ if(first){ first=false; v291Ensure(); v291SetIdentity(); v291SafeStateRepair(true); if(!state.v291.opened){ state.v291.opened=true; toast('🛡️ V2.9.1 yüklendi: save sağlık, mobil fix ve V3 hazırlığı aktif.'); } } return __v291_loop(now); };
+})();
+
+
+const loaded=loadSave(); ensureTransientWorld(); ensureV25Fields(); v25PostLoadFix(); ensureV26MobileFields(); ensureV27Fields(); applyMobileComfortLayout(); refreshModeButtons(); if(!loaded) showMessage('V2.9.1 hazır. Save key sabit, zoom guard aktif, V3 hazırlığı başladı.',3); saveGame(); requestAnimationFrame(loop);
 })();
 </script>
 </body>
