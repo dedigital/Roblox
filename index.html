@@ -3878,6 +3878,387 @@ resize();
 })();
 
 
+/* ===================== V3.4.2 QA HOTFIX =====================
+   QA-only layer: no new gameplay systems, no dependencies, same save key.
+   Keeps visible/export identity at V3.4.1 while adding transactional guards
+   and an in-game PASS/WARN QA panel for the V3.4.1 release surface.
+   ============================================================ */
+(function v342QAHotfix(){
+  const V342_VERSION = 342;
+  const V342_LABEL = 'V3.4.2 QA Hotfix';
+  const VISIBLE_LABEL = 'V3.4.1';
+  const TITLE = 'Brainrot Heist V3.4.1 Open City Empire';
+  const baseOpenPanel = openPanel;
+  const baseSerializeSave = serializeSave;
+  const baseRestoreSave = restoreSave;
+  const baseEncodeSave = encodeSave;
+  const baseUpdateV25 = updateV25;
+  const baseDrawPlayer = drawPlayer;
+  const baseToggleVehicle = toggleVehicle;
+  const baseV27Prestige = typeof v27Prestige === 'function' ? v27Prestige : null;
+  const baseLoop = loop;
+
+  function n(v,fb=0,min=0,max=1e300){ v=Number(v); return Number.isFinite(v)?Math.max(min,Math.min(max,v)):fb; }
+  function pass(ok,label,detail=''){ return {ok:!!ok,label,detail}; }
+  function qaState(){
+    const prev = state.v342 || {};
+    state.v342 = {
+      ...prev,
+      version:V342_VERSION,
+      label:V342_LABEL,
+      bank:{cooldown:0,completions:0,last:'', ...(prev.bank||{})},
+      checks:{...(prev.checks||{})}
+    };
+    state.v342.version = V342_VERSION;
+    state.v342.label = V342_LABEL;
+    state.v342.bank.cooldown = Math.max(0,n(state.v342.bank.cooldown));
+    state.v342.bank.completions = Math.max(0,Math.floor(n(state.v342.bank.completions)));
+    return state.v342;
+  }
+  function identityOK(){
+    const menuText = document.querySelector('.menuCard')?.innerText || '';
+    const topText = document.querySelector('.topbar')?.innerText || '';
+    const mobileText = mobileControls?.innerText || '';
+    const data = serializeSave();
+    return {
+      title:document.title.includes(VISIBLE_LABEL),
+      menu:menuText.includes(VISIBLE_LABEL),
+      canvas:(canvas?.getAttribute('aria-label')||'').includes(VISIBLE_LABEL),
+      topbar:topText.includes(VISIBLE_LABEL),
+      mobile:mobileText.includes(VISIBLE_LABEL),
+      exportMeta:data.saveVersion === VISIBLE_LABEL && data.saveKey === SAVE_KEY
+    };
+  }
+  function setIdentity(){
+    try{
+      document.title = TITLE;
+      canvas?.setAttribute('aria-label', `${TITLE} oyun alani`);
+      const eye=document.querySelector('.menuCard .eyebrow'); if(eye) eye.textContent='V3.4.1 Integration & Cleanup';
+      const h=document.querySelector('.menuCard h1'); if(h) h.innerHTML='Brainrot Heist<br>V3.4.1';
+      const btn=document.getElementById('btnV302'); if(btn){ btn.textContent='V3.4.1'; btn.dataset.panelRoute='hub'; btn.onclick=()=>openPanel('hub'); }
+      const juice=document.getElementById('btnJuice'); if(juice){ juice.textContent='ESSENCE'; juice.dataset.panelRoute='essence'; juice.onclick=()=>openPanel('essence'); }
+      const mobileHub=document.getElementById('mV302'); if(mobileHub){ mobileHub.textContent='V3.4.1'; mobileHub.dataset.panelRoute='hub'; mobileHub.onclick=()=>openPanel('hub'); }
+      const mobileV3=document.getElementById('mV3'); if(mobileV3){ mobileV3.textContent='V3'; mobileV3.dataset.panelRoute='v3'; mobileV3.onclick=()=>openPanel('v3'); }
+      const mobileSave=document.getElementById('mV291'); if(mobileSave){ mobileSave.textContent='SAVE'; mobileSave.dataset.panelRoute='save'; mobileSave.onclick=()=>openPanel('save'); }
+      const mobileSeason=document.getElementById('mSeason'); if(mobileSeason){ mobileSeason.textContent='SEASON'; mobileSeason.dataset.panelRoute='season'; mobileSeason.onclick=()=>openPanel('season'); }
+      const mobileEss=document.getElementById('mEssLab'); if(mobileEss){ mobileEss.textContent='ESS'; mobileEss.dataset.panelRoute='essence'; mobileEss.onclick=()=>openPanel('essence'); }
+      ensureQAButton();
+      compactMobileUI();
+    }catch(e){ console.warn('V3.4.2 identity QA failed',e); }
+  }
+  function compactMobileUI(){
+    try{
+      if(document.getElementById('v342MobileStyle')) return;
+      const st=document.createElement('style'); st.id='v342MobileStyle';
+      st.textContent = `
+        .topbar{max-width:calc(100vw - 24px)}
+        .topbar button{white-space:nowrap}
+        #btnQA{background:rgba(126,240,193,.18)!important}
+        @media (max-width:760px){
+          .topbar button{height:32px;padding:0 7px;font-size:10px}
+          #btnQA,#btnV33,#btnV34,#btnV32Spend,#btnEssLab{display:none!important}
+        }
+        body.mobileSimple .topbar #btnQA,
+        body.mobileSimple .topbar #btnV33,
+        body.mobileSimple .topbar #btnV34,
+        body.mobileSimple .topbar #btnV32Spend,
+        body.mobileSimple .topbar #btnEssLab{display:none!important}
+        .v342-pass{border-color:rgba(126,240,193,.45)!important}
+        .v342-warn{border-color:rgba(255,230,128,.55)!important}
+      `;
+      document.head.appendChild(st);
+    }catch(_){}
+  }
+  function ensureQAButton(){
+    try{
+      const tb=document.querySelector('.topbar');
+      if(!tb) return;
+      let b=document.getElementById('btnQA');
+      if(!b){
+        b=document.createElement('button');
+        b.id='btnQA';
+        b.type='button';
+        tb.insertBefore(b, document.getElementById('btnFull') || null);
+      }
+      b.textContent='QA';
+      b.title='V3.4.2 QA Panel';
+      b.dataset.panelRoute='qa';
+      b.onclick=()=>openPanel('qa');
+    }catch(_){}
+  }
+  function snapshotSaved(saved){
+    if(!saved || typeof saved !== 'object') return {};
+    return {
+      cash:n(saved.cash ?? saved.player?.cash, NaN),
+      gems:n(saved.gems ?? saved.player?.gems, NaN),
+      cores:n(saved.hardcore?.cores, NaN),
+      rep:n(saved.hardcore?.raidRep, NaN),
+      active:Array.isArray(saved.activeSlots)?saved.activeSlots:(Array.isArray(saved.playerSlots)?saved.playerSlots:[]),
+      inventory:Array.isArray(saved.inventory)?saved.inventory:[],
+      v25:saved.v25, v27:saved.v27, v29:saved.v29, v3:saved.v3, v31:saved.v31, v32:saved.v32, v33:saved.v33, v34:saved.v34
+    };
+  }
+  function preserveOldSave(saved){
+    const snap=snapshotSaved(saved);
+    try{
+      if(Number.isFinite(snap.cash)) state.player.cash=Math.max(n(state.player.cash),snap.cash);
+      if(Number.isFinite(snap.gems)) state.player.gems=Math.max(n(state.player.gems),snap.gems);
+      if(Number.isFinite(snap.cores)) state.hardcore.cores=Math.max(n(state.hardcore?.cores),snap.cores);
+      if(Number.isFinite(snap.rep)) state.hardcore.raidRep=Math.max(n(state.hardcore?.raidRep),snap.rep);
+      if(snap.active.length && state.activeSlots.length<snap.active.length) state.activeSlots=snap.active.slice(0,getMaxSlots()).map(cleanBrainrot);
+      if(snap.inventory.length && state.inventory.length<snap.inventory.length) state.inventory=snap.inventory.slice(0,220).map(cleanBrainrot);
+      if(snap.v25) state.v25={...ensureV25Fields(),...snap.v25,vehiclesOwned:{...(state.v25?.vehiclesOwned||{}),...(snap.v25.vehiclesOwned||{})},vehicleUpgrades:{...(state.v25?.vehicleUpgrades||{}),...(snap.v25.vehicleUpgrades||{})}};
+      if(snap.v27){ ensureV27Fields?.(); state.v27={...state.v27,...snap.v27,bonuses:{...(state.v27?.bonuses||{}),...(snap.v27.bonuses||{})},stats:{...(state.v27?.stats||{}),...(snap.v27.stats||{})}}; state.v27.essence=Math.max(n(state.v27.essence),n(snap.v27.essence)); }
+      if(snap.v29) state.v29={...(state.v29||{}),...snap.v29,season:{...(state.v29?.season||{}),...(snap.v29.season||{})},territory:{...(state.v29?.territory||{}),...(snap.v29.territory||{})}};
+      if(snap.v3){ try{ v3Ensure?.(); }catch(_){} state.v3={...(state.v3||{}),...snap.v3,empire:{...(state.v3?.empire||{}),...(snap.v3.empire||{})},districts:{...(state.v3?.districts||{}),...(snap.v3.districts||{})},factions:{...(state.v3?.factions||{}),...(snap.v3.factions||{})},housing:{...(state.v3?.housing||{}),...(snap.v3.housing||{}),upgrades:{...(state.v3?.housing?.upgrades||{}),...(snap.v3.housing?.upgrades||{})}},vehicle2:{...(state.v3?.vehicle2||{}),...(snap.v3.vehicle2||{})}}; }
+      for(const k of ['v31','v32','v33','v34']) if(snap[k]) state[k]={...(state[k]||{}),...snap[k]};
+      qaState().checks.oldSave='PASS';
+    }catch(e){ qaState().checks.oldSave='WARN'; console.warn('V3.4.2 old save preservation warn',e); }
+  }
+  function prestigeGain(){
+    try{
+      if(typeof v302EssenceGainFromSnapshot === 'function') return Math.max(1,Math.floor(v302EssenceGainFromSnapshot(state.player?.cash||0, typeof getIncome==='function'?getIncome():0)));
+    }catch(_){}
+    const v=ensureV27Fields?.() || state.v27 || {};
+    return Math.max(3,3+Math.floor(n(v.prestige)*0.55)+Math.floor(n(state.hardcore?.worldTier,1)*0.9)+Math.floor(n(state.hardcore?.rank)*0.65));
+  }
+  function prestigeCost(){
+    try{ return v27PrestigeCost?.() || {cash:0,income:0,cores:0,rep:0}; }
+    catch(_){ return {cash:0,income:0,cores:0,rep:0}; }
+  }
+  function safeEssencePrestige(){
+    const v=ensureV27Fields?.() || (state.v27=state.v27||{});
+    v.stats={prestiges:0,...(v.stats||{})};
+    const c=prestigeCost();
+    const before={cash:n(state.player?.cash), cores:n(state.hardcore?.cores), rep:n(state.hardcore?.raidRep), essence:n(v.essence), prestige:n(v.prestige), stats:n(v.stats.prestiges)};
+    const income=typeof getIncome==='function'?getIncome():0;
+    if(before.cash<n(c.cash) || income<n(c.income) || before.cores<n(c.cores) || before.rep<n(c.rep)){
+      showMessage?.(`Essence için $${shortNum(c.cash)}, +${shortNum(c.income)}/sn${c.cores?`, ${c.cores} core`:''}${c.rep?`, ${c.rep} rep`:''} lazım.`);
+      beep?.('bad');
+      return false;
+    }
+    const gain=prestigeGain();
+    if(!(gain>0)){ showMessage?.('Essence gain hesaplanamadı; kaynak harcanmadı.'); beep?.('bad'); return false; }
+    state.player.cash=before.cash-n(c.cash);
+    state.hardcore.cores=before.cores-n(c.cores);
+    state.hardcore.raidRep=before.rep-n(c.rep);
+    v.essence=before.essence+gain;
+    v.prestige=before.prestige+1;
+    v.stats.prestiges=before.stats+1;
+    if(v.essence<=before.essence){
+      state.player.cash=before.cash; state.hardcore.cores=before.cores; state.hardcore.raidRep=before.rep; v.essence=before.essence; v.prestige=before.prestige; v.stats.prestiges=before.stats;
+      showMessage?.('Essence doğrulaması başarısız; kaynak harcanmadı.');
+      beep?.('bad');
+      return false;
+    }
+    try{ v3Ensure?.().empire && (v3Ensure().empire.xp += gain*55); }catch(_){}
+    toast?.(`Essence Prestige: +${gain} Essence. Kaynak harcama doğrulandı.`);
+    beep?.('win');
+    v27RewardBurst?.(state.player.x,state.player.y,'portal',3.8);
+    saveGame?.();
+    openPanel?.('essence');
+    return true;
+  }
+  function completeBankRaidOnce(br,source='v342'){
+    ensureV25Fields?.();
+    const q=qaState();
+    if(!state.v25 || !br) return false;
+    if(br._v342Done || br._v301Done || q.bank.completing){
+      state.v25.bankRaid=null;
+      state.v25.bankRaidTimer=Math.max(n(state.v25.bankRaidTimer),180);
+      q.bank.cooldown=Math.max(q.bank.cooldown,180);
+      return true;
+    }
+    br._v342Done=true; br._v301Done=true; q.bank.completing=true;
+    try{
+      const reward=Math.round(65000+(typeof getIncome==='function'?getIncome():0)*8+n(br.loot)*0.25);
+      state.player.cash=Math.min(1e300,n(state.player.cash)+reward);
+      if(typeof addRaidRep==='function') addRaidRep(4); else state.hardcore.raidRep=n(state.hardcore?.raidRep)+4;
+      if(typeof v25AddJobProgress==='function'){ v25AddJobProgress('defend',2); v25AddJobProgress('bank',500000); }
+      q.bank.completions++; q.bank.last=`${source} ${new Date().toLocaleTimeString('tr-TR')}`; q.bank.cooldown=180;
+      state.v25.bankRaid=null;
+      state.v25.bankRaidTimer=Math.max(n(state.v25.bankRaidTimer),180);
+      toast?.(`Bank Guard: +$${shortNum(reward)} +rep. Tek ödül kilidi aktif.`);
+      beep?.('win');
+      saveGame?.();
+    }finally{ q.bank.completing=false; }
+    return true;
+  }
+  function failBankRaidOnce(br){
+    const q=qaState();
+    const loss=Math.min(n(state.v25?.bank), Math.round(n(br?.loot)*(1-(n(state.v25?.insuranceLevel)*.055))));
+    state.v25.bank=Math.max(0,n(state.v25.bank)-loss);
+    state.v25.bankRaid=null;
+    state.v25.bankRaidTimer=Math.max(n(state.v25.bankRaidTimer),180);
+    q.bank.cooldown=180; q.bank.last='failed '+new Date().toLocaleTimeString('tr-TR');
+    toast?.(`Bank raid kaçtı: bankadan $${shortNum(loss)} gitti.`);
+    saveGame?.();
+  }
+  function updateBankRaidOnly(dt,br){
+    const q=qaState();
+    q.bank.cooldown=Math.max(0,q.bank.cooldown-dt);
+    br.timer=n(br.timer)-dt;
+    if(pointInRect(state.player,ZONES.bank)){
+      br.progress=n(br.progress)+dt*(1+n(state.player.guardLevel)*.08+n(state.v25?.insuranceLevel)*.05);
+      if(Math.random()<dt*.35) particles?.(state.player.x+rand(-70,70),state.player.y+rand(-70,70),COLORS.cyan,2);
+    }
+    if(br.progress>=8) return completeBankRaidOnce(br,'progress');
+    if(br.timer<=0) return failBankRaidOnce(br);
+    state.v25.bankRaid=br;
+    if(q.bank.cooldown>0) state.v25.bankRaidTimer=Math.max(n(state.v25.bankRaidTimer),q.bank.cooldown);
+    return false;
+  }
+  function drawVehicleWithCarry(){
+    const p=state.player, v=currentVehicle?.() || {emoji:'🏎️',name:'Vehicle',id:'car'};
+    if(!state.settings?.vehicleActive) return baseDrawPlayer();
+    ctx.save();
+    ctx.translate(p.x,p.y);
+    const carrying=!!p.carrying;
+    ctx.shadowColor=v.id==='voidcar'?COLORS.purple:v.id==='admincar'?COLORS.yellow:COLORS.cyan;
+    ctx.shadowBlur=16;
+    roundedRect(-38,-23,76,48,15);
+    ctx.fillStyle=v.id==='police'?'#234b88':v.id==='admincar'?'#4d4020':v.id==='voidcar'?'#2d1b52':'#263a45';
+    ctx.fill();
+    ctx.strokeStyle=carrying?COLORS.yellow:(v.id==='police'?'#88b4ff':v.id==='admincar'?COLORS.yellow:COLORS.orange);
+    ctx.lineWidth=3;
+    ctx.stroke();
+    drawText(v.emoji||'🏎️',0,10,28,'#fff','center',1000);
+    ctx.restore();
+    drawText(carrying?'BAGAJ':'SEN',p.x,p.y-34,11,carrying?COLORS.yellow:COLORS.orange,'center',900);
+    if(carrying){
+      drawBrainrot(p.carrying,p.x,p.y-62,.78);
+      drawText('BASE’E GÖTÜR',p.x,p.y+48,11,COLORS.yellow,'center',1000);
+    }
+  }
+  function routeName(id){
+    const b=document.getElementById(id);
+    return b?.dataset?.panelRoute || '';
+  }
+  function runQAChecks(){
+    const ident=identityOK();
+    const data=serializeSave();
+    const q=qaState();
+    const visibleTop = (() => {
+      try{ return Array.from(document.querySelectorAll('.topbar button')).filter(b=>getComputedStyle(b).display!=='none').length; }catch(_){ return 0; }
+    })();
+    const mobileMode = (() => {
+      try{ return document.body.classList.contains('mobileSimple') || matchMedia('(max-width:760px)').matches; }catch(_){ return false; }
+    })();
+    const mobileCompact = !!document.getElementById('v342MobileStyle') && (!mobileMode || visibleTop<=10);
+    const checks=[
+      pass(Object.values(ident).every(Boolean),'version',`title:${ident.title?'PASS':'WARN'} menu:${ident.menu?'PASS':'WARN'} canvas:${ident.canvas?'PASS':'WARN'} topbar:${ident.topbar?'PASS':'WARN'} mobile:${ident.mobile?'PASS':'WARN'} export:${ident.exportMeta?'PASS':'WARN'}`),
+      pass(data.saveKey===SAVE_KEY && data.saveVersion===VISIBLE_LABEL,'save',`key ${data.saveKey || 'missing'} / meta ${data.saveVersion || 'missing'}`),
+      pass(['hub','v3','save','season','essence'].every((r,i)=>routeName(['btnV302','btnV3','btnV291','btnSeason','btnJuice'][i])===r),'panels',`Y:${routeName('btnV302')} V3:${routeName('btnV3')} SAVE:${routeName('btnV291')} SEASON:${routeName('btnSeason')} ESSENCE:${routeName('btnJuice')}`),
+      pass(typeof v27Prestige==='function' && prestigeGain()>0 && Number.isFinite(n((state.v27||{}).essence)),'essence',`next +${prestigeGain()} essence`),
+      pass(!state.v25?.bankRaid || !state.v25.bankRaid._v342Done,'bank',`cooldown ${Math.ceil(q.bank.cooldown||0)}s / completions ${q.bank.completions||0}`),
+      pass(!state.settings?.vehicleActive || !state.player.carrying || !!currentVehicle?.(),'vehicle',state.player.carrying?'carrying visual guarded':'ok'),
+      pass(mobileCompact,'mobile',`${visibleTop} visible topbar buttons; compact CSS ${document.getElementById('v342MobileStyle')?'active':'missing'}`)
+    ];
+    q.checks.last = checks;
+    return checks;
+  }
+  function renderQAPanel(){
+    setIdentity();
+    state.paused=true;
+    panelEl.classList.remove('hidden');
+    const checks=runQAChecks();
+    panelTitle.textContent='QA Hotfix';
+    panelSub.textContent='V3.4.2 QA panel for V3.4.1 release identity and safety guards';
+    panelBody.innerHTML = `<div class="grid">${checks.map(c=>`<div class="card ${c.ok?'v342-pass':'v342-warn'}"><h3>${c.ok?'PASS':'WARN'} ${htmlEscape(c.label)}</h3><p>${htmlEscape(c.detail||'')}</p></div>`).join('')}</div><div class="row" style="margin-top:12px"><button class="small good" data-v342="rerun">Rerun QA</button><button class="small gold" data-v342="export">Export Check</button><button class="small" data-v342="bank">Bank Guard</button><button class="small" data-v342="essence">Essence Lab</button></div>`;
+  }
+
+  serializeSave=function(){
+    const data=baseSerializeSave();
+    data.version = 341;
+    data.saveVersion = VISIBLE_LABEL;
+    data.patch = 'V3.4.1 Integration & Cleanup';
+    data.saveKey = SAVE_KEY;
+    data.v342 = {version:V342_VERSION,label:V342_LABEL,qaOnly:true,updatedAt:Date.now(),bank:{...qaState().bank}};
+    return data;
+  };
+  restoreSave=function(saved){
+    const ok=baseRestoreSave(saved);
+    preserveOldSave(saved);
+    setIdentity();
+    return ok;
+  };
+  encodeSave=function(data){
+    try{
+      const d={...(data||{})};
+      d.version=341; d.saveVersion=VISIBLE_LABEL; d.patch='V3.4.1 Integration & Cleanup'; d.saveKey=SAVE_KEY;
+      d.v342={version:V342_VERSION,label:V342_LABEL,qaOnly:true,updatedAt:Date.now(),...(d.v342||{})};
+      const bytes=new TextEncoder().encode(JSON.stringify(d));
+      let bin=''; for(const b of bytes) bin+=String.fromCharCode(b);
+      return 'BRAINROT_MEGA_V341:'+btoa(bin);
+    }catch(_){ return baseEncodeSave(data); }
+  };
+  v27Prestige=function(){ return safeEssencePrestige(); };
+  toggleVehicle=function(){
+    ensureV25Fields?.();
+    const v=currentVehicle?.();
+    if(v && ownsVehicle && !ownsVehicle(v.id)){ showMessage('Önce araç satın al.'); beep?.('bad'); return; }
+    state.settings.vehicleOwned=true;
+    state.settings.vehicleActive=!state.settings.vehicleActive;
+    toast(state.settings.vehicleActive?`${v?.emoji||'🏎️'} ${v?.name||'Araç'} aktif. Pet taşıyorsan bagaj modunda.`:'Yaya moda geçtin.');
+    saveGame?.();
+  };
+  updateV25=function(dt){
+    ensureV25Fields?.();
+    dt=Number.isFinite(Number(dt))?Math.max(0,Math.min(Number(dt),1/30)):0;
+    const br=state.v25?.bankRaid || null;
+    if(br){
+      const savedTimer=n(state.v25.bankRaidTimer);
+      state.v25.bankRaid=null;
+      state.v25.bankRaidTimer=Math.max(savedTimer,9999);
+      try{ baseUpdateV25(dt); }catch(e){ console.warn('V3.4.2 base V25 update warn',e); }
+      state.v25.bankRaidTimer=Math.max(savedTimer,n(qaState().bank.cooldown));
+      state.v25.bankRaid=br;
+      updateBankRaidOnly(dt,br);
+      return;
+    }
+    baseUpdateV25(dt);
+    if(state.v25?.bankRaid){
+      state.v25.bankRaid._v342Id = state.v25.bankRaid._v342Id || ('bank342'+Date.now()+Math.random().toString(36).slice(2));
+    }
+  };
+  drawPlayer=function(){
+    try{ if(state.settings?.vehicleActive) return drawVehicleWithCarry(); }
+    catch(e){ console.warn('V3.4.2 vehicle draw fallback',e); }
+    return baseDrawPlayer();
+  };
+  openPanel=function(kind){
+    const k=String(kind||'').toLowerCase();
+    if(k==='qa'||k==='v342'){ renderQAPanel(); return; }
+    const eventKey = (()=>{ try{ return String(window.event?.key||'').toLowerCase(); }catch(_){ return ''; } })();
+    const out=baseOpenPanel(k==='v3' && eventKey==='y' ? 'hub' : kind);
+    setIdentity();
+    return out;
+  };
+  panelEl.addEventListener('click',e=>{
+    const b=e.target.closest?.('[data-v342]');
+    if(!b) return;
+    const cmd=b.dataset.v342;
+    if(cmd==='rerun') renderQAPanel();
+    else if(cmd==='export') { const d=serializeSave(); toast(`Export meta: ${d.saveVersion} / ${d.saveKey}`); renderQAPanel(); }
+    else if(cmd==='bank') openPanel('bank');
+    else if(cmd==='essence') openPanel('essence');
+  });
+  window.addEventListener('keydown',e=>{
+    const k=String(e.key||'').toLowerCase();
+    if(k==='y'){ try{ e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation?.(); }catch(_){} openPanel('hub'); }
+  }, true);
+  loop=function(now){
+    const out=baseLoop(now);
+    setIdentity();
+    return out;
+  };
+  setIdentity();
+  runQAChecks();
+  setTimeout(setIdentity,0);
+  setTimeout(setIdentity,250);
+})();
+
+
 const loaded=loadSave(); ensureTransientWorld(); ensureV25Fields(); v25PostLoadFix(); ensureV26MobileFields(); ensureV27Fields(); applyMobileComfortLayout(); refreshModeButtons(); if(!loaded) showMessage('V3.4.1 hazır. Save key sabit, Bank Guard aktif, zoom guard açık.',3); saveGame(); requestAnimationFrame(loop);
 })();
 </script>
