@@ -2621,6 +2621,8 @@ resize();
   panelEl.addEventListener('click',e=>{ const btn=e.target.closest('[data-v291]'); if(btn) v291Handle(btn); });
   window.addEventListener('keydown',e=>{ if(e.repeat||!e.key) return; const k=e.key.toLowerCase(); if(k==='y'){ openPanel('v291'); } });
   const __v291_loop=loop; let first=true; loop=function(now){ if(first){ first=false; v291Ensure(); v291SetIdentity(); v291SafeStateRepair(true); if(!state.v291.opened){ state.v291.opened=true; toast('🛡️ V3.0.2 yüklendi: save sağlık, mobil fix ve V3 hazırlığı aktif.'); } } return __v291_loop(now); };
+  // Expose so the later v302 showtime patch (separate IIFE) can run this deep save repair from its "Save Sağlık Kontrolü" button.
+  try{ window.v291SafeStateRepair=v291SafeStateRepair; }catch(_){}
 })();
 
 
@@ -2913,6 +2915,8 @@ resize();
   const __v3_drawZones=drawZones; drawZones=function(){ for(const z of Object.values(ZONES)) drawZone(z); drawBuildings(); for(const r of state.rivals) drawZone({x:r.x,y:r.y,w:r.w,h:r.h,name:r.name,color:r.color,edge:r.edge}); const v=v3Ensure(); for(const [id,info] of Object.entries(V3_DISTRICT_INFO)){ const d=DISTRICTS.find(x=>x.id===id); if(!d) continue; const own=v.districts[id]?.owner==='player'; ctx.save(); ctx.globalAlpha=own?.26:.12; ctx.fillStyle=own?info.color:'#ff6688'; ctx.fillRect(d.x+10,d.y+8,d.w-20,24); ctx.globalAlpha=1; drawText(`${info.icon} ${own?'EMPIRE CONTROL':'RIVAL CONTROL'} • Lv.${v.districts[id]?.level||1} • ${Math.round(v.districts[id]?.influence||0)}%`,d.x+d.w-36,d.y+31,15,own?info.color:COLORS.red,'right',1000); ctx.restore(); } drawV3Objects(); drawText('🚀 V3.0.2 OPEN CITY EMPIRE • 5 DISTRICTS • HOUSING • FACTIONS • DUNGEON 2.0 • BANK FIX',WORLD.w/2,58,28,COLORS.green,'center',1000); };
   const __v3_drawHUD=drawHUD; drawHUD=function(){ __v3_drawHUD(); drawV3HUD(); };
   const __v3_loop=loop; let first=true; loop=function(now){ const out=__v3_loop(now); try{ if(first){ first=false; v3Ensure(); if(!state.v3.opened){ state.v3.opened=true; toast('🚀 V3.0.2 Open City Empire yüklendi! Save korundu, Bank Guard aktif.'); } } v3SetIdentity(); }catch(e){ console.warn('V3 final identity guard failed',e); } return out; };
+  // Expose V3 helpers so later sibling patch IIFEs (v301 bank guard, v302 showtime) can call them; they live in this IIFE scope otherwise.
+  try{ window.v3Ensure=v3Ensure; window.v3AddEmpireXp=v3AddEmpireXp; }catch(_){}
 })();
 
 
@@ -3145,7 +3149,7 @@ resize();
   }
   function v302Handle(btn){ const cmd=btn.dataset.v302; if(cmd==='open') openPanel(btn.dataset.kind||'v3'); else if(cmd==='export') exportSave?.(); else if(cmd==='repair'){ try{ v291SafeStateRepair?.(false); v302CompensateEssence(false); toast('🛡️ V3 save/essence sağlık kontrolü tamam.'); }catch(_){ toast('Save kontrolü tamam.'); } } else if(cmd==='claim') v302ClaimChapter(btn.dataset.id); else if(cmd==='prestige') v27Prestige(); else if(cmd==='comp') v302CompensateEssence(false); }
   try{ const st=document.createElement('style'); st.textContent=`#btnV302{background:linear-gradient(135deg,rgba(126,240,193,.32),rgba(255,230,128,.22),rgba(190,149,255,.18))!important;color:#fff!important}.v302-glow{border-color:rgba(126,240,193,.5)!important;background:linear-gradient(135deg,rgba(126,240,193,.14),rgba(190,149,255,.10))!important}body.mobileSimple .topbar #btnV302{display:inline-flex!important}`; document.head.appendChild(st); }catch(_){}
-  try{ const tb=document.querySelector('.topbar'); if(tb && !document.getElementById('btnV302')){ const b=document.createElement('button'); b.id='btnV302'; b.type='button'; b.textContent='V3.0.2'; b.title='V3.0.2 Showtime / Essence Fix'; b.onclick=()=>openPanel('v302'); const ref=document.getElementById('btnV3')||document.getElementById('btnInventory'); tb.insertBefore(b,ref); } }catch(_){}
+  try{ const tb=document.querySelector('.topbar'); if(tb && !document.getElementById('btnV302')){ const b=document.createElement('button'); b.id='btnV302'; b.type='button'; b.textContent='V3.0.2'; b.title='V3.0.2 Showtime / Essence Fix'; b.onclick=()=>openPanel('v302'); const ref=document.getElementById('btnV3')||document.getElementById('btnInventory'); tb.insertBefore(b,ref); const legacy=document.getElementById('btnV3'); if(legacy && legacy!==b) legacy.remove(); } }catch(_){}
   try{ const mbs=document.querySelector('.mButtons'); if(mbs && !document.getElementById('mV302')){ const mb=document.createElement('button'); mb.id='mV302'; mb.className='mButton good'; mb.type='button'; mb.textContent='V3.0.2'; mb.dataset.action='v302'; mbs.appendChild(mb); mb.addEventListener('click',()=>openPanel('v302')); } }catch(_){}
   const __v302_serialize=serializeSave; serializeSave=function(){ const data=__v302_serialize(); try{ data.v302=ensureV302(); data.version=V302_VERSION; data.patch=V302_PATCH; }catch(_){} return data; };
   const __v302_restore=restoreSave; restoreSave=function(saved){ const ok=__v302_restore(saved); try{ ensureV302(); if(saved?.v302){ state.v302={...ensureV302(),...saved.v302,chapter:{...ensureV302().chapter,...(saved.v302.chapter||{}),progress:{...(ensureV302().chapter.progress||{}),...(saved.v302.chapter?.progress||{})},claimed:{...(ensureV302().chapter.claimed||{}),...(saved.v302.chapter?.claimed||{})}}}; } v302CompensateEssence(true); v302Identity(); }catch(e){ console.warn('V3.0.2 restore failed',e); } return ok; };
