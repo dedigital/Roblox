@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, viewport-fit=cover, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Brainrot Heist V2.6 Mobile Comfort</title>
+<title>Brainrot Heist V2.7.1 Juice & Stability</title>
 <style>
   :root{
     --bg:#060914;--panel:rgba(8,14,30,.86);--panel2:rgba(255,255,255,.08);--line:rgba(255,255,255,.14);
@@ -66,7 +66,7 @@
   canvas{touch-action:none!important;-ms-touch-action:none!important}
   .topbar #btnMobile{background:rgba(121,217,255,.16)}
   body.mobileSimple .topbar{gap:5px}
-  body.mobileSimple .topbar button:not(#btnMenu):not(#btnMobile):not(#btnFull):not(#btnMute){display:none}
+  body.mobileSimple .topbar button:not(#btnMenu):not(#btnMobile):not(#btnJuice):not(#btnFull):not(#btnMute){display:none}
   body.mobileSimple .mButtons{grid-template-columns:78px 78px;gap:9px;transform:scale(var(--mob-btn-scale,1));transform-origin:right bottom}
   body.mobileSimple .mButton{height:52px;font-size:11px}
   body.mobileSimple .mButton.big{height:64px;font-size:12px}
@@ -86,11 +86,12 @@
 </head>
 <body>
 <div id="app">
-  <canvas id="game" aria-label="Brainrot Heist V2.6 Mobile Comfort oyun alanı"></canvas>
+  <canvas id="game" aria-label="Brainrot Heist V2.7.1 Juice & Stability oyun alanı"></canvas>
   <div id="toast" class="toast" aria-live="polite"></div>
   <div class="topbar">
     <button id="btnMenu" type="button">MENÜ</button>
     <button id="btnMobile" type="button">MOBİL</button>
+    <button id="btnJuice" type="button">JUICE</button>
     <button id="btnInventory" type="button">ENVANTER</button>
     <button id="btnQuests" type="button">GÖREV</button>
     <button id="btnSkills" type="button">SKILL</button>
@@ -120,14 +121,14 @@
   <div id="mobileAssistChip" class="mobileAssistChip">📍 Dokun: yürü • Çift dokunma zoom kapalı</div>
   <section id="menu" class="menu">
     <div class="menuCard">
-      <p class="eyebrow">V2.6 Mobile Comfort + Anti Zoom</p>
+      <p class="eyebrow">V2.7.1 Juice & Stability</p>
       <h1>Brainrot Heist<br>SECTOR CITY</h1>
-      <p class="lead">V2.6 güncelleme: iPhone çift dokunma zoom fix, sade mobil UI, dokun-git sistemi, joystick hassasiyet/boyut ayarı ve otomatik koşu geldi. Save key aynı kaldı.</p>
+      <p class="lead">V2.7 güncelleme: kodla üretilen sesler, partikül/ekran titremesi, gece-gündüz, yağmur/sis/neon hava, rastgele şehir eventleri, Brainrot Essence prestige ve güçlendirilmiş mobil anti-zoom geldi. Save key aynı kaldı.</p>
       <div class="patch">
-        <div><b>Anti-Zoom</b>iPhone çift tıklama ve pinch zoom kapatıldı. Sayfa zoomda kalmasın diye viewport kilidi her açılışta uygulanır.</div>
-        <div><b>Hardcore ilerleme</b>Para tek başına yetmez: boss core, raid rep, world tier, hardcore rank, skill ve zone ilerlemesi gerekir.</div>
-        <div><b>Bina + Counter sistemi</b>Market, kasa, upgrade, skill, heist, polis, garaj ve boss artık bina gibi durur. Counter’a gidince panel açılır.</div>
-        <div><b>Mobil Rahatlık</b>Sade buton dizilimi, dokun-git hareketi, joystick hassasiyeti ve otomatik koşu ayarları menüde.</div>
+        <div><b>Procedural Ses</b>MP3 yok: kılıç, para, crate, boss, siren ve event sesleri Web Audio ile koddan üretilir.</div>
+        <div><b>Juice Efektleri</b>Partiküller, hasar hissi, ekran titremesi, flash ve nadir drop patlamaları oyunu daha tok hissettirir.</div>
+        <div><b>Canlı Şehir</b>Gece-gündüz, yağmur, sis, neon ışık ve Skibidi Supply Drop / Void Portal gibi rastgele eventler var.</div>
+        <div><b>Brainrot Essence</b>Save silmeden para/core/rep yakıp kalıcı Essence prestige ve bonuslar alabilirsin.</div>
       </div>
       <div class="difficultyBox" aria-label="Oyun modu seçimi">
         <button id="btnEasyMode" class="modeBtn" type="button"><b>😄 EASY MOD</b><span>Az önceki gibi daha rahat: ucuz upgrade, daha az polis, botlar var ama oyuncuya baskı düşük. Enis modu.</span></button>
@@ -1718,9 +1719,460 @@ resetPhraseEl.addEventListener('keydown', e=>{ if(e.key==='Enter') confirmReset(
 
 function loop(now){ const dt=clamp((now-lastFrame)/1000,0,.05); lastFrame=now; update(dt); draw(); requestAnimationFrame(loop); }
 
+/* ===================== V2.7 JUICE & POLISH PATCH ===================== */
+const V27_EVENTS = [
+  {id:'supply',name:'Skibidi Supply Drop',icon:'📦',color:'#ffe680',time:75,kind:'pickup',desc:'Haritada özel sandık. Yetişirsen para, rep ve core verir.'},
+  {id:'goldRain',name:'Golden Rain',icon:'💸',color:'#7ef0c1',time:62,kind:'global',desc:'Gelir ve para ödülleri kısa süre artar.'},
+  {id:'policeStrike',name:'Police Strike',icon:'🚫',color:'#79d9ff',time:70,kind:'global',desc:'Polis baskısı düşer, wanted daha hızlı söner.'},
+  {id:'rivalWar',name:'Rival War Fever',icon:'⚔️',color:'#ffb86c',time:88,kind:'global',desc:'Fake botlar daha agresif savaşır, yakalarsan daha çok rep gelir.'},
+  {id:'voidPortal',name:'Void Portal',icon:'🌀',color:'#be95ff',time:80,kind:'pickup',desc:'Void portalına yetişirsen güçlü pet veya core düşer.'},
+  {id:'meteor',name:'Core Meteor',icon:'☄️',color:'#ff6688',time:70,kind:'pickup',desc:'Core meteorunu toplayınca boss core ve gem verir.'}
+];
+const V27_ESSENCE_UPGRADES = {
+  cash:{name:'Cash Juice',icon:'💸',desc:'Para, görev ve boss ödüllerini kalıcı artırır.',max:40},
+  damage:{name:'Boss Damage',icon:'⚔️',desc:'Kılıç/boss hasarını kalıcı artırır.',max:40},
+  luck:{name:'Drop Luck',icon:'🍀',desc:'Market, kasa ve mutation şansını artırır.',max:35},
+  rep:{name:'Raid Rep Flow',icon:'🎖️',desc:'Raid Rep kazanımını kalıcı artırır.',max:35},
+  vehicle:{name:'Vehicle Flow',icon:'🏎️',desc:'Araç hız/nitro hissini artırır.',max:25}
+};
+let __v27LastGoldParticle = 0;
+let __v27LastWeatherParticle = 0;
+let __v27AudioUnlocked = false;
+
+function ensureV27Fields(){
+  ensureV26MobileFields();
+  const old = state.v27 || {};
+  state.v27 = {
+    version:27,
+    enabled: old.enabled !== false,
+    sound: old.sound !== false,
+    haptic: old.haptic !== false,
+    weather: old.weather !== false,
+    lowFx: !!old.lowFx,
+    prestige: Math.max(0, Number(old.prestige)||0),
+    essence: Math.max(0, Number(old.essence)||0),
+    bonuses: {cash:0,damage:0,luck:0,rep:0,vehicle:0, ...(old.bonuses||{})},
+    timeOfDay: Number.isFinite(Number(old.timeOfDay)) ? Number(old.timeOfDay) : rand(0,1),
+    weatherKind: old.weatherKind || choice(['clear','clear','rain','fog','neon']),
+    weatherTimer: Math.max(8, Number(old.weatherTimer)||rand(80,180)),
+    event: old.event || null,
+    eventTimer: Math.max(8, Number(old.eventTimer)||rand(35,75)),
+    shake: Math.max(0, Number(old.shake)||0),
+    shakePower: Math.max(0, Number(old.shakePower)||0),
+    screenFlash: Math.max(0, Number(old.screenFlash)||0),
+    stats: {eventsCollected:0,prestiges:0, ...(old.stats||{})}
+  };
+  for(const [k,d] of Object.entries(V27_ESSENCE_UPGRADES)) state.v27.bonuses[k]=clamp(Number(state.v27.bonuses[k])||0,0,d.max);
+  return state.v27;
+}
+function v27JuiceOn(){ const v=ensureV27Fields(); return !!v.enabled && !v.lowFx; }
+function v27Shake(power=4,time=.18){ const v=ensureV27Fields(); if(!v.enabled || v.lowFx) return; v.shake=Math.max(v.shake,time); v.shakePower=Math.max(v.shakePower,power); }
+function v27Flash(t=.12){ const v=ensureV27Fields(); if(!v.enabled || v.lowFx) return; v.screenFlash=Math.max(v.screenFlash,t); }
+function v27Haptic(ms=25){ const v=ensureV27Fields(); if(!v.haptic) return; try{ navigator.vibrate?.(ms); }catch(_){} }
+function v27AudioUnlock(){ try{ audioCtx ||= new (window.AudioContext||window.webkitAudioContext)(); audioCtx.resume?.(); __v27AudioUnlocked=true; }catch(_){} }
+document.addEventListener('pointerdown', v27AudioUnlock, {passive:true});
+document.addEventListener('touchstart', v27AudioUnlock, {passive:true});
+
+function v27Tone(freq=440,dur=.09,type='sine',vol=.055,slide=1){
+  const v=ensureV27Fields(); if(state.muted || !v.sound) return;
+  try{
+    audioCtx ||= new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended') audioCtx.resume?.();
+    const t=audioCtx.currentTime, o=audioCtx.createOscillator(), g=audioCtx.createGain();
+    o.type=type; o.frequency.setValueAtTime(freq,t); o.frequency.exponentialRampToValueAtTime(Math.max(24,freq*slide),t+dur);
+    g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+.012); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+    o.connect(g); g.connect(audioCtx.destination); o.start(t); o.stop(t+dur+.02);
+  }catch(_){}
+}
+var __v27_baseBeep = beep;
+beep = function(type='ok'){
+  const v=ensureV27Fields();
+  if(state.muted || !v.sound) return;
+  const pack = {
+    ok:[[360,.055,'triangle',.045,1.32],[520,.045,'sine',.035,.92]],
+    buy:[[470,.06,'triangle',.045,1.18],[710,.08,'sine',.04,1.28]],
+    win:[[520,.06,'sine',.045,1.55],[780,.08,'triangle',.045,1.35],[1180,.12,'sine',.035,1.08]],
+    bad:[[150,.11,'sawtooth',.045,.58],[92,.14,'square',.025,.72]],
+    coin:[[740,.045,'sine',.042,1.45],[1120,.06,'triangle',.035,1.08]],
+    slash:[[220,.055,'sawtooth',.030,2.65],[760,.045,'triangle',.026,.72]],
+    siren:[[430,.16,'sawtooth',.028,1.65],[760,.16,'sawtooth',.022,.56]],
+    drop:[[210,.09,'square',.035,.82],[420,.11,'triangle',.035,1.6]],
+    portal:[[180,.14,'sine',.035,2.8],[980,.16,'triangle',.025,.45]]
+  }[type] || [[360,.09,'triangle',.045,1.1]];
+  let delay=0;
+  for(const [f,d,w,vol,slide] of pack){ setTimeout(()=>v27Tone(f,d,w,vol,slide), delay); delay+= type==='win'?55:35; }
+};
+
+var __v27_baseParticles = particles;
+particles = function(x,y,color,count=26){
+  const v=ensureV27Fields();
+  const maxCount = v.lowFx ? Math.min(10,count) : Math.min(180,count);
+  for(let i=0;i<maxCount;i++){
+    const a=rand(0,Math.PI*2), sp=rand(45,220)*(count>70?1.18:1);
+    const shape = Math.random()<.16 ? 'text' : (Math.random()<.18?'square':'circle');
+    state.particles.push({id:uid(),type:shape,text:Math.random()<.5?'$':'✦',x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-rand(20,95),life:rand(.38,1.05),max:1,size:rand(2.2,6.5),rot:rand(0,6.28),vr:rand(-8,8),color});
+  }
+};
+function v27Ring(x,y,color='#fff',r=20){ state.particles.push({id:uid(),type:'ring',x,y,vx:0,vy:0,life:.45,max:.45,size:r,color}); }
+function v27Slash(x,y,ang,color){ state.particles.push({id:uid(),type:'slash',x,y,vx:0,vy:0,life:.16,max:.16,size:72+weaponLevel()*8,rot:ang,color}); }
+function v27RewardBurst(x,y,kind='cash',power=1){
+  const color = kind==='core'?COLORS.orange:kind==='rep'?COLORS.cyan:kind==='portal'?COLORS.purple:kind==='bad'?COLORS.red:COLORS.yellow;
+  particles(x,y,color,Math.round(30*power)); v27Ring(x,y,color,26*power); v27Shake(3.5*power,.14); v27Haptic(Math.round(22*power));
+}
+
+var __v27_baseUpdateParticles = updateParticles;
+updateParticles = function(dt){
+  for(const p of [...state.particles]){
+    p.x += (p.vx||0)*dt; p.y += (p.vy||0)*dt; p.vy = (p.vy||0) + (p.type==='slash'||p.type==='ring'?0:185*dt); p.rot=(p.rot||0)+(p.vr||0)*dt; p.life -= dt;
+  }
+  state.particles = state.particles.filter(p=>p.life>0);
+  for(const f of [...state.floatingTexts]){ f.y-=32*dt; f.life-=dt; }
+  state.floatingTexts = state.floatingTexts.filter(f=>f.life>0);
+};
+var __v27_baseDrawParticles = drawParticles;
+drawParticles = function(){
+  for(const p of state.particles){
+    const a=clamp(p.life/(p.max||1),0,1); ctx.save(); ctx.globalAlpha=a; ctx.translate(p.x,p.y); ctx.rotate(p.rot||0); ctx.fillStyle=p.color; ctx.strokeStyle=p.color;
+    if(p.type==='text'){ drawText(p.text||'$',0,0,(p.size||4)*4,p.color,'center',1000); }
+    else if(p.type==='square'){ ctx.fillRect(-(p.size||4),-(p.size||4),(p.size||4)*2,(p.size||4)*2); }
+    else if(p.type==='ring'){ ctx.lineWidth=3; ctx.globalAlpha=a*.85; ctx.beginPath(); ctx.arc(0,0,(p.size||18)*(1-a*.25),0,Math.PI*2); ctx.stroke(); }
+    else if(p.type==='slash'){ ctx.lineWidth=8; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(-(p.size||70)*.45,0); ctx.lineTo((p.size||70)*.45,0); ctx.stroke(); }
+    else { ctx.beginPath(); ctx.arc(0,0,p.size||4,0,Math.PI*2); ctx.fill(); }
+    ctx.restore();
+  }
+  for(const f of state.floatingTexts){ ctx.save(); ctx.globalAlpha=clamp(f.life/f.max,0,1); drawText(f.text,f.x,f.y,16,f.color,'center',1000); ctx.restore(); }
+};
+
+function v27RandomWorldPoint(preferVoid=false){
+  const d = preferVoid ? DISTRICTS.find(x=>x.id==='void') : choice(DISTRICTS);
+  return {x:rand(d.x+220,d.x+d.w-220), y:rand(d.y+220,d.y+d.h-220), district:d};
+}
+function v27SpawnEvent(forced){
+  const def = forced ? V27_EVENTS.find(e=>e.id===forced) : choice(V27_EVENTS);
+  if(!def) return;
+  const p = def.kind==='pickup' ? v27RandomWorldPoint(def.id==='voidPortal'||def.id==='meteor') : {x:state.player.x,y:state.player.y,district:currentDistrict()};
+  state.v27.event = {id:def.id,name:def.name,icon:def.icon,color:def.color,kind:def.kind,timer:def.time,x:p.x,y:p.y,district:p.district?.id||currentDistrict().id,desc:def.desc,pulse:0};
+  state.v27.eventTimer = rand(75,150);
+  toast(`${def.icon} EVENT: ${def.name} başladı! ${def.kind==='pickup'?'Haritadaki ikona git.':''}`);
+  beep(def.id==='voidPortal'?'portal':def.id==='policeStrike'?'siren':'drop');
+  v27Shake(5,.18); v27Haptic(35);
+}
+function v27CollectEvent(){
+  const v=ensureV27Fields(), ev=v.event; if(!ev || ev.kind!=='pickup') return false;
+  if(Math.hypot(state.player.x-ev.x,state.player.y-ev.y)>100) return false;
+  const diff = 1 + (state.hardcore?.worldTier||1)*.22 + (state.hardcore?.rank||0)*.08 + v.prestige*.05;
+  if(ev.id==='supply'){
+    const cash=Math.round((65000+getIncome()*36+state.player.level*9000)*rewardMult()*diff);
+    state.player.cash += cash; state.player.gems += 8+Math.floor(diff*4); addRaidRep(2+Math.floor(diff)); if(Math.random()<.45) addCores(1);
+    floating(ev.x,ev.y-40,`SUPPLY +$${shortNum(cash)}`,COLORS.yellow); toast(`📦 Supply Drop toplandı! +$${shortNum(cash)} +rep`); beep('win'); v27RewardBurst(ev.x,ev.y,'rep',2.4);
+  } else if(ev.id==='voidPortal'){
+    const pet=makeBrainrot({minTier:clamp(6+Math.floor((state.hardcore?.worldTier||1)/2),6,13),boost:2.8+v27EssenceLuck()}); pet.name='Portal '+pet.name; pet.mutation=pet.mutation==='Normal'?'Void':pet.mutation; pet.color=pet.color||COLORS.purple; addToInventory(pet,true); addRaidRep(4); if(Math.random()<.7) addCores(1);
+    toast(`🌀 Void Portal ödülü: ${pet.rarity} ${pet.name} envantere geldi.`); beep('portal'); v27RewardBurst(ev.x,ev.y,'portal',3);
+  } else if(ev.id==='meteor'){
+    const cores=1+Math.floor(diff/1.7), gems=20+Math.floor(diff*9); addCores(cores); state.player.gems += gems; addRaidRep(2);
+    toast(`☄️ Core Meteor toplandı! +${cores} core +${gems}💎`); beep('win'); v27RewardBurst(ev.x,ev.y,'core',3.2);
+  }
+  v.stats.eventsCollected++; v.event=null; saveGame(); return true;
+}
+function v27UpdateEvent(dt){
+  const v=ensureV27Fields(); v.timeOfDay=(v.timeOfDay+dt/480)%1; v.weatherTimer-=dt; v.shake=Math.max(0,v.shake-dt); v.screenFlash=Math.max(0,v.screenFlash-dt);
+  if(v.weatherTimer<=0){ v.weatherKind=choice(['clear','clear','rain','fog','neon','storm']); v.weatherTimer=rand(120,260); }
+  if(v.event){
+    v.event.timer-=dt; v.event.pulse=(v.event.pulse||0)+dt;
+    if(v.event.id==='goldRain'){
+      if(state.t-__v27LastGoldParticle>.16){ __v27LastGoldParticle=state.t; particles(state.player.x+rand(-120,120),state.player.y-rand(70,160),COLORS.yellow,3); }
+      state.player.cash += Math.max(1,getIncome()*.045*dt); if(Math.random()<.008) floating(state.player.x+rand(-80,80),state.player.y-rand(40,100),'+GOLD',COLORS.yellow);
+    }
+    if(v.event.id==='policeStrike'){
+      state.wanted.heat=Math.max(0,state.wanted.heat-22*dt); state.wanted.level=wantedLevelForHeat(state.wanted.heat); if(state.police.length>2 && Math.random()<.04) state.police.pop();
+    }
+    if(v.event.id==='rivalWar'){
+      state.botActionTimer=Math.min(state.botActionTimer,.45); if(Math.random()<.012){ addProgress('rivalWar',1); state.hardcore.totalRivalWars=(state.hardcore.totalRivalWars||0)+1; }
+    }
+    if(v.event.timer<=0){ toast(`${v.event.icon} ${v.event.name} bitti.`); v.event=null; }
+  } else { v.eventTimer-=dt; if(v.eventTimer<=0) v27SpawnEvent(); }
+}
+
+function v27EssenceLuck(){ const v=ensureV27Fields(); return (v.bonuses.luck||0)*.055 + v.prestige*.035; }
+function v27EssenceReward(){ const v=ensureV27Fields(); return 1 + (v.bonuses.cash||0)*.055 + v.prestige*.025 + (v.event?.id==='goldRain'? .45:0); }
+var __v27_baseIncomeMult = incomeMult;
+incomeMult = function(){ const v=ensureV27Fields(); return __v27_baseIncomeMult() * (1 + (v.bonuses.cash||0)*.04 + v.prestige*.025 + (v.event?.id==='goldRain'?.35:0)); };
+var __v27_baseRewardMult = rewardMult;
+rewardMult = function(){ return __v27_baseRewardMult() * v27EssenceReward(); };
+var __v27_baseSwordDamage = swordDamage;
+swordDamage = function(){ const v=ensureV27Fields(); return __v27_baseSwordDamage() * (1 + (v.bonuses.damage||0)*.075 + v.prestige*.035); };
+var __v27_baseWeightedRarity = weightedRarity;
+weightedRarity = function(opts={}){ const v=ensureV27Fields(); return __v27_baseWeightedRarity({...opts, boost:(opts.boost||0)+v27EssenceLuck()+(v.event?.id==='voidPortal'?.8:0)}); };
+var __v27_baseAddRaidRep = addRaidRep;
+addRaidRep = function(n=1){ const v=ensureV27Fields(); const before=state.hardcore?.raidRep||0; __v27_baseAddRaidRep(Math.max(.25,Number(n)||1)*(1+(v.bonuses.rep||0)*.08+v.prestige*.03+(v.event?.id==='rivalWar'?.35:0))); const gained=(state.hardcore?.raidRep||0)-before; if(gained>=2) floating(state.player.x,state.player.y-70,`+${shortNum(gained)} REP JUICE`,COLORS.cyan); };
+var __v27_baseVehicleTotalMult = vehicleTotalMult;
+vehicleTotalMult = function(){ const v=ensureV27Fields(); return __v27_baseVehicleTotalMult() * (1+(v.bonuses.vehicle||0)*.035); };
+
+function v27PrestigeCost(){ const v=ensureV27Fields(); const n=v.prestige+1; return {cash:Math.round(1e10*Math.pow(n,2.45)*Math.pow(state.hardcore?.worldTier||1,1.55)), income:Math.round(1e6*Math.pow(n,1.9)*Math.pow(state.hardcore?.worldTier||1,1.15)), cores:Math.max(0,Math.floor((n-2)/2)), rep:Math.max(0,Math.floor(n*1.5))}; }
+function v27EssenceGain(){ const v=ensureV27Fields(); const cashScore=Math.max(0,Math.floor(Math.log10(Math.max(10,state.player.cash))/2)-4); return Math.max(1, 1+Math.floor((state.hardcore?.worldTier||1)/2)+Math.floor((state.hardcore?.rank||0)/3)+Math.floor(v.prestige/2)+cashScore); }
+function v27Prestige(){
+  const v=ensureV27Fields(), c=v27PrestigeCost();
+  if(state.player.cash<c.cash || getIncome()<c.income || (state.hardcore?.cores||0)<c.cores || (state.hardcore?.raidRep||0)<c.rep){ showMessage(`Essence için $${shortNum(c.cash)}, +${shortNum(c.income)}/sn${c.cores?`, ${c.cores} core`:''}${c.rep?`, ${c.rep} rep`:''} lazım.`); beep('bad'); return; }
+  state.player.cash-=c.cash; state.hardcore.cores-=c.cores; state.hardcore.raidRep-=c.rep; const gain=v27EssenceGain(); v.essence+=gain; v.prestige++; v.stats.prestiges++;
+  toast(`🧃 Brainrot Essence Prestige! +${gain} Essence. Petler ve save silinmedi.`); beep('win'); v27RewardBurst(state.player.x,state.player.y,'portal',3.4); saveGame(); openPanel('juice');
+}
+function v27EssenceUpgradeCost(k){ const v=ensureV27Fields(); const lvl=v.bonuses[k]||0; return Math.ceil(1 + lvl*1.45 + Math.pow(lvl,1.55)/2.4); }
+function v27BuyEssenceUpgrade(k){ const v=ensureV27Fields(), d=V27_ESSENCE_UPGRADES[k]; if(!d) return; const lvl=v.bonuses[k]||0; if(lvl>=d.max){ showMessage(`${d.name} maksimum.`); return; } const cost=v27EssenceUpgradeCost(k); if(v.essence<cost){ showMessage(`${d.name} için ${cost} Essence lazım.`); beep('bad'); return; } v.essence-=cost; v.bonuses[k]=lvl+1; toast(`${d.icon} ${d.name} Lv.${lvl+1}!`); beep('buy'); saveGame(); openPanel('juice'); }
+function renderV27Panel(){
+  ensureV27Fields(); panelEl.classList.remove('hidden'); state.paused=true;
+  const v=state.v27, c=v27PrestigeCost(), gain=v27EssenceGain();
+  panelTitle.textContent='🧃 V2.7 Juice & Essence';
+  panelSub.textContent=`Essence ${shortNum(v.essence)} • Prestige ${v.prestige} • Event ${v.event?v.event.name:'bekleniyor'} • Hava ${v.weatherKind}`;
+  const upgrades=Object.entries(V27_ESSENCE_UPGRADES).map(([k,d])=>{ const lvl=v.bonuses[k]||0; return `<div class="card"><h3>${d.icon} ${htmlEscape(d.name)} Lv.${lvl}/${d.max}</h3><p>${htmlEscape(d.desc)}</p><p>Fiyat: ${v27EssenceUpgradeCost(k)} Essence</p><button class="small good" data-v27="essence" data-key="${k}" ${lvl>=d.max?'disabled':''}>Kalıcı Yükselt</button></div>`; }).join('');
+  panelBody.innerHTML=`<div class="grid"><div class="card"><h3>♻️ Güvenli Essence Prestige</h3><p>Bu reset değildir: petler, arabalar, skill, base ve save silinmez. Sadece büyük miktar para/core/rep yakar, kalıcı Essence verir.</p><p>Gereken: $${shortNum(c.cash)} • +${shortNum(c.income)}/sn${c.cores?` • ${c.cores} core`:''}${c.rep?` • ${c.rep} rep`:''}</p><p>Kazanç: +${gain} Essence</p><button class="small gold" data-v27="prestige">Essence Prestige Yap</button></div><div class="card"><h3>🎛️ Juice Ayarları</h3><p>Single-file kalır: ses, partikül, ekran titremesi, hava ve eventler tamamen kodla üretilir.</p><div class="row"><button class="small ${v.sound?'good':'bad'}" data-v27="toggle" data-key="sound">Ses ${v.sound?'Açık':'Kapalı'}</button><button class="small ${v.enabled?'good':'bad'}" data-v27="toggle" data-key="enabled">Efekt ${v.enabled?'Açık':'Kapalı'}</button><button class="small ${v.weather?'good':'bad'}" data-v27="toggle" data-key="weather">Hava ${v.weather?'Açık':'Kapalı'}</button><button class="small ${v.lowFx?'gold':'good'}" data-v27="toggle" data-key="lowFx">${v.lowFx?'Performans Modu':'Full Juice'}</button></div></div><div class="card"><h3>🎲 Şehir Eventi</h3><p>${v.event?`${v.event.icon} ${v.event.name}: ${Math.ceil(v.event.timer)}sn kaldı.`:`Sonraki event yaklaşık ${Math.ceil(v.eventTimer)}sn içinde.`}</p><div class="row"><button class="small gold" data-v27="spawnEvent">Event Çağır</button><button class="small good" data-v27="openMobile">Mobil Ayarlar</button></div></div>${upgrades}</div>`;
+}
+function v27AppendUpgradeCards(){
+  ensureV27Fields(); const v=state.v27, c=v27PrestigeCost();
+  panelBody.insertAdjacentHTML('beforeend', `<h3 style="margin-top:18px">🧃 V2.7 Juice & Essence</h3><div class="grid"><div class="card"><h3>🧃 Essence Prestige</h3><p>Kalıcı bonus sistemi. Pet ve save silmeden para/core/rep yakıp Essence kazanırsın.</p><p>Essence: ${shortNum(v.essence)} • Prestige: ${v.prestige}</p><p>Gereken: $${shortNum(c.cash)} • +${shortNum(c.income)}/sn${c.cores?` • ${c.cores} core`:''}${c.rep?` • ${c.rep} rep`:''}</p><button class="small gold" data-v27="openJuice">Juice Panelini Aç</button></div><div class="card"><h3>✨ Kodla Üretilen Efektler</h3><p>Ses, partikül, ekran titremesi, gece/gündüz, yağmur/sis/neon ve şehir eventleri harici dosya olmadan çalışır.</p><button class="small good" data-v27="spawnEvent">Rastgele Event Çağır</button></div></div>`);
+}
+function v27AppendMobileCards(){
+  ensureV27Fields(); const v=state.v27;
+  panelBody.insertAdjacentHTML('beforeend', `<h3 style="margin-top:18px">🧃 Juice / Performans</h3><div class="grid"><div class="card"><h3>📱 Telefon Performans Modu</h3><p>Eski telefonlarda partikül ve hava efektlerini azaltır. Oyun daha sade ama daha akıcı olur.</p><div class="row"><button class="small ${v.lowFx?'gold':'good'}" data-v27="toggle" data-key="lowFx">${v.lowFx?'Performans Modu Açık':'Full Juice Açık'}</button><button class="small ${v.haptic?'good':'bad'}" data-v27="toggle" data-key="haptic">Titreşim ${v.haptic?'Açık':'Kapalı'}</button><button class="small ${v.sound?'good':'bad'}" data-v27="toggle" data-key="sound">Ses ${v.sound?'Açık':'Kapalı'}</button></div></div><div class="card"><h3>🚫 Zoom Guard+</h3><p>Çift dokunma, pinch ve gesture olayları oyun alanında engellenir. Takılı zoom yaşanırsa sayfayı ?v=27 ile aç.</p><button class="small good" data-v27="zoomFix">Zoom Guard Yenile</button></div></div>`);
+}
+var __v27_baseOpenPanel = openPanel;
+openPanel = function(kind){
+  if(kind==='juice'){ renderV27Panel(); return; }
+  __v27_baseOpenPanel(kind);
+  if(kind==='upgrades') v27AppendUpgradeCards();
+  if(kind==='mobile') v27AppendMobileCards();
+};
+panelEl.addEventListener('click', e=>{ const btn=e.target.closest('[data-v27]'); if(!btn) return; const cmd=btn.dataset.v27; ensureV27Fields(); if(cmd==='openJuice') openPanel('juice'); else if(cmd==='openMobile') openPanel('mobile'); else if(cmd==='prestige') v27Prestige(); else if(cmd==='essence') v27BuyEssenceUpgrade(btn.dataset.key); else if(cmd==='spawnEvent') v27SpawnEvent(); else if(cmd==='toggle'){ const k=btn.dataset.key; state.v27[k]=!state.v27[k]; if(k==='lowFx') state.v27.lowFx=!!state.v27.lowFx; toast('V2.7 ayarı güncellendi.'); saveGame(); openPanel(panelTitle.textContent.includes('Juice')?'juice':'mobile'); } else if(cmd==='zoomFix'){ installAntiZoomGuards(); toast('Zoom Guard+ yenilendi.'); } });
+
+var __v27_baseSerializeSave = serializeSave;
+serializeSave = function(){ const data=__v27_baseSerializeSave(); ensureV27Fields(); data.v27=state.v27; data.version=27; return data; };
+var __v27_baseRestoreSave = restoreSave;
+restoreSave = function(saved){ const ok=__v27_baseRestoreSave(saved); if(ok!==false){ ensureV27Fields(); if(saved?.v27) state.v27={...state.v27,...saved.v27,bonuses:{...state.v27.bonuses,...(saved.v27.bonuses||{})},stats:{...state.v27.stats,...(saved.v27.stats||{})}}; } return ok; };
+var __v27_baseEncodeSave = encodeSave;
+encodeSave = function(data){ const json=JSON.stringify(data); const bytes=new TextEncoder().encode(json); let bin=''; for(const b of bytes) bin+=String.fromCharCode(b); return 'BRAINROT_MEGA_V27:'+btoa(bin); };
+
+var __v27_baseInteract = interact;
+interact = function(){ if(v27CollectEvent()) return; __v27_baseInteract(); };
+var __v27_baseSwing = swing;
+swing = function(){ const p=state.player; const a=Math.atan2((state.boss?.y||p.y)-p.y,(state.boss?.x||p.x)-p.x); v27Slash(p.x+Math.cos(a)*48,p.y+Math.sin(a)*28,a,swordDef().color); beep('slash'); v27Haptic(12); __v27_baseSwing(); };
+var __v27_baseDamageBoss = damageBoss;
+damageBoss = function(amount){ v27Shake(5,.13); v27Haptic(18); __v27_baseDamageBoss(amount); };
+var __v27_baseDefeatBoss = defeatBoss;
+defeatBoss = function(){ v27Flash(.18); v27Shake(11,.35); __v27_baseDefeatBoss(); };
+var __v27_baseOpenCrate = openCrate;
+openCrate = function(kind){ const before=(state.inventory||[]).length; __v27_baseOpenCrate(kind); if((state.inventory||[]).length>before){ v27Shake(4,.16); v27Haptic(32); beep('drop'); } };
+var __v27_baseBuyMarketItem = buyMarketItem;
+buyMarketItem = function(item){ __v27_baseBuyMarketItem(item); if(state.player.carrying){ beep('coin'); v27RewardBurst(item.x,item.y,'cash',1.1); } };
+var __v27_baseStealRivalPet = stealRivalPet;
+stealRivalPet = function(hit){ __v27_baseStealRivalPet(hit); if(state.player.carrying){ v27Shake(6,.18); v27Haptic(40); } };
+
+var __v27_baseUpdate = update;
+update = function(dt){ __v27_baseUpdate(dt); v27UpdateEvent(dt); };
+
+function drawV27WorldObjects(){
+  const v=ensureV27Fields(), ev=v.event; if(!ev || ev.kind!=='pickup') return;
+  const pulse=1+Math.sin((ev.pulse||0)*5)*.12; ctx.save(); ctx.translate(ev.x,ev.y); ctx.scale(pulse,pulse); ctx.shadowColor=ev.color; ctx.shadowBlur=32; roundedRect(-48,-42,96,84,22); ctx.fillStyle='rgba(8,14,30,.78)'; ctx.fill(); ctx.strokeStyle=ev.color; ctx.lineWidth=4; ctx.stroke(); drawText(ev.icon,0,12,42,'#fff','center',1000); ctx.shadowBlur=0; drawText('EVENT',0,-58,13,ev.color,'center',1000); drawText(Math.ceil(ev.timer)+'sn',0,70,13,COLORS.text,'center',1000); ctx.restore();
+}
+function drawV27Weather(){
+  const v=ensureV27Fields(); if(!v.weather) return; const night = .5 + .5*Math.cos((v.timeOfDay-.5)*Math.PI*2); const alpha=clamp(night*.45,0,.45); ctx.save(); if(alpha>.02){ ctx.fillStyle=`rgba(2,6,18,${alpha})`; ctx.fillRect(0,0,view.w,view.h); }
+  if(v.weatherKind==='fog'){ ctx.fillStyle='rgba(190,210,255,.08)'; for(let i=0;i<9;i++){ const y=(i*97 + state.t*11)%view.h; ctx.fillRect(0,y,view.w,22); } }
+  if(v.weatherKind==='rain'||v.weatherKind==='storm'){ ctx.strokeStyle=v.weatherKind==='storm'?'rgba(160,210,255,.42)':'rgba(160,210,255,.27)'; ctx.lineWidth=1.4; const n=v.lowFx?34:90; ctx.beginPath(); for(let i=0;i<n;i++){ const x=(i*53 + state.t*360)%(view.w+120)-60; const y=(i*97 + state.t*610)%(view.h+80)-40; ctx.moveTo(x,y); ctx.lineTo(x-10,y+26); } ctx.stroke(); if(v.weatherKind==='storm' && Math.sin(state.t*1.7)>0.985){ ctx.fillStyle='rgba(160,210,255,.12)'; ctx.fillRect(0,0,view.w,view.h); } }
+  if(v.weatherKind==='neon'){ ctx.globalCompositeOperation='lighter'; const gx=ctx.createRadialGradient(view.w*.75,view.h*.25,10,view.w*.75,view.h*.25,Math.max(view.w,view.h)*.7); gx.addColorStop(0,'rgba(190,149,255,.13)'); gx.addColorStop(1,'rgba(190,149,255,0)'); ctx.fillStyle=gx; ctx.fillRect(0,0,view.w,view.h); }
+  ctx.restore();
+}
+function drawV27HUD(){
+  const v=ensureV27Fields(); ctx.save();
+  const x=14, y=view.h>650?170:138, w=Math.min(500,view.w-28); roundedRect(x,y,w,44,16); ctx.fillStyle='rgba(8,14,30,.64)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.12)'; ctx.stroke();
+  const ev=v.event?`${v.event.icon} ${v.event.name} ${Math.ceil(v.event.timer)}sn`:`🎲 Event ${Math.ceil(v.eventTimer)}sn`; drawText(`🧃 Essence ${shortNum(v.essence)} • P${v.prestige} • ${ev}`,x+14,y+28,13,v.event?v.event.color:COLORS.muted,'left',1000);
+  if(v.event?.kind==='pickup'){
+    const dx=v.event.x-state.player.x, dy=v.event.y-state.player.y, d=Math.hypot(dx,dy)||1; const cx=view.w-82, cy=view.h-132; ctx.save(); ctx.translate(cx,cy); ctx.rotate(Math.atan2(dy,dx)); ctx.fillStyle=v.event.color; ctx.beginPath(); ctx.moveTo(28,0); ctx.lineTo(-10,-10); ctx.lineTo(-4,0); ctx.lineTo(-10,10); ctx.closePath(); ctx.fill(); ctx.restore(); drawText(`${v.event.icon} ${shortNum(d)}m`,cx,cy+36,12,v.event.color,'center',1000);
+  }
+  if(v.screenFlash>0){ ctx.fillStyle=`rgba(255,255,255,${clamp(v.screenFlash/.18,0,.35)})`; ctx.fillRect(0,0,view.w,view.h); }
+  ctx.restore();
+}
+var __v27_baseDrawMiniMap = drawMiniMap;
+drawMiniMap = function(){
+  const v=ensureV27Fields(); const compact=view.w<650; const w=compact?136:250, h=compact?92:160, x=view.w-w-12, y=compact?58:112; ctx.save(); roundedRect(x,y,w,h,16); ctx.fillStyle='rgba(8,14,30,.76)'; ctx.fill(); ctx.strokeStyle='rgba(255,255,255,.14)'; ctx.stroke(); const sx=w/WORLD.w, sy=h/WORLD.h; function dot(px,py,c,r=4){ctx.fillStyle=c;ctx.beginPath();ctx.arc(x+px*sx,y+py*sy,r,0,Math.PI*2);ctx.fill();}
+  for(const d of DISTRICTS){ ctx.fillStyle=d.color; ctx.fillRect(x+d.x*sx,y+d.y*sy,d.w*sx,d.h*sy); ctx.strokeStyle=d.edge; ctx.strokeRect(x+d.x*sx,y+d.y*sy,d.w*sx,d.h*sy); }
+  for(const r of state.rivals) dot(r.x+r.w/2,r.y+r.h/2,r.edge,compact?2.3:3); for(const bot of state.fakeBots||[]) dot(bot.x,bot.y,bot.carrying?COLORS.red:COLORS.yellow,compact?2:3); if(state.boss) dot(state.boss.x,state.boss.y,COLORS.red,compact?4:5); if(v.event?.kind==='pickup') dot(v.event.x,v.event.y,v.event.color,compact?5:6); if(state.v25?.gpsTarget) dot(state.v25.gpsTarget.x,state.v25.gpsTarget.y,COLORS.cyan,compact?3:4); dot(state.player.x,state.player.y,state.settings.vehicleActive?COLORS.orange:COLORS.green,compact?4:5); drawText(compact?'MAP':'V2.7 RADAR',x+10,y+17,compact?10:12,COLORS.muted,'left',900); ctx.restore();
+};
+var __v27_baseDraw = draw;
+draw = function(){
+  ctx.clearRect(0,0,view.w,view.h); drawBackground(); const v=ensureV27Fields(); const sp=v.shake>0?(v.shakePower||4)*(v.shake/.35):0; const sx=sp?rand(-sp,sp):0, sy=sp?rand(-sp,sp):0;
+  ctx.save(); ctx.translate(-view.camX+sx,-view.camY+sy); drawWorld(); drawZones(); drawMarket(); drawRivals(); drawPlayerBase(); drawV27WorldObjects(); drawEntities(); drawParticles(); ctx.restore();
+  drawV27Weather(); drawHUD(); drawV27HUD(); drawMiniMap(); drawPrompt(); if(state.paused && menuEl.classList.contains('hidden') && panelEl.classList.contains('hidden')) drawPause();
+};
+
+var __v27_baseDrawZones = drawZones;
+drawZones = function(){ __v27_baseDrawZones(); drawText('🧃 V2.7 JUICE & POLISH • PROCEDURAL AUDIO • PARTICLES • WEATHER • ESSENCE • RANDOM EVENTS',WORLD.w/2,100,24,COLORS.green,'center',1000); };
+
+function installV27AntiZoomPlus(){
+  installAntiZoomGuards(); document.documentElement.style.touchAction='none'; document.body.style.touchAction='none'; document.body.style.webkitTextSizeAdjust='100%';
+  let last=0; document.addEventListener('pointerup', e=>{ if(e.pointerType!=='touch') return; const now=performance.now(); if(now-last<360){ e.preventDefault(); e.stopPropagation(); } last=now; }, {capture:true,passive:false});
+}
+installV27AntiZoomPlus();
+setTimeout(()=>{ document.getElementById('btnJuice')?.addEventListener('click',()=>openPanel('juice')); },0);
+
+
+/* ===================== V2.7.1 STABILITY GUARD PATCH =====================
+   Gemini risk fix pack: dt guard, numeric save sanitizer, array pruning,
+   orientation-safe mobile controls and stronger anti-zoom recovery. */
+const V271_STABILITY_VERSION = '2.7.1';
+const V271_ECON_MAX = 1e300;
+function v271Num(v, fb=0, min=-Number.MAX_SAFE_INTEGER/8, max=Number.MAX_SAFE_INTEGER/8){
+  const n = Number(v);
+  if(!Number.isFinite(n)) return fb;
+  return Math.min(max, Math.max(min, n));
+}
+function v271Int(v, fb=0, min=0, max=999999){ return Math.round(v271Num(v, fb, min, max)); }
+function v271Bool(v){ return !!v; }
+function v271FinitePoint(obj, fallback){
+  obj.x = v271Num(obj.x, fallback?.x ?? center(ZONES.playerBase).x, 30, WORLD.w-30);
+  obj.y = v271Num(obj.y, fallback?.y ?? center(ZONES.playerBase).y, 30, WORLD.h-30);
+  return obj;
+}
+function v271CleanMarketPet(p,i, fallbackZone=ZONES.market){
+  const q = cleanBrainrot(p,i);
+  q.x = v271Num(p?.x, fallbackZone.x + 100 + (i%6)*120, 0, WORLD.w);
+  q.y = v271Num(p?.y, fallbackZone.y + 140 + Math.floor(i/6)*96, 0, WORLD.h);
+  q.vy = v271Num(p?.vy, rand(18,48), -180, 180);
+  return q;
+}
+function v271SanitizeStats(obj){
+  if(!obj || typeof obj !== 'object') return {};
+  for(const k of Object.keys(obj)){
+    if(typeof obj[k] === 'number' || /^-?\d+(\.\d+)?$/.test(String(obj[k]))) obj[k]=v271Num(obj[k],0,0,V271_ECON_MAX);
+  }
+  return obj;
+}
+function v271SanitizeRuntimeState(){
+  try{
+    ensureV27Fields();
+    const p = state.player;
+    p.x = v271Num(p.x, center(ZONES.playerBase).x, 30, WORLD.w-30);
+    p.y = v271Num(p.y, center(ZONES.playerBase).y, 30, WORLD.h-30);
+    p.r = v271Num(p.r, 20, 8, 48);
+    p.cash = v271Num(p.cash, 2500, 0, V271_ECON_MAX);
+    p.highCash = Math.max(v271Num(p.highCash, p.cash, 0, V271_ECON_MAX), p.cash);
+    p.gems = v271Num(p.gems, 20, 0, V271_ECON_MAX);
+    p.xp = v271Num(p.xp, 0, 0, V271_ECON_MAX);
+    p.level = v271Int(p.level, 1, 1, 9999);
+    p.skillPoints = v271Int(p.skillPoints, 0, 0, 99999);
+    p.rebirths = v271Int(p.rebirths, 0, 0, 9999);
+    p.speedLevel = v271Int(p.speedLevel, 0, 0, 200);
+    p.slotBonus = v271Int(p.slotBonus, 0, 0, 200);
+    p.luckLevel = v271Int(p.luckLevel, 0, 0, 200);
+    p.lockLevel = v271Int(p.lockLevel, 0, 0, 200);
+    p.trapLevel = v271Int(p.trapLevel, 0, 0, 200);
+    p.guardLevel = v271Int(p.guardLevel, 0, 0, 200);
+    p.scannerLevel = v271Int(p.scannerLevel, 0, 0, 200);
+    p.vaultLevel = v271Int(p.vaultLevel, 0, 0, 200);
+    p.shieldTimer = v271Num(p.shieldTimer,0,0,9999);
+    p.swingTimer = v271Num(p.swingTimer,0,0,5);
+    p.stunTimer = v271Num(p.stunTimer,0,0,10);
+    if(p.carrying) p.carrying = cleanBrainrot(p.carrying);
+
+    state.settings = state.settings || {};
+    state.settings.speedMult = clamp(v271Num(state.settings.speedMult,.72,.25,2.6),.25,2.6);
+    state.settings.vehicleOwned = v271Bool(state.settings.vehicleOwned);
+    state.settings.vehicleActive = v271Bool(state.settings.vehicleActive) && state.settings.vehicleOwned;
+    if(!GAME_MODES[state.settings.mode]) state.settings.mode='easy';
+    state.settings.mobile = {simple:true,assist:true,tapMove:true,autoSprint:true,joySize:1.06,joySens:.82,uiScale:1, ...(state.settings.mobile||{})};
+    state.settings.mobile.joySize = clamp(v271Num(state.settings.mobile.joySize,1.06,.75,1.45),.75,1.45);
+    state.settings.mobile.joySens = clamp(v271Num(state.settings.mobile.joySens,.82,.35,1.25),.35,1.25);
+    state.settings.mobile.uiScale = clamp(v271Num(state.settings.mobile.uiScale,1,.75,1.25),.75,1.25);
+
+    state.weapon = {level:1,xp:0, ...(state.weapon||{})};
+    state.weapon.level = v271Int(state.weapon.level,1,1,SWORDS.length);
+    state.weapon.xp = v271Num(state.weapon.xp,0,0,V271_ECON_MAX);
+    state.hardcore = {rank:0,worldTier:1,cores:0,raidRep:0,legacyPower:0,botThreat:1,totalBotSteals:0,totalRivalWars:0,bossAssists:0, ...(state.hardcore||{})};
+    state.hardcore.rank = v271Int(state.hardcore.rank,0,0,9999);
+    state.hardcore.worldTier = v271Int(state.hardcore.worldTier,1,1,999);
+    state.hardcore.cores = v271Num(state.hardcore.cores,0,0,V271_ECON_MAX);
+    state.hardcore.raidRep = v271Num(state.hardcore.raidRep,0,0,V271_ECON_MAX);
+    state.hardcore.legacyPower = v271Num(state.hardcore.legacyPower,0,0,V271_ECON_MAX);
+    state.hardcore.botThreat = v271Num(state.hardcore.botThreat,1,0,99999);
+
+    state.wanted = {heat:0,level:0,best:0,timer:0,survive:0,lastReason:'Temiz', ...(state.wanted||{})};
+    state.wanted.heat = v271Num(state.wanted.heat,0,0,560);
+    state.wanted.level = v271Int(state.wanted.level,0,0,5);
+    state.wanted.best = v271Int(state.wanted.best,0,0,5);
+    state.wanted.timer = v271Num(state.wanted.timer,0,0,999);
+    state.wanted.survive = v271Num(state.wanted.survive,0,0,V271_ECON_MAX);
+
+    state.activeSlots = (Array.isArray(state.activeSlots)?state.activeSlots:[]).filter(Boolean).slice(0, getMaxSlots()).map((pet,i)=>cleanBrainrot(pet,i));
+    state.inventory = (Array.isArray(state.inventory)?state.inventory:[]).filter(Boolean).slice(-180).map((pet,i)=>cleanBrainrot(pet,i));
+    state.market = (Array.isArray(state.market)?state.market:[]).filter(Boolean).slice(-42).map((pet,i)=>v271CleanMarketPet(pet,i,ZONES.market));
+    state.blackOffers = (Array.isArray(state.blackOffers)?state.blackOffers:[]).filter(Boolean).slice(-12).map((pet,i)=>v271CleanMarketPet(pet,i,ZONES.black));
+
+    state.rivals = (Array.isArray(state.rivals)?state.rivals:[]).slice(0,14).map((r,ri)=>{
+      const cfg = RIVAL_CONFIG[ri%RIVAL_CONFIG.length] || r || {};
+      const rr = {...cfg, ...(r||{})};
+      rr.x = v271Num(rr.x, cfg.x||1200, 0, WORLD.w); rr.y = v271Num(rr.y, cfg.y||1200, 0, WORLD.h);
+      rr.w = v271Num(rr.w, cfg.w||580, 160, 1200); rr.h = v271Num(rr.h, cfg.h||440, 160, 900);
+      rr.threat = v271Num(rr.threat, cfg.threat||1, .1, 9999); rr.slots = (Array.isArray(rr.slots)?rr.slots:[]).filter(Boolean).slice(-26).map((pet,i)=>cleanBrainrot(pet,i));
+      return rr;
+    });
+    if(!state.rivals.length) state.rivals = RIVAL_CONFIG.map((cfg,idx)=>createRival(cfg,idx));
+    state.fakeBots = (Array.isArray(state.fakeBots)?state.fakeBots:[]).slice(0,18).map((b,i)=>{
+      const home = state.rivals.find(r=>r.id===b?.home) || state.rivals[i%state.rivals.length] || {id:'rival0',x:500,y:500,w:300,h:300};
+      const bb = {...b, home:b?.home||home.id, name:b?.name||`Bot ${i+1}`, icon:b?.icon||'🤖', color:b?.color||COLORS.yellow};
+      v271FinitePoint(bb,{x:home.x+home.w/2,y:home.y+home.h/2}); bb.speed = v271Num(bb.speed,145,30,900); bb.timer = v271Num(bb.timer,1,0,999); bb.stunTimer = v271Num(bb.stunTimer,0,0,99); if(bb.carrying) bb.carrying=cleanBrainrot(bb.carrying); return bb;
+    });
+    if(!state.fakeBots.length) state.fakeBots = createFakeBots();
+    state.thieves = (Array.isArray(state.thieves)?state.thieves:[]).filter(t=>t&&v271Num(t.hp,1,-20,999)>-5).slice(-48).map((t,i)=>{ v271FinitePoint(t,state.player); t.speed=v271Num(t.speed,150,25,900); t.hp=v271Num(t.hp,1,-5,999); t.stunTimer=v271Num(t.stunTimer,0,0,99); if(t.carrying) t.carrying=cleanBrainrot(t.carrying); return t; });
+    state.police = (Array.isArray(state.police)?state.police:[]).slice(-32).map((c,i)=>{ v271FinitePoint(c,state.player); c.speed=v271Num(c.speed,160,30,950); c.stunTimer=v271Num(c.stunTimer,0,0,99); return c; });
+    state.traps = (Array.isArray(state.traps)?state.traps:[]).slice(0,80).map((tr,i)=>{ v271FinitePoint(tr,center(ZONES.playerBase)); tr.r=v271Num(tr.r,42,10,220); tr.cool=v271Num(tr.cool,0,0,999); return tr; });
+    if(state.boss){ v271FinitePoint(state.boss,center(ZONES.boss)); state.boss.hp=v271Num(state.boss.hp,1,0,V271_ECON_MAX); state.boss.maxHp=Math.max(state.boss.hp,v271Num(state.boss.maxHp,state.boss.hp,1,V271_ECON_MAX)); state.boss.attackTimer=v271Num(state.boss.attackTimer,1,0,999); }
+    state.particles = (Array.isArray(state.particles)?state.particles:[]).filter(x=>x&&v271Num(x.life,0,-1,10)>0).slice(-(state.v27?.lowFx?220:520));
+    state.floatingTexts = (Array.isArray(state.floatingTexts)?state.floatingTexts:[]).filter(x=>x&&v271Num(x.life,0,-1,10)>0).slice(-90);
+    state.stats = v271SanitizeStats(state.stats||{});
+    state.v25 = state.v25 || {}; state.v25.bank = v271Num(state.v25.bank,0,0,V271_ECON_MAX); state.v25.nitro = clamp(v271Num(state.v25.nitro,100,0,100),0,100); state.v25.chaseTimer=v271Num(state.v25.chaseTimer,0,0,999); state.v25.insuranceLevel=v271Int(state.v25.insuranceLevel,0,0,99);
+    state.v27.prestige = v271Int(state.v27.prestige,0,0,9999); state.v27.essence = v271Num(state.v27.essence,0,0,V271_ECON_MAX); state.v27.eventTimer = v271Num(state.v27.eventTimer,45,4,9999); state.v27.weatherTimer = v271Num(state.v27.weatherTimer,90,4,9999);
+    for(const k of Object.keys(state.v27.bonuses||{})) state.v27.bonuses[k]=v271Int(state.v27.bonuses[k],0,0,99);
+    state.__stability = {version:V271_STABILITY_VERSION,lastSanitized:Date.now(),particles:state.particles.length,police:state.police.length,thieves:state.thieves.length};
+  }catch(e){ console.warn('V2.7.1 stability sanitize failed', e); }
+}
+function v271PruneWorldArrays(){
+  const maxParticles = state.v27?.lowFx ? 180 : 460;
+  if(Array.isArray(state.particles) && state.particles.length>maxParticles) state.particles.splice(0,state.particles.length-maxParticles);
+  if(Array.isArray(state.floatingTexts) && state.floatingTexts.length>80) state.floatingTexts.splice(0,state.floatingTexts.length-80);
+  if(Array.isArray(state.market) && state.market.length>42) state.market.splice(0,state.market.length-42);
+  if(Array.isArray(state.police) && state.police.length>32) state.police.splice(0,state.police.length-32);
+  if(Array.isArray(state.thieves) && state.thieves.length>48) state.thieves.splice(0,state.thieves.length-48);
+}
+function v271InstallViewportSafety(){
+  const force = () => {
+    try{
+      window.scrollTo(0,0);
+      const vp=document.querySelector('meta[name="viewport"]');
+      if(vp) vp.setAttribute('content','width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, viewport-fit=cover, user-scalable=no');
+      document.documentElement.style.touchAction='none'; document.body.style.touchAction='none'; canvas.style.touchAction='none';
+    }catch(_){ }
+  };
+  force();
+  window.addEventListener('orientationchange',()=>{ joy.active=false; joy.dx=joy.dy=0; setTimeout(()=>{force(); resize(); applyMobileComfortLayout(); updateCamera();},80); setTimeout(()=>{force(); resize(); updateCamera();},360); },{passive:true});
+  window.visualViewport?.addEventListener('resize',()=>{ force(); resize(); updateCamera(); },{passive:true});
+  window.visualViewport?.addEventListener('scroll',()=>{ force(); },{passive:true});
+  document.addEventListener('touchstart', e=>{ if(e.touches && e.touches.length>1) e.preventDefault(); }, {capture:true,passive:false});
+  document.addEventListener('touchmove', e=>{ if(e.touches && e.touches.length>1) e.preventDefault(); }, {capture:true,passive:false});
+  document.addEventListener('contextmenu', e=>{ if((e.pointerType||'')==='touch') e.preventDefault(); }, {capture:true,passive:false});
+}
+var __v271_baseSerializeSave = serializeSave;
+serializeSave = function(){ v271SanitizeRuntimeState(); const data = __v271_baseSerializeSave(); data.version = 271; data.stability = {version:V271_STABILITY_VERSION, savedAt:Date.now()}; return data; };
+var __v271_baseRestoreSave = restoreSave;
+restoreSave = function(saved){ const ok = __v271_baseRestoreSave(saved||{}); if(ok!==false) v271SanitizeRuntimeState(); return ok; };
+var __v271_baseUpdate = update;
+update = function(dt){ dt = (!Number.isFinite(dt) || dt<0) ? 0 : clamp(dt,0,1/30); __v271_baseUpdate(dt); v271PruneWorldArrays(); state.__stabilityTimer=(state.__stabilityTimer||0)-dt; if(state.__stabilityTimer<=0){ v271SanitizeRuntimeState(); state.__stabilityTimer=7.5; } };
+var __v271_baseResize = resize;
+resize = function(){ __v271_baseResize(); joy.active=false; joy.dx=joy.dy=0; joyStick.style.transform='translate(0,0)'; updateCamera(); };
+var __v271_baseDrawZones = drawZones;
+drawZones = function(){ __v271_baseDrawZones(); drawText('🛡️ V2.7.1 STABILITY GUARD • DT LOCK • SAVE SANITIZER • ARRAY PRUNE • MOBILE RESIZE SAFE',WORLD.w/2,132,18,COLORS.cyan,'center',1000); };
+v271InstallViewportSafety();
+
+
 applyV25WorldPatch();
 resize();
-const loaded=loadSave(); ensureTransientWorld(); ensureV25Fields(); v25PostLoadFix(); ensureV26MobileFields(); applyMobileComfortLayout(); refreshModeButtons(); if(!loaded) showMessage('V2.6 Mobile Comfort hazır. Zoom kapalı, save key sabit.',3); saveGame(); requestAnimationFrame(loop);
+const loaded=loadSave(); ensureTransientWorld(); ensureV25Fields(); v25PostLoadFix(); ensureV26MobileFields(); ensureV27Fields(); applyMobileComfortLayout(); refreshModeButtons(); if(!loaded) showMessage('V2.7.1 Juice & Stability hazır. Save key sabit, zoom guard aktif.',3); saveGame(); requestAnimationFrame(loop);
 })();
 </script>
 </body>
