@@ -2,10 +2,10 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, viewport-fit=cover, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Brainrot Heist V2.5 Vehicle & Shop Life</title>
+<title>Brainrot Heist V2.6 Mobile Comfort</title>
 <style>
   :root{
     --bg:#060914;--panel:rgba(8,14,30,.86);--panel2:rgba(255,255,255,.08);--line:rgba(255,255,255,.14);
@@ -58,14 +58,39 @@
   @media (orientation:portrait) and (pointer:coarse){#rotateHint{display:block}.mButtons{grid-template-columns:76px 76px}.mButton{height:54px;font-size:11px}.mButton.big{height:66px}#joyWrap{width:132px;height:132px}}
   @media (max-width:760px){.topbar{left:calc(env(safe-area-inset-left) + 8px);right:calc(env(safe-area-inset-right) + 8px);justify-content:flex-end;gap:6px}.topbar button{height:34px;padding:0 8px;font-size:11px}.mButtons{right:calc(env(safe-area-inset-right) + 10px);bottom:calc(env(safe-area-inset-bottom) + 14px);grid-template-columns:69px 69px;gap:8px}.mButton{height:48px;font-size:10px;border-radius:14px}.mButton.big{height:57px}#joyWrap{left:calc(env(safe-area-inset-left) + 12px);bottom:calc(env(safe-area-inset-bottom) + 16px);width:116px;height:116px}#joyStick{width:52px;height:52px;margin:-26px 0 0 -26px}#rotateHint{bottom:calc(env(safe-area-inset-bottom) + 170px);font-size:12px;padding:8px 10px}}
   @media (max-height:500px){#rotateHint{display:none!important}.mButtons{grid-template-columns:66px 66px;gap:7px}.mButton{height:40px;font-size:10px}.mButton.big{height:48px}#joyWrap{width:104px;height:104px}.menu{align-items:flex-start}.menuCard{margin-top:8px}}
+
+
+  /* ===================== V2.6 MOBILE COMFORT + ANTI-ZOOM ===================== */
+  html,body,#app,canvas{overscroll-behavior:none;-webkit-overflow-scrolling:auto;-webkit-touch-callout:none;-webkit-text-size-adjust:100%}
+  button,input,select,textarea{font-size:16px;touch-action:manipulation}
+  canvas{touch-action:none!important;-ms-touch-action:none!important}
+  .topbar #btnMobile{background:rgba(121,217,255,.16)}
+  body.mobileSimple .topbar{gap:5px}
+  body.mobileSimple .topbar button:not(#btnMenu):not(#btnMobile):not(#btnFull):not(#btnMute){display:none}
+  body.mobileSimple .mButtons{grid-template-columns:78px 78px;gap:9px;transform:scale(var(--mob-btn-scale,1));transform-origin:right bottom}
+  body.mobileSimple .mButton{height:52px;font-size:11px}
+  body.mobileSimple .mButton.big{height:64px;font-size:12px}
+  body.mobileSimple .mButton[data-action="quest"],
+  body.mobileSimple .mButton[data-action="skills"],
+  body.mobileSimple .mButton[data-action="heist"],
+  body.mobileSimple .mButton[data-action="crate"],
+  body.mobileSimple .mButton[data-action="book"]{display:none!important}
+  #joyWrap{transform:scale(var(--joy-scale,1));transform-origin:left bottom}
+  .mobileAssistChip{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 92px);transform:translateX(-50%);z-index:39;display:none;padding:7px 11px;border-radius:999px;background:rgba(8,14,30,.78);border:1px solid rgba(121,217,255,.25);color:#dbe6ff;font-size:12px;font-weight:1000;pointer-events:none;box-shadow:0 12px 36px rgba(0,0,0,.32)}
+  body.mobileAssistOn .mobileAssistChip{display:block}
+  @media (pointer:coarse), (max-width:900px){body.mobileSimple .mobileControls{display:block}.mobileAssistChip{display:block}}
+  @media (max-width:760px){body.mobileSimple .mButtons{right:calc(env(safe-area-inset-right) + 9px);bottom:calc(env(safe-area-inset-bottom) + 12px);grid-template-columns:66px 66px;gap:8px}body.mobileSimple .mButton{height:46px;font-size:10px}body.mobileSimple .mButton.big{height:56px}body.mobileSimple #joyWrap{left:calc(env(safe-area-inset-left) + 10px);bottom:calc(env(safe-area-inset-bottom) + 12px);width:116px;height:116px}.mobileAssistChip{bottom:calc(env(safe-area-inset-bottom) + 78px);font-size:11px}}
+  @media (max-height:500px){.mobileAssistChip{display:none!important}body.mobileSimple .mButtons{grid-template-columns:62px 62px}body.mobileSimple .mButton{height:39px;font-size:9px}body.mobileSimple .mButton.big{height:46px}}
+
 </style>
 </head>
 <body>
 <div id="app">
-  <canvas id="game" aria-label="Brainrot Heist V2.5 Vehicle & Shop Life oyun alanı"></canvas>
+  <canvas id="game" aria-label="Brainrot Heist V2.6 Mobile Comfort oyun alanı"></canvas>
   <div id="toast" class="toast" aria-live="polite"></div>
   <div class="topbar">
     <button id="btnMenu" type="button">MENÜ</button>
+    <button id="btnMobile" type="button">MOBİL</button>
     <button id="btnInventory" type="button">ENVANTER</button>
     <button id="btnQuests" type="button">GÖREV</button>
     <button id="btnSkills" type="button">SKILL</button>
@@ -80,7 +105,10 @@
       <button class="mButton big" data-action="act" type="button">AL / ÇAL</button>
       <button class="mButton big danger" data-action="swing" type="button">KILIÇ</button>
       <button class="mButton warn" data-action="lock" type="button">KİLİT</button>
-      <button class="mButton" data-action="inventory" type="button">ENVANTER</button>
+      <button class="mButton good" data-action="vehicle" type="button">ARABA</button>
+      <button class="mButton" data-action="inventory" type="button">ÇANTA</button>
+      <button class="mButton" data-action="map" type="button">HARİTA</button>
+      <button class="mButton" data-action="mobile" type="button">MOBİL</button>
       <button class="mButton" data-action="quest" type="button">GÖREV</button>
       <button class="mButton" data-action="skills" type="button">SKILL</button>
       <button class="mButton" data-action="heist" type="button">HEIST</button>
@@ -89,16 +117,17 @@
       <button class="mButton" data-action="book" type="button">KİTAP</button>
     </div>
   </div>
+  <div id="mobileAssistChip" class="mobileAssistChip">📍 Dokun: yürü • Çift dokunma zoom kapalı</div>
   <section id="menu" class="menu">
     <div class="menuCard">
-      <p class="eyebrow">V2.5 Vehicle & Shop Life Expansion</p>
+      <p class="eyebrow">V2.6 Mobile Comfort + Anti Zoom</p>
       <h1>Brainrot Heist<br>SECTOR CITY</h1>
-      <p class="lead">V2.4 güncelleme: map yaklaşık 5 kat büyüdü, 3 dev bölgeye ayrıldı, mağazalar artık bina + counter mantığında, hız ayarı ve araç altyapısı geldi, fake bot savaşları daha geniş haritaya yayıldı.</p>
+      <p class="lead">V2.6 güncelleme: iPhone çift dokunma zoom fix, sade mobil UI, dokun-git sistemi, joystick hassasiyet/boyut ayarı ve otomatik koşu geldi. Save key aynı kaldı.</p>
       <div class="patch">
-        <div><b>3 Dev Bölge</b>Downtown, Neon District ve Void Frontier olarak ayrılmış çok daha büyük açık şehir. Arabasız yürümek uzun sürebilir.</div>
+        <div><b>Anti-Zoom</b>iPhone çift tıklama ve pinch zoom kapatıldı. Sayfa zoomda kalmasın diye viewport kilidi her açılışta uygulanır.</div>
         <div><b>Hardcore ilerleme</b>Para tek başına yetmez: boss core, raid rep, world tier, hardcore rank, skill ve zone ilerlemesi gerekir.</div>
         <div><b>Bina + Counter sistemi</b>Market, kasa, upgrade, skill, heist, polis, garaj ve boss artık bina gibi durur. Counter’a gidince panel açılır.</div>
-        <div><b>Hız / Araç altyapısı</b>Oyuncu hızı artık ayarlanabilir. Garaj BETA ile sonraki update’lerde araç sistemi büyütülebilir.</div>
+        <div><b>Mobil Rahatlık</b>Sade buton dizilimi, dokun-git hareketi, joystick hassasiyeti ve otomatik koşu ayarları menüde.</div>
       </div>
       <div class="difficultyBox" aria-label="Oyun modu seçimi">
         <button id="btnEasyMode" class="modeBtn" type="button"><b>😄 EASY MOD</b><span>Az önceki gibi daha rahat: ucuz upgrade, daha az polis, botlar var ama oyuncuya baskı düşük. Enis modu.</span></button>
@@ -140,6 +169,35 @@
 (() => {
 'use strict';
 
+/* V2.6: iPhone/Safari çift dokunma ve pinch zoom koruması */
+function installAntiZoomGuards(){
+  const viewport = document.querySelector('meta[name="viewport"]');
+  const viewportContent = 'width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, viewport-fit=cover, user-scalable=no';
+  if(viewport) viewport.setAttribute('content', viewportContent);
+  let lastTouchEnd = 0;
+  const prevent = e => { try{ e.preventDefault(); }catch(_){} };
+  document.addEventListener('gesturestart', prevent, {passive:false});
+  document.addEventListener('gesturechange', prevent, {passive:false});
+  document.addEventListener('gestureend', prevent, {passive:false});
+  document.addEventListener('dblclick', prevent, {passive:false});
+  document.addEventListener('touchmove', e => {
+    if(e.scale && e.scale !== 1) e.preventDefault();
+  }, {passive:false});
+  document.addEventListener('touchend', e => {
+    const now = Date.now();
+    if(now - lastTouchEnd < 430){
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    lastTouchEnd = now;
+  }, {capture:true, passive:false});
+  document.addEventListener('touchstart', e => {
+    if(e.touches && e.touches.length > 1) e.preventDefault();
+  }, {passive:false});
+}
+installAntiZoomGuards();
+
+
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 const toastEl = document.getElementById('toast');
@@ -154,6 +212,8 @@ const joyWrap = document.getElementById('joyWrap');
 const joyStick = document.getElementById('joyStick');
 const mobileControls = document.querySelector('.mobileControls');
 const actionButton = document.querySelector('[data-action="act"]');
+const mobileAssistChip = document.getElementById('mobileAssistChip');
+let mobileTapTarget = null;
 
 const SAVE_KEY = 'brainrot-heist-save';
 const SAVE_VERSION = 9;
@@ -507,9 +567,13 @@ function ensureV22Fields(){
 }
 
 function ensureV23Fields(){
-  state.settings = {mode:'easy',speedMult:.72,vehicleOwned:false,vehicleActive:false, ...(state.settings||{})};
+  state.settings = {mode:'easy',speedMult:.72,vehicleOwned:false,vehicleActive:false,mobile:{simple:true,assist:true,tapMove:true,autoSprint:true,joySize:1.06,joySens:.82,uiScale:1}, ...(state.settings||{})};
   if(!GAME_MODES[state.settings.mode]) state.settings.mode='easy';
   state.settings.speedMult = clamp(Number(state.settings.speedMult)||.72,.45,1.65);
+  state.settings.mobile = {simple:true,assist:true,tapMove:true,autoSprint:true,joySize:1.06,joySens:.82,uiScale:1, ...(state.settings.mobile||{})};
+  state.settings.mobile.joySize = clamp(Number(state.settings.mobile.joySize)||1.06,.82,1.35);
+  state.settings.mobile.joySens = clamp(Number(state.settings.mobile.joySens)||.82,.45,1.15);
+  state.settings.mobile.uiScale = clamp(Number(state.settings.mobile.uiScale)||1,.82,1.20);
   state.settings.vehicleOwned = Boolean(state.settings.vehicleOwned);
   state.settings.vehicleActive = Boolean(state.settings.vehicleActive) && state.settings.vehicleOwned;
   state.weapon = {level:1,xp:0, ...(state.weapon||{})};
@@ -535,6 +599,68 @@ function refreshModeButtons(){
 
 function speedPreferenceMult(){ ensureV23Fields(); return clamp(Number(state.settings.speedMult)||.72,.45,1.65); }
 function setSpeedPreset(mult,label=''){ ensureV23Fields(); state.settings.speedMult=clamp(Number(mult)||.72,.45,1.65); toast(`Oyuncu hızı ${Math.round(state.settings.speedMult*100)}% ${label?`• ${label}`:''}`); saveGame(); if(!panelEl.classList.contains('hidden')) openPanel('upgrades'); }
+
+function ensureV26MobileFields(){
+  ensureV23Fields();
+  state.settings.mobile = {simple:true,assist:true,tapMove:true,autoSprint:true,joySize:1.06,joySens:.82,uiScale:1, ...(state.settings.mobile||{})};
+  state.settings.mobile.joySize = clamp(Number(state.settings.mobile.joySize)||1.06,.82,1.35);
+  state.settings.mobile.joySens = clamp(Number(state.settings.mobile.joySens)||.82,.45,1.15);
+  state.settings.mobile.uiScale = clamp(Number(state.settings.mobile.uiScale)||1,.82,1.20);
+  return state.settings.mobile;
+}
+function applyMobileComfortLayout(){
+  const m=ensureV26MobileFields();
+  document.body.classList.toggle('mobileSimple', !!m.simple);
+  document.body.classList.toggle('mobileAssistOn', !!m.assist);
+  document.documentElement.style.setProperty('--joy-scale', String(m.joySize));
+  document.documentElement.style.setProperty('--mob-btn-scale', String(m.uiScale));
+  if(mobileAssistChip){
+    mobileAssistChip.textContent = m.tapMove ? '📍 Dokun: yürü • Çift dokunma zoom kapalı' : '📱 Mobil sade mod • Çift dokunma zoom kapalı';
+  }
+}
+function setMobileComfort(key,value){
+  const m=ensureV26MobileFields();
+  if(key==='simple'||key==='assist'||key==='tapMove'||key==='autoSprint') m[key]=!!value;
+  if(key==='joySize') m.joySize=clamp(Number(value)||1.06,.82,1.35);
+  if(key==='joySens') m.joySens=clamp(Number(value)||.82,.45,1.15);
+  if(key==='uiScale') m.uiScale=clamp(Number(value)||1,.82,1.20);
+  applyMobileComfortLayout();
+  saveGame();
+  toast('📱 Mobil ayar güncellendi. Zoom kilidi aktif.');
+  if(!panelEl.classList.contains('hidden')) openPanel('mobile');
+}
+function renderMobileSettings(){
+  const m=ensureV26MobileFields(); applyMobileComfortLayout();
+  panelTitle.textContent='📱 Mobil Kontrol & Zoom Koruması';
+  panelSub.textContent='iPhone çift dokunma zoom kapalı. Telefonda sade UI, tap-to-walk, joystick ve hız ayarı buradan.';
+  panelBody.innerHTML=`<div class="grid">
+    <div class="card"><h3>🚫 Anti-Zoom Koruması</h3><p>Çift dokunma, pinch ve Safari oyun içi zoom engellenir. Sayfa zoom’da kalmasın diye viewport her açılışta kilitlenir.</p><p class="pill">Aktif</p></div>
+    <div class="card"><h3>🎮 Sade Mobil UI: ${m.simple?'Açık':'Kapalı'}</h3><p>Telefonda gereksiz butonları gizler; AL/KILIÇ/KİLİT/ARABA/ÇANTA/HARİTA/MOBİL kalır.</p><button class="small good" data-cmd="mobileToggle" data-key="simple">${m.simple?'Kapat':'Aç'}</button></div>
+    <div class="card"><h3>📍 Dokun-Git: ${m.tapMove?'Açık':'Kapalı'}</h3><p>Haritada boş yere dokununca karakter oraya yürür. Büyük mapte joystick zor gelirse bunu kullan.</p><button class="small good" data-cmd="mobileToggle" data-key="tapMove">${m.tapMove?'Kapat':'Aç'}</button></div>
+    <div class="card"><h3>⚡ Otomatik Koşu: ${m.autoSprint?'Açık':'Kapalı'}</h3><p>Joystick sonuna yakınsa karakter otomatik koşar; Shift gerektirmez.</p><button class="small good" data-cmd="mobileToggle" data-key="autoSprint">${m.autoSprint?'Kapat':'Aç'}</button></div>
+    <div class="card"><h3>🕹️ Joystick Boyutu</h3><p>Şu an: ${Math.round(m.joySize*100)}%</p><div class="row"><button class="small" data-cmd="mobileSet" data-key="joySize" data-value="0.88">Küçük</button><button class="small good" data-cmd="mobileSet" data-key="joySize" data-value="1.06">Normal</button><button class="small gold" data-cmd="mobileSet" data-key="joySize" data-value="1.22">Büyük</button></div></div>
+    <div class="card"><h3>🎚️ Joystick Hassasiyeti</h3><p>Şu an: ${Math.round(m.joySens*100)}%</p><div class="row"><button class="small" data-cmd="mobileSet" data-key="joySens" data-value="0.62">Yumuşak</button><button class="small good" data-cmd="mobileSet" data-key="joySens" data-value="0.82">Dengeli</button><button class="small gold" data-cmd="mobileSet" data-key="joySens" data-value="1.05">Hızlı</button></div></div>
+    <div class="card"><h3>🔘 Buton Boyutu</h3><p>Şu an: ${Math.round(m.uiScale*100)}%</p><div class="row"><button class="small" data-cmd="mobileSet" data-key="uiScale" data-value="0.88">Küçük</button><button class="small good" data-cmd="mobileSet" data-key="uiScale" data-value="1">Normal</button><button class="small gold" data-cmd="mobileSet" data-key="uiScale" data-value="1.14">Büyük</button></div></div>
+    <div class="card"><h3>🏃 Oyun Hızı</h3><p>Çok hızlı gelirse buradan düşür. Bu ayar save’e kaydedilir.</p>${renderSpeedCard()}</div>
+  </div>`;
+}
+function handleMobileComfortCommand(btn){
+  const cmd=btn.dataset.cmd;
+  if(cmd==='mobileToggle'){
+    const m=ensureV26MobileFields();
+    setMobileComfort(btn.dataset.key,!m[btn.dataset.key]);
+  } else if(cmd==='mobileSet') setMobileComfort(btn.dataset.key,btn.dataset.value);
+}
+function setMobileTapTargetFromEvent(e){
+  const m=ensureV26MobileFields();
+  if(!m.tapMove || state.paused || !menuEl.classList.contains('hidden') || !panelEl.classList.contains('hidden')) return;
+  const target=e.target;
+  if(target.closest && target.closest('.topbar,.mobileControls,.panel,.menu,.resetModal')) return;
+  if(e.pointerType && e.pointerType!=='touch') return;
+  mobileTapTarget={x:view.camX+e.clientX,y:view.camY+e.clientY,t:1.8};
+  if(m.assist) showMessage('Hedefe yürüyorum...',.55);
+}
+
 function vehicleCost(){ const wt=state.hardcore?.worldTier||1; return Math.round(250000*Math.pow(3.5,Math.max(0,wt-1))*modeCfg().upgradeCostMult); }
 function buyVehicle(){ ensureV23Fields(); if(state.settings.vehicleOwned){ showMessage('Garaj aracı zaten sende. G ile aç/kapat.'); return; } const cost=vehicleCost(); if(state.player.cash<cost){ showMessage(`Garaj aracı için $${shortNum(cost)} lazım.`); beep('bad'); return; } state.player.cash-=cost; state.settings.vehicleOwned=true; state.settings.vehicleActive=true; toast('🏎️ Garaj BETA aracı açıldı. G ile bin/in. Pet taşırken araç kapanır.'); beep('win'); saveGame(); if(!panelEl.classList.contains('hidden')) openPanel('upgrades'); }
 function toggleVehicle(){ ensureV23Fields(); if(!state.settings.vehicleOwned){ showMessage('Önce Garaj BETA counterından aracı aç.'); beep('bad'); return; } if(state.player.carrying){ showMessage('Pet taşırken araca binemezsin.'); beep('bad'); return; } state.settings.vehicleActive=!state.settings.vehicleActive; toast(state.settings.vehicleActive?'🏎️ Araç modu açık. Büyük mapte daha hızlısın.':'🚶 Araç modu kapalı.'); saveGame(); }
@@ -1066,8 +1192,14 @@ function update(dt){
 function updatePlayer(dt){
   const p=state.player; if(p.stunTimer>0) return; let ax=0,ay=0;
   if(keys.has('arrowup')||keys.has('w')) ay-=1; if(keys.has('arrowdown')||keys.has('s')) ay+=1; if(keys.has('arrowleft')||keys.has('a')) ax-=1; if(keys.has('arrowright')||keys.has('d')) ax+=1;
-  ax+=joy.dx; ay+=joy.dy; const len=Math.hypot(ax,ay)||1; if(len>1){ax/=len;ay/=len;}
-  const sprint=keys.has('shift'); const carryMult=p.carrying ? (.82 + getSkill('turboCarry')*.055 + getSkill('quickHands')*.03) : 1;
+  ax+=joy.dx; ay+=joy.dy;
+  const m26=state.settings?.mobile;
+  if(Math.hypot(ax,ay)<.05 && mobileTapTarget && m26?.tapMove){
+    const tx=mobileTapTarget.x, ty=mobileTapTarget.y; const dx=tx-p.x, dy=ty-p.y, d=Math.hypot(dx,dy)||1;
+    if(d>26){ ax=dx/d; ay=dy/d; mobileTapTarget.t=(mobileTapTarget.t||0)-dt; if(mobileTapTarget.t<=0) mobileTapTarget=null; } else mobileTapTarget=null;
+  }
+  const len=Math.hypot(ax,ay)||1; if(len>1){ax/=len;ay/=len;}
+  const sprint=keys.has('shift') || (!!m26?.autoSprint && Math.hypot(joy.dx,joy.dy)>.72); const carryMult=p.carrying ? (.82 + getSkill('turboCarry')*.055 + getSkill('quickHands')*.03) : 1;
   let speed=(135+state.player.speedLevel*10+state.player.rebirths*4+getSkill('quickHands')*4)*(sprint?1.22:1)*carryMult*speedPreferenceMult();
   if(state.settings.vehicleActive && !p.carrying){ speed*=2.65; }
   if(p.carrying && state.settings.vehicleActive) state.settings.vehicleActive=false;
@@ -1195,7 +1327,7 @@ function drawText(text,x,y,size,color,align='left',weight=800){ ctx.font=`${weig
 
 function openPanel(kind){
   state.paused=true; panelEl.classList.remove('hidden'); ensureV21Fields();
-  if(kind==='inventory') renderInventory(); else if(kind==='quests') renderQuests(); else if(kind==='collection') renderCollection(); else if(kind==='crates') renderCrates(); else if(kind==='upgrades') renderUpgrades(); else if(kind==='skills') renderSkills(); else if(kind==='heists') renderHeists(); else if(kind==='marketInfo') renderMarketInfo(); else if(kind==='garage') renderGarage(); else if(kind==='blackInfo') renderBlackInfo(); else if(kind==='forgeInfo') renderForgeInfo(); else if(kind==='fusionInfo') renderFusionInfo(); else if(kind==='districtMap') renderMap(); else renderMap();
+  if(kind==='inventory') renderInventory(); else if(kind==='quests') renderQuests(); else if(kind==='collection') renderCollection(); else if(kind==='crates') renderCrates(); else if(kind==='upgrades') renderUpgrades(); else if(kind==='skills') renderSkills(); else if(kind==='heists') renderHeists(); else if(kind==='mobile') renderMobileSettings(); else if(kind==='marketInfo') renderMarketInfo(); else if(kind==='garage') renderGarage(); else if(kind==='blackInfo') renderBlackInfo(); else if(kind==='forgeInfo') renderForgeInfo(); else if(kind==='fusionInfo') renderFusionInfo(); else if(kind==='districtMap') renderMap(); else renderMap();
 }
 function closePanel(){ panelEl.classList.add('hidden'); state.paused=false; saveGame(); }
 function renderInventory(){
@@ -1413,8 +1545,14 @@ var __v25_baseUpdatePlayer = updatePlayer;
 updatePlayer = function(dt){
   const p=state.player; ensureV25Fields(); if(p.stunTimer>0) return; let ax=0,ay=0;
   if(keys.has('arrowup')||keys.has('w')) ay-=1; if(keys.has('arrowdown')||keys.has('s')) ay+=1; if(keys.has('arrowleft')||keys.has('a')) ax-=1; if(keys.has('arrowright')||keys.has('d')) ax+=1;
-  ax+=joy.dx; ay+=joy.dy; const len=Math.hypot(ax,ay)||1; if(len>1){ax/=len;ay/=len;}
-  const sprint=keys.has('shift'); const carryMult=p.carrying ? (.82 + getSkill('turboCarry')*.055 + getSkill('quickHands')*.03) : 1;
+  ax+=joy.dx; ay+=joy.dy;
+  const m26=state.settings?.mobile;
+  if(Math.hypot(ax,ay)<.05 && mobileTapTarget && m26?.tapMove){
+    const tx=mobileTapTarget.x, ty=mobileTapTarget.y; const dx=tx-p.x, dy=ty-p.y, d=Math.hypot(dx,dy)||1;
+    if(d>26){ ax=dx/d; ay=dy/d; mobileTapTarget.t=(mobileTapTarget.t||0)-dt; if(mobileTapTarget.t<=0) mobileTapTarget=null; } else mobileTapTarget=null;
+  }
+  const len=Math.hypot(ax,ay)||1; if(len>1){ax/=len;ay/=len;}
+  const sprint=keys.has('shift') || (!!m26?.autoSprint && Math.hypot(joy.dx,joy.dy)>.72); const carryMult=p.carrying ? (.82 + getSkill('turboCarry')*.055 + getSkill('quickHands')*.03) : 1;
   let speed=(118+state.player.speedLevel*9+state.player.rebirths*3.4+getSkill('quickHands')*4)*(sprint?1.18:1)*carryMult*speedPreferenceMult();
   if(state.settings.vehicleActive){ const v=currentVehicle(); speed*=vehicleTotalMult(); if(sprint && state.v25.nitro>1){ speed*=1.38+(state.v25.vehicleUpgrades.nitro||0)*.035; state.v25.nitro=clamp(state.v25.nitro-28*dt,0,100); } }
   const ox=p.x, oy=p.y; p.x=clamp(p.x+ax*speed*dt,30,WORLD.w-30); p.y=clamp(p.y+ay*speed*dt,30,WORLD.h-30);
@@ -1509,6 +1647,23 @@ function drawV25Decoration(){
   if(state?.v25?.gpsTarget){ const g=state.v25.gpsTarget; ctx.save(); ctx.globalAlpha=.75; ctx.strokeStyle=COLORS.cyan; ctx.lineWidth=4; ctx.setLineDash([18,16]); ctx.beginPath(); ctx.moveTo(state.player.x,state.player.y); ctx.lineTo(g.x,g.y); ctx.stroke(); ctx.setLineDash([]); roundedRect(g.x-74,g.y-42,148,52,20); ctx.fillStyle='rgba(121,217,255,.18)'; ctx.fill(); ctx.strokeStyle=COLORS.cyan; ctx.stroke(); drawText('📍 '+String(g.label||'GPS').slice(0,14),g.x,g.y-9,14,COLORS.cyan,'center',1000); ctx.restore(); }
   ctx.restore();
 }
+
+
+/* V2.6 mobile tap target visual */
+var __v26_baseDrawV25Decoration = drawV25Decoration;
+drawV25Decoration = function(){
+  __v26_baseDrawV25Decoration();
+  if(mobileTapTarget){
+    ctx.save();
+    ctx.globalAlpha=.75+.18*Math.sin(state.t*10);
+    ctx.strokeStyle=COLORS.cyan;
+    ctx.lineWidth=4;
+    ctx.beginPath(); ctx.arc(mobileTapTarget.x,mobileTapTarget.y,28,0,Math.PI*2); ctx.stroke();
+    drawText('GİT',mobileTapTarget.x,mobileTapTarget.y+5,13,COLORS.cyan,'center',1000);
+    ctx.restore();
+  }
+};
+
 var __v25_baseDrawPlayer=drawPlayer;
 drawPlayer=function(){ if(state.settings.vehicleActive){ const p=state.player, v=currentVehicle(); ctx.save(); ctx.translate(p.x,p.y); ctx.shadowColor=v.id==='voidcar'?COLORS.purple:v.id==='admincar'?COLORS.yellow:COLORS.cyan; ctx.shadowBlur=16; roundedRect(-32,-20,64,42,14); ctx.fillStyle=v.id==='police'?'#234b88':v.id==='admincar'?'#4d4020':v.id==='voidcar'?'#2d1b52':'#263a45'; ctx.fill(); ctx.strokeStyle=v.id==='police'?'#88b4ff':v.id==='admincar'?COLORS.yellow:COLORS.orange; ctx.lineWidth=3; ctx.stroke(); drawText(v.emoji,0,10,28,'#fff','center',1000); ctx.restore(); if(state.player.carrying) drawBrainrot({...state.player.carrying,x:p.x,y:p.y-64},true); } else __v25_baseDrawPlayer(); };
 var __v25_baseDrawHUD=drawHUD;
@@ -1526,6 +1681,7 @@ panelEl.addEventListener('click', e=>{
 });
 
 panelEl.addEventListener('click', e=>{ const btn=e.target.closest('[data-v25]'); if(btn) handleV25Command(btn); });
+panelEl.addEventListener('click', e=>{ const btn=e.target.closest('[data-cmd^="mobile"]'); if(btn) handleMobileComfortCommand(btn); });
 
 function resize(){ view.dpr=Math.max(1,Math.min(2.5,window.devicePixelRatio||1)); view.w=Math.floor(window.innerWidth); view.h=Math.floor(window.innerHeight); canvas.width=Math.floor(view.w*view.dpr); canvas.height=Math.floor(view.h*view.dpr); ctx.setTransform(view.dpr,0,0,view.dpr,0,0); updateCamera(); }
 window.addEventListener('resize',resize,{passive:true});
@@ -1536,17 +1692,19 @@ window.addEventListener('keydown', e=>{
 });
 window.addEventListener('keyup', e=>keys.delete(e.key.toLowerCase()));
 window.addEventListener('pointerdown', e=>{ if(e.pointerType==='touch') setInputMode('touch'); }, {passive:true});
+canvas.addEventListener('pointerdown', e=>{ if(e.pointerType==='touch') setMobileTapTargetFromEvent(e); }, {passive:false});
 joyWrap.addEventListener('pointerdown', e=>{ joy.active=true; joy.id=e.pointerId; joyWrap.setPointerCapture(e.pointerId); const r=joyWrap.getBoundingClientRect(); joy.cx=r.left+r.width/2; joy.cy=r.top+r.height/2; updateJoy(e); });
 joyWrap.addEventListener('pointermove', e=>{ if(joy.active && e.pointerId===joy.id) updateJoy(e); });
 joyWrap.addEventListener('pointerup', resetJoy); joyWrap.addEventListener('pointercancel', resetJoy);
-function updateJoy(e){ const max=44; const dx=e.clientX-joy.cx,dy=e.clientY-joy.cy,d=Math.hypot(dx,dy)||1,mag=Math.min(max,d); joy.dx=(dx/d)*(mag/max); joy.dy=(dy/d)*(mag/max); joyStick.style.transform=`translate(${joy.dx*max}px,${joy.dy*max}px)`; }
+function updateJoy(e){ const prefs=ensureV26MobileFields(); const max=44; const dx=e.clientX-joy.cx,dy=e.clientY-joy.cy,d=Math.hypot(dx,dy)||1,mag=Math.min(max,d); const sens=prefs.joySens||.82; joy.dx=(dx/d)*(mag/max)*sens; joy.dy=(dy/d)*(mag/max)*sens; joyStick.style.transform=`translate(${(dx/d)*mag}px,${(dy/d)*mag}px)`; }
 function resetJoy(e){ if(e && e.pointerId!==joy.id) return; joy.active=false; joy.id=null; joy.dx=joy.dy=0; joyStick.style.transform='translate(0,0)'; }
-document.querySelectorAll('[data-action]').forEach(btn=>btn.addEventListener('click',()=>{ const a=btn.dataset.action; if(a==='act') interact(); else if(a==='swing') swing(); else if(a==='lock') lockBase(); else if(a==='inventory') openPanel('inventory'); else if(a==='quest') openPanel('quests'); else if(a==='skills') openPanel('skills'); else if(a==='heist') openPanel('heists'); else if(a==='crate') openPanel('crates'); else if(a==='upgrade') openPanel('upgrades'); else if(a==='book') openPanel('collection'); }));
+document.querySelectorAll('[data-action]').forEach(btn=>btn.addEventListener('click',()=>{ const a=btn.dataset.action; if(a==='act') interact(); else if(a==='swing') swing(); else if(a==='lock') lockBase(); else if(a==='inventory') openPanel('inventory'); else if(a==='quest') openPanel('quests'); else if(a==='skills') openPanel('skills'); else if(a==='heist') openPanel('heists'); else if(a==='crate') openPanel('crates'); else if(a==='upgrade') openPanel('upgrades'); else if(a==='book') openPanel('collection'); else if(a==='vehicle') toggleVehicle(); else if(a==='map') openPanel('districtMap'); else if(a==='mobile') openPanel('mobile'); else if(a==='menu'){menuEl.classList.remove('hidden');state.paused=true;} }));
 
 document.getElementById('btnStart').onclick=()=>{menuEl.classList.add('hidden');state.started=true;state.paused=false;beep('ok');};
 document.getElementById('btnEasyMode').onclick=()=>setGameMode('easy');
 document.getElementById('btnHardMode').onclick=()=>setGameMode('hardcore');
 document.getElementById('btnMenu').onclick=()=>{menuEl.classList.toggle('hidden');state.paused=!menuEl.classList.contains('hidden');};
+document.getElementById('btnMobile').onclick=()=>openPanel('mobile');
 document.getElementById('btnInventory').onclick=()=>openPanel('inventory');
 document.getElementById('btnQuests').onclick=()=>openPanel('quests');
 document.getElementById('btnSkills').onclick=()=>openPanel('skills');
@@ -1562,7 +1720,7 @@ function loop(now){ const dt=clamp((now-lastFrame)/1000,0,.05); lastFrame=now; u
 
 applyV25WorldPatch();
 resize();
-const loaded=loadSave(); ensureTransientWorld(); ensureV25Fields(); v25PostLoadFix(); refreshModeButtons(); if(!loaded) showMessage('V2.5 Vehicle & Shop Life hazır. Save key sabit.',3); saveGame(); requestAnimationFrame(loop);
+const loaded=loadSave(); ensureTransientWorld(); ensureV25Fields(); v25PostLoadFix(); ensureV26MobileFields(); applyMobileComfortLayout(); refreshModeButtons(); if(!loaded) showMessage('V2.6 Mobile Comfort hazır. Zoom kapalı, save key sabit.',3); saveGame(); requestAnimationFrame(loop);
 })();
 </script>
 </body>
