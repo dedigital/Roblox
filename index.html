@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, viewport-fit=cover, user-scalable=no" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<title>Brainrot Heist V3.4 Open City Empire</title>
+<title>Brainrot Heist V3.4.1 Open City Empire</title>
 <style>
   :root{
     --bg:#060914;--panel:rgba(8,14,30,.86);--panel2:rgba(255,255,255,.08);--line:rgba(255,255,255,.14);
@@ -86,7 +86,7 @@
 </head>
 <body>
 <div id="app">
-  <canvas id="game" aria-label="Brainrot Heist V3.4 Open City Empire oyun alanı"></canvas>
+  <canvas id="game" aria-label="Brainrot Heist V3.4.1 Open City Empire oyun alanı"></canvas>
   <div id="toast" class="toast" aria-live="polite"></div>
   <div class="topbar">
     <button id="btnMenu" type="button">MENÜ</button>
@@ -121,9 +121,9 @@
   <div id="mobileAssistChip" class="mobileAssistChip">📍 Dokun: yürü • Çift dokunma zoom kapalı</div>
   <section id="menu" class="menu">
     <div class="menuCard">
-      <p class="eyebrow">V3.4 Open City Empire</p>
-      <h1>Brainrot Heist<br>V3 OPEN CITY</h1>
-      <p class="lead">V3.0 dev update: Open City Empire, 5 dev district, interior mağazalar, housing, faction, dungeon 2.0, araç 2.0, empire progression ve bank raid bug fix geldi.</p>
+      <p class="eyebrow">V3.4.1 Integration & Cleanup</p>
+      <h1>Brainrot Heist<br>V3.4.1</h1>
+      <p class="lead">V3.4.1 integration update: Open City Empire korunur; 5 dev district, interior mağazalar, housing, faction, dungeon 2.0, araç 2.0, empire progression ve Bank Guard aynı save key ile toparlandı.</p>
       <div class="patch">
         <div><b>Bug Fix</b>Araçta pet taşıma çizimi, eski sürüm yazıları, mobile UI ve panel karmaşası toparlandı.</div>
         <div><b>Save Health</b>Save audit, numeric guard, export/import hatırlatıcı ve bozuk değer temizliği güçlendi.</div>
@@ -217,7 +217,7 @@ const mobileAssistChip = document.getElementById('mobileAssistChip');
 let mobileTapTarget = null;
 
 const SAVE_KEY = 'brainrot-heist-save';
-const SAVE_VERSION = 9;
+const SAVE_VERSION = 341;
 const RESET_BACKUP_KEY = 'brainrot-heist-reset-backup';
 const LEGACY_SAVE_KEYS = [
   SAVE_KEY,
@@ -3632,7 +3632,253 @@ resize();
 })();
 
 
-const loaded=loadSave(); ensureTransientWorld(); ensureV25Fields(); v25PostLoadFix(); ensureV26MobileFields(); ensureV27Fields(); applyMobileComfortLayout(); refreshModeButtons(); if(!loaded) showMessage('V3.4 Syndicate hazır. Save key sabit, Bank Guard aktif, zoom guard açık.',3); saveGame(); requestAnimationFrame(loop);
+/* ===================== V3.4.1 INTEGRATION & CLEANUP =====================
+   V3.4.1 smoke-test note:
+   - Keep this file single-file and dependency-free.
+   - Verify Y/V3/SAVE/SEASON/ESSENCE route through one public panel router.
+   - Preserve save key brainrot-heist-save, export/import, reset confirmation,
+     anti-zoom, mobile controls, save repair, Bank Guard, Essence Lab, and V3.4 systems.
+   ============================================================================ */
+(function v341IntegrationCleanup(){
+  const V341_VERSION = 341;
+  const V341_LABEL = 'V3.4.1';
+  const V341_PATCH = 'V3.4.1 Integration & Cleanup';
+  const V341_TITLE = 'Brainrot Heist V3.4.1 Open City Empire';
+  const V341_SYSTEMS = {
+    districts:5, housing:true, factions:true, dungeon20:true, vehicle20:true,
+    essenceLab:true, bankGuard:true, saveHealth:true
+  };
+  const v341BaseOpenPanel = openPanel;
+  const v341BaseSerializeSave = serializeSave;
+  const v341BaseRestoreSave = restoreSave;
+  const v341BaseEncodeSave = encodeSave;
+  const v341BaseDrawText = drawText;
+  const v341BaseToast = toast;
+  const v341BaseShowMessage = showMessage;
+  const v341BaseLoop = loop;
+  let v341EventsInstalled = false;
+
+  const PANEL_ROUTES = {
+    y:'v302', hub:'v302', guide:'v302', v302:'v302', v3showtime:'v302',
+    v3:'v3', v3empire:'v3',
+    save:'v291', health:'v291', repair:'v291', v291:'v291',
+    season:'v29', territory:'v29', v29:'v29',
+    essence:'essLab', ess:'essLab', esslab:'essLab', farm:'essLab', v31:'essLab'
+  };
+
+  function v341Text(text){
+    return String(text)
+      .replace(/\bV3\.4(?!\.1)\b/g, V341_LABEL)
+      .replace(/\bV3\.0\b/g, V341_LABEL);
+  }
+  function v341EventKey(){
+    try{
+      const ev = window.event;
+      return ev && ev.type === 'keydown' ? String(ev.key || '').toLowerCase() : '';
+    }catch(_){ return ''; }
+  }
+  function v341CanonicalPanel(kind){
+    const raw = String(kind || 'hub');
+    const key = raw.toLowerCase();
+    if(key === 'v3' && v341EventKey() === 'y') return 'v302';
+    return PANEL_ROUTES[key] || raw;
+  }
+  function v341NormalizeElement(root){
+    try{
+      if(!root || !document.createTreeWalker) return;
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node){
+          const p = node.parentElement;
+          if(!p || /^(SCRIPT|STYLE|TEXTAREA|INPUT)$/i.test(p.tagName)) return NodeFilter.FILTER_REJECT;
+          return /V3\.4(?!\.1)|V3\.0/.test(node.nodeValue || '') ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+        }
+      });
+      const nodes = [];
+      while(walker.nextNode()) nodes.push(walker.currentNode);
+      for(const n of nodes) n.nodeValue = v341Text(n.nodeValue);
+    }catch(_){}
+  }
+  function v341ApplySaveMeta(data){
+    if(!data || typeof data !== 'object') data = {};
+    const previousVersion = data.version ?? data.saveVersion ?? null;
+    const previousPatch = data.patch || '';
+    data.version = V341_VERSION;
+    data.saveVersion = V341_LABEL;
+    data.patch = V341_PATCH;
+    data.saveKey = SAVE_KEY;
+    data.savedAt = Date.now();
+    data.v341 = {
+      ...(data.v341 || {}),
+      version:V341_VERSION,
+      label:V341_LABEL,
+      patch:V341_PATCH,
+      previousVersion,
+      previousPatch,
+      systems:{...V341_SYSTEMS},
+      routedPanels:true,
+      updatedAt:Date.now()
+    };
+    return data;
+  }
+  function v341Encode(data){
+    const json = JSON.stringify(v341ApplySaveMeta((data && typeof data === 'object') ? {...data} : {}));
+    const bytes = new TextEncoder().encode(json);
+    let bin = '';
+    for(const b of bytes) bin += String.fromCharCode(b);
+    return 'BRAINROT_MEGA_V341:' + btoa(bin);
+  }
+  function v341SetRouteButton(id,label,route,title){
+    const btn = document.getElementById(id);
+    if(!btn) return null;
+    btn.textContent = label;
+    btn.title = title || label;
+    btn.dataset.panelRoute = route;
+    btn.onclick = ev => {
+      try{ ev?.preventDefault?.(); ev?.stopPropagation?.(); }catch(_){}
+      openPanel(route);
+    };
+    return btn;
+  }
+  function v341EnsureTopButton(id,label,route,beforeId,title){
+    let btn = document.getElementById(id);
+    const tb = document.querySelector('.topbar');
+    if(!btn && tb){
+      btn = document.createElement('button');
+      btn.id = id;
+      btn.type = 'button';
+      const ref = beforeId ? document.getElementById(beforeId) : null;
+      tb.insertBefore(btn, ref || document.getElementById('btnInventory') || null);
+    }
+    return v341SetRouteButton(id,label,route,title);
+  }
+  function v341EnsureMobileButton(id,label,route,cls='mButton'){
+    let btn = document.getElementById(id);
+    const wrap = document.querySelector('.mButtons');
+    if(!btn && wrap){
+      btn = document.createElement('button');
+      btn.id = id;
+      btn.className = cls;
+      btn.type = 'button';
+      wrap.appendChild(btn);
+    }
+    if(btn){
+      btn.textContent = label;
+      btn.dataset.panelRoute = route;
+      btn.dataset.action = route;
+      btn.onclick = ev => {
+        try{ ev?.preventDefault?.(); ev?.stopPropagation?.(); }catch(_){}
+        openPanel(route);
+      };
+    }
+    return btn;
+  }
+  function v341InstallPanelButtons(){
+    v341EnsureTopButton('btnV302', V341_LABEL, 'hub', 'btnInventory', 'V3.4.1 Hub');
+    v341EnsureTopButton('btnV3', 'V3', 'v3', 'btnV291', 'V3.4.1 Open City Empire');
+    v341EnsureTopButton('btnV291', 'SAVE', 'save', 'btnSeason', 'V3.4.1 Save Health');
+    v341EnsureTopButton('btnSeason', 'SEASON', 'season', 'btnJuice', 'V3.4.1 Season / Territory');
+    v341SetRouteButton('btnJuice', 'ESSENCE', 'essence', 'V3.4.1 Essence Lab');
+    v341SetRouteButton('btnEssLab', 'FARM', 'essence', 'V3.4.1 Essence Lab');
+    v341SetRouteButton('btnV32Spend', 'SPEND', 'essSpend', 'V3.4.1 Essence Spend');
+    v341SetRouteButton('btnV33', 'COSMIC', 'v33', 'V3.4.1 Cosmic Frontier');
+    v341SetRouteButton('btnV34', 'HQ', 'v34', 'V3.4.1 Syndicate HQ');
+
+    v341EnsureMobileButton('mV302', V341_LABEL, 'hub', 'mButton good');
+    v341EnsureMobileButton('mV3', 'V3', 'v3', 'mButton good');
+    v341EnsureMobileButton('mV291', 'SAVE', 'save', 'mButton warn');
+    v341EnsureMobileButton('mSeason', 'SEASON', 'season', 'mButton warn');
+    v341EnsureMobileButton('mEssLab', 'ESS', 'essence', 'mButton good');
+    v341EnsureMobileButton('mV32Spend', 'SPEND', 'essSpend', 'mButton good');
+  }
+  function v341InstallRouteEvents(){
+    if(v341EventsInstalled) return;
+    v341EventsInstalled = true;
+    const clickRoute = ev => {
+      const btn = ev.target?.closest?.('[data-panel-route]');
+      if(!btn) return;
+      try{ ev.preventDefault(); ev.stopPropagation(); ev.stopImmediatePropagation?.(); }catch(_){}
+      openPanel(btn.dataset.panelRoute || 'hub');
+    };
+    document.querySelector('.topbar')?.addEventListener('click', clickRoute, true);
+    mobileControls?.addEventListener('click', clickRoute, true);
+  }
+  function v341SetIdentity(){
+    try{
+      document.title = V341_TITLE;
+      canvas?.setAttribute('aria-label', `${V341_TITLE} oyun alani`);
+      const eye = document.querySelector('.menuCard .eyebrow');
+      if(eye) eye.textContent = 'V3.4.1 Integration & Cleanup';
+      const h = document.querySelector('.menuCard h1');
+      if(h) h.innerHTML = 'Brainrot Heist<br>V3.4.1';
+      const lead = document.querySelector('.menuCard .lead');
+      if(lead) lead.textContent = 'V3.4.1 integration pass: 5 districts, housing, factions, dungeon 2.0, vehicle 2.0, Essence Lab, Bank Guard and Save Health stay intact on the same save key.';
+      const patch = document.querySelector('.menuCard .patch');
+      if(patch) patch.innerHTML =
+        '<div><b>Integration</b>Visible version text is unified to V3.4.1 without changing the save key.</div>' +
+        '<div><b>Panel Router</b>Y, V3, SAVE, SEASON and ESSENCE route through one final panel dispatcher.</div>' +
+        '<div><b>Save Health</b>Export/import, reset confirmation, repair, and legacy save migration remain active.</div>' +
+        '<div><b>Preserved Systems</b>5 districts, housing, factions, dungeon 2.0, vehicle 2.0, Essence Lab and Bank Guard are preserved.</div>';
+      v341InstallPanelButtons();
+      v341NormalizeElement(document.querySelector('.topbar'));
+      v341NormalizeElement(mobileControls);
+      v341NormalizeElement(menuEl);
+    }catch(e){ console.warn('V3.4.1 identity failed', e); }
+  }
+
+  drawText = function(text,x,y,size,color,align='left',weight=800){
+    return v341BaseDrawText(v341Text(text),x,y,size,color,align,weight);
+  };
+  toast = function(text){
+    return v341BaseToast(v341Text(text));
+  };
+  showMessage = function(text,t){
+    return v341BaseShowMessage(v341Text(text),t);
+  };
+  serializeSave = function(){
+    return v341ApplySaveMeta(v341BaseSerializeSave());
+  };
+  restoreSave = function(saved){
+    const ok = v341BaseRestoreSave(saved);
+    try{
+      state.v341 = {
+        ...(state.v341 || {}),
+        version:V341_VERSION,
+        label:V341_LABEL,
+        patch:V341_PATCH,
+        restoredFromVersion:saved?.version ?? saved?.saveVersion ?? 'legacy',
+        systems:{...V341_SYSTEMS}
+      };
+      v341SetIdentity();
+    }catch(e){ console.warn('V3.4.1 restore metadata failed', e); }
+    return ok;
+  };
+  encodeSave = function(data){
+    try{ return v341Encode(data); }
+    catch(e){ console.warn('V3.4.1 encode failed', e); return v341BaseEncodeSave(data); }
+  };
+  openPanel = function(kind){
+    const target = v341CanonicalPanel(kind);
+    const out = v341BaseOpenPanel(target);
+    v341SetIdentity();
+    v341NormalizeElement(panelEl);
+    setTimeout(()=>v341NormalizeElement(panelEl), 0);
+    return out;
+  };
+  loop = function(now){
+    const out = v341BaseLoop(now);
+    v341SetIdentity();
+    return out;
+  };
+
+  v341InstallRouteEvents();
+  v341SetIdentity();
+  setTimeout(v341SetIdentity, 0);
+  setTimeout(v341SetIdentity, 150);
+  setTimeout(v341SetIdentity, 700);
+})();
+
+
+const loaded=loadSave(); ensureTransientWorld(); ensureV25Fields(); v25PostLoadFix(); ensureV26MobileFields(); ensureV27Fields(); applyMobileComfortLayout(); refreshModeButtons(); if(!loaded) showMessage('V3.4.1 hazır. Save key sabit, Bank Guard aktif, zoom guard açık.',3); saveGame(); requestAnimationFrame(loop);
 })();
 </script>
 </body>
