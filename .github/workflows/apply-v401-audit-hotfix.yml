@@ -1,0 +1,64 @@
+name: Apply V4.0.1 audit hotfix
+
+on:
+  push:
+    paths:
+      - .github/workflows/apply-v401-audit-hotfix.yml
+
+permissions:
+  contents: write
+
+jobs:
+  patch-test-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Apply audited source patch
+        run: python tools/apply_v401.py
+
+      - name: Static and syntax validation
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          html=Path('index-v4.html').read_text(encoding='utf-8')
+          assert html.count('V4.0.1 FULL AUDIT HOTFIX') == 1
+          assert 'const bonusTier = i>slotCount-4?1:i>slotCount-2?2:0;' not in html
+          assert 'Teklif İste (test)' not in html
+          assert "if(e.key.toLowerCase()!=='a') return;" in html
+          scripts=re.findall(r'<script(?:\s[^>]*)?>(.*?)</script>',html,re.S|re.I)
+          assert len(scripts)==1, f'expected one script, found {len(scripts)}'
+          Path('/tmp/game.js').write_text(scripts[0],encoding='utf-8')
+          print('static assertions passed')
+          PY
+          node --check /tmp/game.js
+          git diff --check
+
+      - name: Browser smoke tests
+        shell: bash
+        run: |
+          npm install --prefix /tmp --no-save --package-lock=false jsdom@26
+          cp tools/smoke_v401.mjs /tmp/smoke_v401.mjs
+          node /tmp/smoke_v401.mjs
+
+      - name: Commit tested hotfix
+        shell: bash
+        run: |
+          rm -f .github/workflows/apply-v401-audit-hotfix.yml tools/apply_v401.py tools/v401_hotfix.js tools/smoke_v401.mjs
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --stat
+          git commit -m 'fix: harden saves and resolve V4 audit bugs'
+          git push origin HEAD:main
